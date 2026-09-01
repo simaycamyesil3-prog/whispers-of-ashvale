@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Whispers of Ashvale - Bölüm 9 İzolasyon Koğuşu">
+    <title>Whispers of Ashvale - İzolasyon Koğuşu</title>
+
+    <link rel="stylesheet" href="css/style.css?v=20260831105205">
+    <link rel="stylesheet" href="css/animations.css?v=20260831105205">
+    <link rel="stylesheet" href="css/effects.css?v=20260831105205">
+    <link rel="stylesheet" href="css/room-common.css?v=20260831105205">
+    <link rel="stylesheet" href="css/room9.css?v=20260831105205">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body class="room-page chapter-nine">
+
+    <section id="chapter-intro" class="chapter-intro" aria-label="Bölüm girişi">
+        <div class="chapter-intro-content">
+            <span class="chapter-number">BÖLÜM 09</span>
+            <h1>İZOLASYON KOĞUŞU</h1>
+            <p>Kayışlar içeriden yırtılmış. Biri buradan kaçtı - ya da kaçmaya çalıştı.</p>
+            <div class="chapter-intro__line" aria-hidden="true"></div>
+        </div>
+    </section>
+
+    <div class="room-shell">
+
+        <header class="hud">
+            <div class="hud-left">
+                <div class="player-box">
+                    <span class="label">OYUNCU</span>
+                    <span id="playerName">Oyuncu</span>
+                </div>
+            </div>
+
+            <div class="hud-center">
+                <div class="chapter-box">BÖLÜM 09 / 15</div>
+
+                <div class="save-status">
+                    <span class="save-status-light" aria-hidden="true"></span>
+                    <span>Yerel kayıt etkin</span>
+                </div>
+            </div>
+
+            <div class="hud-right">
+                <button id="menuButton" class="menu-button" type="button" aria-label="Ana menüye dön">
+                    ANA MENÜ
+                </button>
+            </div>
+        </header>
+
+        <main id="room" class="room room-nine" aria-label="Ashvale Hastanesi İzolasyon Koğuşu">
+
+            <div id="flashlight" class="flashlight" aria-hidden="true"></div>
+
+            <section class="background-layer" aria-hidden="true">
+                <img
+                    src="images/ui/rooms/room9.png"
+                    class="room-background"
+                    alt=""
+                >
+
+                <div class="dark-overlay"></div>
+                <div class="fog fog-one"></div>
+                <div class="fog fog-two"></div>
+                <div id="roomFlicker" class="room-flicker"></div>
+                <div id="movingShadow" class="moving-shadow"></div>
+                <div id="hallwayFigure" class="hallway-figure"></div>
+            </section>
+
+            <section id="hotspotLayer" class="hotspot-layer" aria-label="Etkileşim alanları">
+
+                <button
+                    id="restraintBed"
+                    class="hotspot"
+                    type="button"
+                    data-text="Kısıtlama Yatağını İncele"
+                    aria-label="Kısıtlama yatağını incele"
+                ></button>
+
+                <button
+                    id="wallScratches"
+                    class="hotspot"
+                    type="button"
+                    data-text="Duvardaki Çizikleri İncele"
+                    aria-label="Duvardaki çizikleri incele"
+                ></button>
+
+                <button
+                    id="observationChart"
+                    class="hotspot"
+                    type="button"
+                    data-text="Gözlem Çizelgesini İncele"
+                    aria-label="Gözlem çizelgesini incele"
+                ></button>
+
+                <button
+                    id="medicineCart"
+                    class="hotspot"
+                    type="button"
+                    data-text="Köşedeki Koltuğu İncele"
+                    aria-label="Köşedeki koltuğu incele"
+                ></button>
+
+                <button
+                    id="exitDoor"
+                    class="hotspot"
+                    type="button"
+                    data-text="Zincirli Kapıyı İncele"
+                    aria-label="Zincirli kapıyı incele"
+                ></button>
+
+            </section>
+
+            <section id="interactionPrompt" class="interaction-prompt hidden" aria-hidden="true">
+                <div class="prompt-icon" aria-hidden="true">👁</div>
+
+                <div class="prompt-content">
+                    <span class="prompt-action">İNCELE</span>
+                    <span id="promptText">...</span>
+                </div>
+
+                <div class="prompt-key">E</div>
+            </section>
+
+            <section id="storyPanel" class="story-panel">
+                <div class="story-header">
+                    <h3>HİKÂYE</h3>
+                </div>
+
+                <div class="story-body">
+                    <p id="story-text">
+                        İzolasyon koğuşu, hastanenin en dip, en izole kanadı. Kısıtlama yatağının kayışları içeriden yırtılmış. Duvarda tuhaf çizikler, ayakucunda bir gözlem çizelgesi var.
+                    </p>
+                </div>
+
+                <div class="objective">
+                    <span class="objective-title">GÖREV</span>
+
+                    <p id="objectiveText">
+                        Odadaki izleri incele.
+                    </p>
+                </div>
+
+                <div id="objectiveProgress" class="objective-progress">
+                    <div class="progress-information">
+                        <span>İLERLEME</span>
+                        <span id="recordProgress">0 / 4</span>
+                    </div>
+
+                    <div class="progress-track">
+                        <div id="recordProgressBar" class="progress-bar"></div>
+                    </div>
+                </div>
+
+                <button id="hintButton" class="hint-button" type="button">
+                    💡 İPUCU
+                </button>
+            </section>
+
+            <section id="inventory" class="inventory" aria-label="Envanter">
+                <div class="inventory-title">ENVANTER</div>
+                <div id="inventorySlots" class="inventory-slots"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <section
+        id="chartViewer"
+        class="record-viewer hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="chartViewerTitle"
+    >
+        <article class="record-document">
+            <header class="record-document-header">
+                <div>
+                    <span class="record-hospital-name">ASHVALE HOSPITAL — İZOLASYON</span>
+                    <h2 id="chartViewerTitle">Gözlem Çizelgesi</h2>
+                </div>
+
+                <button
+                    id="closeChartViewer"
+                    class="record-close-button"
+                    type="button"
+                    aria-label="Çizelgeyi kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="record-document-body">
+                <div class="record-stamp">SON VAKA</div>
+
+                <p class="record-classification">
+                    SEANS KAYITLARI — KRONOLOJİK
+                </p>
+
+                <div class="record-content">
+                    <p class="record-note">
+                        Kayıtlar seans numarasıyla ilerliyor. Son kayıt yarıda kesilmiş - el yazısının kesildiği yerin kenarına, titrek bir elle bir işaret bırakılmış.
+                    </p>
+
+                    <div id="chartEntries" class="chart-entries">
+
+                        <div class="chart-entry">
+                            <span class="chart-entry-number">SEANS 04</span>
+                            <p>Hasta sakin. Standart gözlem, olağan dışı bir şey yok.</p>
+                        </div>
+
+                        <div class="chart-entry">
+                            <span class="chart-entry-number">SEANS 05</span>
+                            <p>Hasta sakin. Uyku düzeni normal.</p>
+                        </div>
+
+                        <div class="chart-entry">
+                            <span class="chart-entry-number">SEANS 06</span>
+                            <p>Hasta huzursuz. Geceleri uyumuyor, duvara bakarak saatler geçiriyor.</p>
+                        </div>
+
+                        <div class="chart-entry">
+                            <span class="chart-entry-number">SEANS 07</span>
+                            <p>Hasta duvara bir şeyler karalıyor. Personel anlam veremedi - rapor edildi.</p>
+                        </div>
+
+                        <div class="chart-entry">
+                            <span class="chart-entry-number">SEANS 08</span>
+                            <p>Bilekler bağlandı. Hasta düzenli konuşmuyor artık - sadece fısıldıyor.</p>
+                        </div>
+
+                        <div class="chart-entry chart-entry--cutoff">
+                            <span class="chart-entry-number">SEANS 09 <span class="chart-entry-mark" aria-hidden="true">①</span></span>
+                            <p>Bu gece nöbetçi hattı sürekli meşgul. Biri kapıyı aç—</p>
+                            <span class="chart-entry-note">El yazısı burada kesiliyor. Sayfanın geri kalanı boş.</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <footer class="record-document-footer">
+                <span>Kesilen kaydın numarası bir izmiş gibi duruyor.</span>
+
+                <button id="closeChartFooter" type="button">
+                    KAPAT
+                </button>
+            </footer>
+        </article>
+    </section>
+
+    <section
+        id="doorPanel"
+        class="code-panel hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="doorPanelTitle"
+    >
+        <div class="code-panel-window door-panel-window">
+            <header class="code-panel-header">
+                <div>
+                    <span class="code-panel-label">İZOLASYON KOĞUŞU</span>
+                    <h2 id="doorPanelTitle">ZİNCİRLİ KİLİT</h2>
+                </div>
+
+                <button
+                    id="closeDoorPanel"
+                    class="window-close-button"
+                    type="button"
+                    aria-label="Paneli kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="code-panel-body">
+                <p class="code-panel-description">
+                    Zincir, tek bir açılış denemesine izin veriyor gibi geriliyor. Altı rakamı, doğru sırayla, vakit bitmeden gir.
+                </p>
+
+                <div id="doorTimer" class="code-timer">
+                    <div class="code-timer-track">
+                        <div id="doorTimerFill" class="code-timer-fill"></div>
+                    </div>
+                    <span id="doorTimerText" class="code-timer-text">75</span>
+                </div>
+
+                <div
+                    id="doorCodeSlots"
+                    class="code-display six-digit"
+                    aria-label="Girilen kapı kodu"
+                >
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                </div>
+
+                <div id="doorCodeButtons" class="tray-buttons keypad-buttons" aria-label="Tuş takımı">
+                    <button type="button" data-digit="1">1</button>
+                    <button type="button" data-digit="2">2</button>
+                    <button type="button" data-digit="3">3</button>
+                    <button type="button" data-digit="4">4</button>
+                    <button type="button" data-digit="5">5</button>
+                    <button type="button" data-digit="6">6</button>
+                    <button type="button" data-digit="7">7</button>
+                    <button type="button" data-digit="8">8</button>
+                    <button type="button" data-digit="9">9</button>
+                    <button type="button" data-digit="0">0</button>
+                </div>
+
+                <p id="doorCodeMessage" class="code-message" aria-live="polite"></p>
+            </div>
+        </div>
+    </section>
+
+    <section
+        id="dialog"
+        class="dialog"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dialogTitle"
+    >
+        <div class="dialog-window">
+            <header class="dialog-header">
+                <h3 id="dialogTitle">İnceleme</h3>
+
+                <button
+                    id="dialog-x-button"
+                    type="button"
+                    aria-label="Diyaloğu kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="dialog-body">
+                <p id="dialogText"></p>
+            </div>
+
+            <footer class="dialog-footer">
+                <button id="dialogContinue" type="button">
+                    DEVAM
+                </button>
+            </footer>
+        </div>
+    </section>
+
+    <section
+        id="chapterComplete"
+        class="chapter-complete hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="chapterCompleteTitle"
+    >
+        <div class="chapter-complete-content">
+            <span class="chapter-complete-label">ASHVALE HOSPITAL</span>
+
+            <h2 id="chapterCompleteTitle">BÖLÜM 09 TAMAMLANDI</h2>
+
+            <p>
+                Zincir çözüldü. Koğuşun ardında, hastanenin daha önce hiç duymadığın bir sesi seni bekliyor.
+            </p>
+
+            <button id="nextChapter" type="button" data-href="room10.html">
+                BÖLÜM 10
+            </button>
+        </div>
+    </section>
+
+    <script src="js/core/flashlight.js?v=20260831105205"></script>
+
+    <script src="js/core/save-manager.js?v=20260831105205"></script>
+    <script src="js/core/inventory.js?v=20260831105205"></script>
+    <script src="js/core/audio-manager.js?v=20260831105205"></script>
+    <script src="js/core/dialogue.js?v=20260831105205"></script>
+    <script src="js/effects.js?v=20260831105205"></script>
+    <script src="js/game.js?v=20260831105205"></script>
+    <script src="js/rooms/room9.js?v=20260831105205"></script>
+
+</body>
+</html>

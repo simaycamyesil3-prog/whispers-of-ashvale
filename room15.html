@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Whispers of Ashvale - Bölüm 15 Ashvale'in Kalbi">
+    <title>Whispers of Ashvale - Ashvale'in Kalbi</title>
+
+    <link rel="stylesheet" href="css/style.css?v=20260901123322">
+    <link rel="stylesheet" href="css/animations.css?v=20260901123322">
+    <link rel="stylesheet" href="css/effects.css?v=20260901123322">
+    <link rel="stylesheet" href="css/room-common.css?v=20260901123322">
+    <link rel="stylesheet" href="css/room15.css?v=20260901123322">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body class="room-page chapter-fifteen">
+
+    <section id="chapter-intro" class="chapter-intro" aria-label="Bölüm girişi">
+        <div class="chapter-intro-content">
+            <span class="chapter-number">BÖLÜM 15</span>
+            <h1>ASHVALE'İN KALBİ</h1>
+            <p>Oda 3-1. İzlerin birleştiği yer.</p>
+            <div class="chapter-intro__line" aria-hidden="true"></div>
+        </div>
+    </section>
+
+    <div class="room-shell">
+
+        <header class="hud">
+            <div class="hud-left">
+                <div class="player-box">
+                    <span class="label">OYUNCU</span>
+                    <span id="playerName">Oyuncu</span>
+                </div>
+            </div>
+
+            <div class="hud-center">
+                <div class="chapter-box">BÖLÜM 15 / 15</div>
+
+                <div class="save-status">
+                    <span class="save-status-light" aria-hidden="true"></span>
+                    <span>Yerel kayıt etkin</span>
+                </div>
+            </div>
+
+            <div class="hud-right">
+                <button id="menuButton" class="menu-button" type="button" aria-label="Ana menüye dön">
+                    ANA MENÜ
+                </button>
+            </div>
+        </header>
+
+        <main id="room" class="room room-fifteen" aria-label="Ashvale Hastanesi Oda 3-1">
+
+            <div id="flashlight" class="flashlight" aria-hidden="true"></div>
+
+            <section class="background-layer" aria-hidden="true">
+                <img
+                    src="images/ui/rooms/room15.png"
+                    class="room-background"
+                    alt=""
+                >
+
+                <div class="dark-overlay"></div>
+                <div class="fog fog-one"></div>
+                <div class="fog fog-two"></div>
+                <div id="roomFlicker" class="room-flicker"></div>
+                <div id="movingShadow" class="moving-shadow"></div>
+                <div id="hallwayFigure" class="hallway-figure"></div>
+            </section>
+
+            <section id="hotspotLayer" class="hotspot-layer" aria-label="Etkileşim alanları">
+
+                <button
+                    id="photos"
+                    class="hotspot"
+                    type="button"
+                    data-text="Duvardaki Fotoğrafları İncele"
+                    aria-label="Duvardaki eski fotoğrafları incele"
+                ></button>
+
+                <button
+                    id="musicBox"
+                    class="hotspot"
+                    type="button"
+                    data-text="Müzik Kutusuna Dokun"
+                    aria-label="Sehpadaki müzik kutusuna dokun"
+                ></button>
+
+                <button
+                    id="drawer"
+                    class="hotspot"
+                    type="button"
+                    data-text="Sehpanın Çekmecesini Aç"
+                    aria-label="Sehpanın altındaki çekmeceyi aç"
+                ></button>
+
+                <button
+                    id="bed"
+                    class="hotspot"
+                    type="button"
+                    data-text="Yatağı İncele"
+                    aria-label="Özenle düzeltilmiş yatağı incele"
+                ></button>
+
+                <button
+                    id="figure"
+                    class="hotspot"
+                    type="button"
+                    data-text="Pencere Kenarındaki Figürü İncele"
+                    aria-label="Pencere kenarında duran figürü incele"
+                ></button>
+
+            </section>
+
+            <section id="interactionPrompt" class="interaction-prompt hidden" aria-hidden="true">
+                <div class="prompt-icon" aria-hidden="true">👁</div>
+
+                <div class="prompt-content">
+                    <span class="prompt-action">İNCELE</span>
+                    <span id="promptText">...</span>
+                </div>
+
+                <div class="prompt-key">E</div>
+            </section>
+
+            <section id="storyPanel" class="story-panel">
+                <div class="story-header">
+                    <h3>HİKÂYE</h3>
+                </div>
+
+                <div class="story-body">
+                    <p id="story-text">
+                        Oda 3-1. Diğerleri gibi dağılmamış - burası yıllardır neredeyse bir türbe gibi korunmuş.
+                    </p>
+                </div>
+
+                <div class="objective">
+                    <span class="objective-title">GÖREV</span>
+
+                    <p id="objectiveText">
+                        Odayı incele, sonra müzik kutusuna dokun.
+                    </p>
+                </div>
+
+                <div id="objectiveProgress" class="objective-progress">
+                    <div class="progress-information">
+                        <span>İLERLEME</span>
+                        <span id="recordProgress">0 / 3</span>
+                    </div>
+
+                    <div class="progress-track">
+                        <div id="recordProgressBar" class="progress-bar"></div>
+                    </div>
+                </div>
+
+                <button id="hintButton" class="hint-button" type="button">
+                    💡 İPUCU
+                </button>
+            </section>
+
+            <section id="inventory" class="inventory" aria-label="Envanter">
+                <div class="inventory-title">ENVANTER</div>
+                <div id="inventorySlots" class="inventory-slots"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <section
+        id="dialog"
+        class="dialog"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dialogTitle"
+    >
+        <div class="dialog-window">
+            <header class="dialog-header">
+                <h3 id="dialogTitle">İnceleme</h3>
+
+                <button
+                    id="dialog-x-button"
+                    type="button"
+                    aria-label="Diyaloğu kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="dialog-body">
+                <p id="dialogText"></p>
+            </div>
+
+            <footer class="dialog-footer">
+                <button id="dialogContinue" type="button">
+                    DEVAM
+                </button>
+            </footer>
+        </div>
+    </section>
+
+    <section
+        id="finalChoicePanel"
+        class="final-choice-panel hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="finalChoiceTitle"
+    >
+        <div class="final-choice-window">
+            <span class="final-choice-label">SON SEÇİM</span>
+            <h2 id="finalChoiceTitle">Ne Yapacaksın?</h2>
+
+            <div class="final-choice-options">
+                <button id="finalChoiceSpeak" type="button" class="final-choice-speak">
+                    KONUŞ
+                </button>
+                <button id="finalChoiceSilent" type="button" class="final-choice-silent">
+                    SUS
+                </button>
+            </div>
+
+            <p id="finalChoiceMessage" class="final-choice-message" aria-live="polite"></p>
+        </div>
+    </section>
+
+    <div id="climaxFlash" class="climax-flash" aria-hidden="true"></div>
+
+    <section
+        id="chapterComplete"
+        class="chapter-complete hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="chapterCompleteTitle"
+    >
+        <div class="chapter-complete-content">
+            <span class="chapter-complete-label">ASHVALE HOSPITAL</span>
+
+            <h2 id="chapterCompleteTitle">OYUN TAMAMLANDI</h2>
+
+            <p class="chapter-complete-epilogue">
+                3179, hiçbir zaman tek bir insan olmadı - Ashvale'in unutmayı reddettiği her vakaya yeniden verilen aynı isimdi. Duyduğun cümle de bir tehdit değildi: çocukken sana söylenmiş bir ninniydi, yıllar içinde çarpıtılıp bir hastalığa dönüştürülmüştü. Senden önceki herkesin yapamadığını yaptın - duydun, tanıdın, kimseye taşımadan içinde bıraktın. Döngü, senden sonra bir daha başlamayacak.
+            </p>
+
+            <p>
+                Hastanenin son kaydı, artık yeni bir vaka olmadığı için ilk kez gerçekten kapanıyor.
+            </p>
+
+            <button id="nextChapter" type="button" data-href="index.html">
+                ANA MENÜYE DÖN
+            </button>
+        </div>
+    </section>
+
+    <script src="js/core/flashlight.js?v=20260901123322"></script>
+
+    <script src="js/core/save-manager.js?v=20260901123322"></script>
+    <script src="js/core/inventory.js?v=20260901123322"></script>
+    <script src="js/core/audio-manager.js?v=20260901123322"></script>
+    <script src="js/core/dialogue.js?v=20260901123322"></script>
+    <script src="js/effects.js?v=20260901123322"></script>
+    <script src="js/game.js?v=20260901123322"></script>
+    <script src="js/rooms/room15.js?v=20260901123322"></script>
+
+</body>
+</html>

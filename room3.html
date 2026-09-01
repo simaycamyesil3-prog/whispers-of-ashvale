@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Whispers of Ashvale - Bölüm 3 Tedavi Kanadı">
+    <title>Whispers of Ashvale - Tedavi Kanadı</title>
+
+    <link rel="stylesheet" href="css/style.css?v=202608280557">
+    <link rel="stylesheet" href="css/animations.css?v=202608280557">
+    <link rel="stylesheet" href="css/effects.css?v=202608280557">
+    <link rel="stylesheet" href="css/room-common.css?v=202608280557">
+    <link rel="stylesheet" href="css/room3.css?v=20260828093015">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body class="room-page chapter-three">
+
+    <section id="chapter-intro" class="chapter-intro" aria-label="Bölüm girişi">
+        <div class="chapter-intro-content">
+            <span class="chapter-number">BÖLÜM 03</span>
+            <h1>TEDAVİ KANADI</h1>
+            <p>Burada her hastaya bir numara, her tedaviye bir bedel verildi.</p>
+            <div class="chapter-intro__line" aria-hidden="true"></div>
+        </div>
+    </section>
+
+    <div class="room-shell">
+
+        <header class="hud">
+            <div class="hud-left">
+                <div class="player-box">
+                    <span class="label">OYUNCU</span>
+                    <span id="playerName">Oyuncu</span>
+                </div>
+            </div>
+
+            <div class="hud-center">
+                <div class="chapter-box">BÖLÜM 03 / 15</div>
+
+                <div class="save-status">
+                    <span class="save-status-light" aria-hidden="true"></span>
+                    <span>Yerel kayıt etkin</span>
+                </div>
+            </div>
+
+            <div class="hud-right">
+                <button id="menuButton" class="menu-button" type="button" aria-label="Ana menüye dön">
+                    ANA MENÜ
+                </button>
+            </div>
+        </header>
+
+        <main id="room" class="room room-three" aria-label="Ashvale Hastanesi Tedavi Kanadı">
+
+            <div
+    id="flashlight"
+    class="flashlight"
+    aria-hidden="true"
+></div>
+            <section class="background-layer" aria-hidden="true">
+                <img
+                    src="images/ui/rooms/room3.png"
+                    class="room-background"
+                    alt=""
+                >
+
+                <div class="dark-overlay"></div>
+                <div class="fog fog-one"></div>
+                <div class="fog fog-two"></div>
+                <div id="roomFlicker" class="room-flicker"></div>
+                <div id="movingShadow" class="moving-shadow"></div>
+                <div id="hallwayFigure" class="hallway-figure"></div>
+            </section>
+
+            <section id="hotspotLayer" class="hotspot-layer" aria-label="Etkileşim alanları">
+
+               <button
+    id="bedPillow"
+    class="hotspot"
+    type="button"
+    data-text="Masanın Üstüne Bir Göz At"
+    aria-label="Masanın üstüne bir göz at"
+></button>
+
+                <button
+                    id="medicineCabinet"
+                    class="hotspot"
+                    type="button"
+                    data-text="İlaç Dolabını İncele"
+                    aria-label="Kilitli ilaç dolabını incele"
+                ></button>
+
+                <button
+                    id="treatmentBoard"
+                    class="hotspot"
+                    type="button"
+                    data-text="Tedavi Kayıt Panosunu İncele"
+                    aria-label="Tedavi kayıt panosunu incele"
+                ></button>
+
+                <button
+                    id="doorKeypad"
+                    class="hotspot"
+                    type="button"
+                    data-text="Kapı Şifre Panelini İncele"
+                    aria-label="Kapı şifre panelini incele"
+                ></button>
+
+                <button
+                    id="exitDoor"
+                    class="hotspot"
+                    type="button"
+                    data-text="Çıkış Kapısını İncele"
+                    aria-label="Çıkış kapısını incele"
+                ></button>
+
+            </section>
+
+            <section id="interactionPrompt" class="interaction-prompt hidden" aria-hidden="true">
+                <div class="prompt-icon" aria-hidden="true">👁</div>
+
+                <div class="prompt-content">
+                    <span class="prompt-action">İNCELE</span>
+                    <span id="promptText">...</span>
+                </div>
+
+                <div class="prompt-key">E</div>
+            </section>
+
+            <section id="storyPanel" class="story-panel">
+                <div class="story-header">
+                    <h3>HİKÂYE</h3>
+                </div>
+
+                <div class="story-body">
+                    <p id="story-text">
+                        Tedavi Kanadı yıllardır kapalı. Duvarlardaki kayıtlar,
+                        hastaların ilaçlarla değil numaralarla eşleştirildiğini gösteriyor.
+                    </p>
+                </div>
+
+                <div class="objective">
+                    <span class="objective-title">GÖREV</span>
+
+                    <p id="objectiveText">
+                        Masanın üstündeki anahtarı bul, ilaç dolabını aç ve kayıtları eşleştir.
+                    </p>
+                </div>
+
+                <div id="objectiveProgress" class="objective-progress">
+                    <div class="progress-information">
+                        <span>İLERLEME</span>
+                        <span id="recordProgress">0 / 4</span>
+                    </div>
+
+                    <div class="progress-track">
+                        <div id="recordProgressBar" class="progress-bar"></div>
+                    </div>
+                </div>
+
+                <button id="hintButton" class="hint-button" type="button">
+                    💡 İPUCU
+                </button>
+            </section>
+
+            <section id="inventory" class="inventory" aria-label="Envanter">
+                <div class="inventory-title">ENVANTER</div>
+                <div id="inventorySlots" class="inventory-slots"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <section
+        id="foundCabinetKey"
+        class="item-popup hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="foundCabinetKeyTitle"
+    >
+        <div class="item-popup-glow"></div>
+
+        <div class="item-popup-icon" aria-hidden="true">🔑</div>
+
+        <span class="item-popup-label">YENİ EŞYA</span>
+
+        <h2 id="foundCabinetKeyTitle">İlaç Dolabı Anahtarı</h2>
+
+        <p>
+            Masanın üzerindeki dağınık evrakların arasında, paslı ama kullanılabilir küçük bir anahtar buldun.
+        </p>
+
+        <button id="collectCabinetKey" type="button">
+            ENVANTERE EKLE
+        </button>
+    </section>
+
+    <section
+        id="treatmentBoardViewer"
+        class="record-viewer hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="treatmentBoardTitle"
+    >
+        <article class="record-document">
+            <header class="record-document-header">
+                <div>
+                    <span class="record-hospital-name">ASHVALE HOSPITAL</span>
+                    <h2 id="treatmentBoardTitle">Tedavi Kayıt Panosu</h2>
+                </div>
+
+                <button
+                    id="closeTreatmentBoard"
+                    class="record-close-button"
+                    type="button"
+                    aria-label="Tedavi kayıt panosunu kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="record-document-body">
+                <div class="record-stamp">ARŞİV</div>
+
+                <p class="record-classification">
+                    HASTA SIRASI DEĞİŞTİRİLMEMELİDİR
+                </p>
+
+                <div class="record-content">
+                    <table class="treatment-table">
+                        <thead>
+                            <tr>
+                                <th>SIRA</th>
+                                <th>HASTA NO</th>
+                                <th>HASTALIK</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr><td>1</td><td>031</td><td>Ateş</td></tr>
+                            <tr><td>2</td><td>104</td><td>Enfeksiyon</td></tr>
+                            <tr><td>3</td><td>287</td><td>Kalp Yetmezliği</td></tr>
+                            <tr><td>4</td><td>562</td><td>Diyabet</td></tr>
+                            <tr><td>5</td><td>778</td><td>Astım</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="record-note">
+                        Kapı kodu, listedeki hasta sırasına göre doğru ilaç numaralarından oluşur.
+                    </p>
+                </div>
+            </div>
+
+            <footer class="record-document-footer">
+                <span>
+                    Bu kayıt panosu duvarda sabit. Bilgileri inceleyip ilaç listesiyle eşleştir.
+                </span>
+
+                <button id="closeTreatmentBoardFooter" type="button">
+                    KAPAT
+                </button>
+            </footer>
+        </article>
+    </section>
+    <section
+        id="medicineCabinetViewer"
+        class="record-viewer hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="medicineCabinetTitle"
+    >
+        <article class="record-document medicine-document">
+            <header class="record-document-header">
+                <div>
+                    <span class="record-hospital-name">ASHVALE ECZANE ARŞİVİ</span>
+                    <h2 id="medicineCabinetTitle">Numaralandırılmış İlaçlar</h2>
+                </div>
+
+                <button
+                    id="closeMedicineCabinet"
+                    class="record-close-button"
+                    type="button"
+                    aria-label="İlaç dolabını kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="record-document-body">
+                <div class="record-stamp">KONTROLLÜ</div>
+
+                <p class="record-classification">
+                    İLAÇ NUMARALARI TEDAVİ EŞLEŞMESİ İÇİNDİR
+                </p>
+
+                <div class="record-content">
+                    <table class="medicine-table">
+                        <thead>
+                            <tr>
+                                <th>İLAÇ NO</th>
+                                <th>KULLANIM</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr><td>7</td><td>Astım</td></tr>
+                            <tr><td>1</td><td>Diyabet</td></tr>
+                            <tr><td>8</td><td>Ateş</td></tr>
+                            <tr><td>5</td><td>Kalp Yetmezliği</td></tr>
+                            <tr><td>3</td><td>Enfeksiyon</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="record-note">
+                        Numaralar bir düzene göre sıralanmış gibi duruyor. Anlamları başka bir yerde saklı olmalı.
+                    </p>
+                </div>
+            </div>
+
+            <footer class="record-document-footer">
+                <span>Kilit açıldıktan sonra liste alınabilir.</span>
+
+                <button id="collectMedicineList" type="button">
+                    ENVANTERE EKLE
+                </button>
+            </footer>
+        </article>
+    </section>
+
+    <section
+        id="foundMedicineList"
+        class="item-popup hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="foundMedicineListTitle"
+    >
+        <div class="item-popup-glow"></div>
+
+        <div class="item-popup-icon" aria-hidden="true">💊</div>
+
+        <span class="item-popup-label">YENİ BELGE</span>
+
+        <h2 id="foundMedicineListTitle">İlaç Eşleştirme Listesi</h2>
+
+        <p>
+            Karışık sıradaki hastalıkları ilaç numaralarıyla eşleştiren liste envantere eklendi.
+        </p>
+
+        <button id="closeFoundMedicineList" type="button">
+            TAMAM
+        </button>
+    </section>
+
+    <section
+        id="doorCodePanel"
+        class="code-panel hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="doorCodeTitle"
+    >
+        <div class="code-panel-window door-code-window">
+            <header class="code-panel-header">
+                <div>
+                    <span class="code-panel-label">TEDAVİ KANADI ÇIKIŞI</span>
+                    <h2 id="doorCodeTitle">GÜVENLİK PANELİ</h2>
+                </div>
+
+                <button
+                    id="closeDoorCode"
+                    class="window-close-button"
+                    type="button"
+                    aria-label="Kapı panelini kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="code-panel-body">
+                <p class="code-panel-description">
+                    Hasta sırasına göre doğru ilaç numaralarından oluşan beş haneli kodu gir.
+                </p>
+
+                <div
+                    id="doorCodeDisplay"
+                    class="code-display five-digit"
+                    aria-label="Girilen kapı kodu"
+                >
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                </div>
+
+                <div
+                    id="doorKeypadButtons"
+                    class="keypad"
+                    aria-label="Kapı şifre tuşları"
+                >
+                    <button type="button" data-door-number="1">1</button>
+                    <button type="button" data-door-number="2">2</button>
+                    <button type="button" data-door-number="3">3</button>
+
+                    <button type="button" data-door-number="4">4</button>
+                    <button type="button" data-door-number="5">5</button>
+                    <button type="button" data-door-number="6">6</button>
+
+                    <button type="button" data-door-number="7">7</button>
+                    <button type="button" data-door-number="8">8</button>
+                    <button type="button" data-door-number="9">9</button>
+
+                    <button id="clearDoorCode" class="keypad-action" type="button">
+                        SİL
+                    </button>
+
+                    <button type="button" data-door-number="0">0</button>
+
+                    <button
+                        id="submitDoorCode"
+                        class="keypad-action submit-code"
+                        type="button"
+                    >
+                        GİR
+                    </button>
+                </div>
+
+                <p
+                    id="doorCodeMessage"
+                    class="code-message"
+                    aria-live="polite"
+                ></p>
+            </div>
+        </div>
+    </section>
+
+    <section
+        id="dialog"
+        class="dialog"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dialogTitle"
+    >
+        <div class="dialog-window">
+            <header class="dialog-header">
+                <h3 id="dialogTitle">İnceleme</h3>
+
+                <button
+                    id="dialog-x-button"
+                    type="button"
+                    aria-label="Diyaloğu kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="dialog-body">
+                <p id="dialogText"></p>
+            </div>
+
+            <footer class="dialog-footer">
+                <button id="dialogContinue" type="button">
+                    DEVAM
+                </button>
+            </footer>
+        </div>
+    </section>
+
+    <section
+        id="chapterComplete"
+        class="chapter-complete hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="chapterCompleteTitle"
+    >
+        <div class="chapter-complete-content">
+            <span class="chapter-complete-label">ASHVALE HOSPITAL</span>
+
+            <h2 id="chapterCompleteTitle">BÖLÜM 03 TAMAMLANDI</h2>
+
+            <p>
+                Hastalarla ilaçları eşleştirdin. Kapının kilidi 83517 koduyla açıldı.
+            </p>
+
+            <button id="nextChapter" type="button" data-href="room4.html">
+                BÖLÜM 4
+            </button>
+        </div>
+    </section>
+
+    <script src="js/core/flashlight.js?v=202608280557"></script>
+
+
+    <script src="js/core/save-manager.js?v=202608280557"></script>
+    <script src="js/core/inventory.js?v=202608280557"></script>
+    <script src="js/core/audio-manager.js?v=202608280557"></script>
+    <script src="js/core/dialogue.js?v=202608280557"></script>
+    <script src="js/effects.js?v=202608280557"></script>
+    <script src="js/game.js?v=20260831095208"></script>
+    <script src="js/ui.js?v=202608280557"></script>
+    <script src="js/rooms/room3.js?v=202608280557"></script>
+
+</body>
+</html>

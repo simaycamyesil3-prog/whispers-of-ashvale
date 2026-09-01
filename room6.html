@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Whispers of Ashvale - Bölüm 6 Eczane / İlaç Deposu">
+    <title>Whispers of Ashvale - Eczane / İlaç Deposu</title>
+
+    <link rel="stylesheet" href="css/style.css?v=20260831073155">
+    <link rel="stylesheet" href="css/animations.css?v=20260831073155">
+    <link rel="stylesheet" href="css/effects.css?v=20260831073155">
+    <link rel="stylesheet" href="css/room-common.css?v=20260831073155">
+    <link rel="stylesheet" href="css/room6.css?v=20260831073155">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body class="room-page chapter-six">
+
+    <section id="chapter-intro" class="chapter-intro" aria-label="Bölüm girişi">
+        <div class="chapter-intro-content">
+            <span class="chapter-number">BÖLÜM 06</span>
+            <h1>ECZANE / İLAÇ DEPOSU</h1>
+            <p>Rutin bir gece bozulmuştu. Belki de burada, kimsenin bakmadığı bir rafta.</p>
+            <div class="chapter-intro__line" aria-hidden="true"></div>
+        </div>
+    </section>
+
+    <div class="room-shell">
+
+        <header class="hud">
+            <div class="hud-left">
+                <div class="player-box">
+                    <span class="label">OYUNCU</span>
+                    <span id="playerName">Oyuncu</span>
+                </div>
+            </div>
+
+            <div class="hud-center">
+                <div class="chapter-box">BÖLÜM 06 / 15</div>
+
+                <div class="save-status">
+                    <span class="save-status-light" aria-hidden="true"></span>
+                    <span>Yerel kayıt etkin</span>
+                </div>
+            </div>
+
+            <div class="hud-right">
+                <button id="menuButton" class="menu-button" type="button" aria-label="Ana menüye dön">
+                    ANA MENÜ
+                </button>
+            </div>
+        </header>
+
+        <main id="room" class="room room-six" aria-label="Ashvale Hastanesi Eczane / İlaç Deposu">
+
+            <div id="flashlight" class="flashlight" aria-hidden="true"></div>
+
+            <section class="background-layer" aria-hidden="true">
+                <img
+                    src="images/ui/rooms/room6.png"
+                    class="room-background"
+                    alt=""
+                >
+
+                <div class="dark-overlay"></div>
+                <div class="fog fog-one"></div>
+                <div class="fog fog-two"></div>
+                <div id="roomFlicker" class="room-flicker"></div>
+                <div id="movingShadow" class="moving-shadow"></div>
+                <div id="hallwayFigure" class="hallway-figure"></div>
+            </section>
+
+            <section id="hotspotLayer" class="hotspot-layer" aria-label="Etkileşim alanları">
+
+                <button
+                    id="storageLog"
+                    class="hotspot"
+                    type="button"
+                    data-text="Depo Kayıt Defterini İncele"
+                    aria-label="Depo kayıt defterini incele"
+                ></button>
+
+                <button
+                    id="batchRecords"
+                    class="hotspot"
+                    type="button"
+                    data-text="Parti Kayıtlarını İncele"
+                    aria-label="Parti kayıtlarını incele"
+                ></button>
+
+                <button
+                    id="mixingBench"
+                    class="hotspot"
+                    type="button"
+                    data-text="Karıştırma Tezgahını İncele"
+                    aria-label="Karıştırma tezgahını incele"
+                ></button>
+
+                <button
+                    id="securityMonitor"
+                    class="hotspot"
+                    type="button"
+                    data-text="Güvenlik Monitörünü İncele"
+                    aria-label="Güvenlik monitörünü incele"
+                ></button>
+
+                <button
+                    id="exitDoor"
+                    class="hotspot"
+                    type="button"
+                    data-text="Depo Kafesini İncele"
+                    aria-label="Depo kafesini incele"
+                ></button>
+
+            </section>
+
+            <section id="interactionPrompt" class="interaction-prompt hidden" aria-hidden="true">
+                <div class="prompt-icon" aria-hidden="true">👁</div>
+
+                <div class="prompt-content">
+                    <span class="prompt-action">İNCELE</span>
+                    <span id="promptText">...</span>
+                </div>
+
+                <div class="prompt-key">E</div>
+            </section>
+
+            <section id="storyPanel" class="story-panel">
+                <div class="story-header">
+                    <h3>HİKÂYE</h3>
+                </div>
+
+                <div class="story-body">
+                    <p id="story-text">
+                        Bodrumdaki eczane deposu, tozlu raflar ve kapalı bir kafesle çevrili. Havada keskin bir kimyasal koku var.
+                    </p>
+                </div>
+
+                <div class="objective">
+                    <span class="objective-title">GÖREV</span>
+
+                    <p id="objectiveText">
+                        Depo kayıt defterini incele.
+                    </p>
+                </div>
+
+                <div id="objectiveProgress" class="objective-progress">
+                    <div class="progress-information">
+                        <span>İLERLEME</span>
+                        <span id="recordProgress">0 / 3</span>
+                    </div>
+
+                    <div class="progress-track">
+                        <div id="recordProgressBar" class="progress-bar"></div>
+                    </div>
+                </div>
+
+                <button id="hintButton" class="hint-button" type="button">
+                    💡 İPUCU
+                </button>
+            </section>
+
+            <section id="inventory" class="inventory" aria-label="Envanter">
+                <div class="inventory-title">ENVANTER</div>
+                <div id="inventorySlots" class="inventory-slots"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <section
+        id="storageLogViewer"
+        class="record-viewer hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="storageLogViewerTitle"
+    >
+        <article class="record-document">
+            <header class="record-document-header">
+                <div>
+                    <span class="record-hospital-name">ASHVALE HOSPITAL</span>
+                    <h2 id="storageLogViewerTitle">Depo Kayıt Defteri</h2>
+                </div>
+
+                <button
+                    id="closeStorageLogViewer"
+                    class="record-close-button"
+                    type="button"
+                    aria-label="Depo kayıt defterini kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="record-document-body">
+                <div class="record-stamp">STANDART</div>
+
+                <p class="record-classification">
+                    ECZANE — ÜRETİM PROTOKOLÜ
+                </p>
+
+                <div class="record-content">
+                    <p class="record-note">
+                        Her Sessizlik Serumu partisi, üç bileşenin (A, B, C) sabit bir oranına göre karıştırılır. Bu oran hiçbir zaman değişmez — değişirse parti kullanılamaz sayılır.
+                    </p>
+
+                    <p class="ratio-display">A : B : C = 2 : 5 : 3</p>
+
+                    <p class="record-note">
+                        Bir partinin toplam hacmi ne olursa olsun, bileşenler bu orana göre bölünür. Örnek: toplam 40 ml ise, oranın on parçaya bölünmesiyle her parça 4 ml eder.
+                    </p>
+                </div>
+            </div>
+
+            <footer class="record-document-footer">
+                <span>Oran, her parti için aynı kalmalı.</span>
+
+                <button id="closeStorageLogFooter" type="button">
+                    KAPAT
+                </button>
+            </footer>
+        </article>
+    </section>
+
+    <section
+        id="batchRecordsViewer"
+        class="record-viewer hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="batchRecordsViewerTitle"
+    >
+        <article class="record-document">
+            <header class="record-document-header">
+                <div>
+                    <span class="record-hospital-name">SEVKİYAT DEFTERİ</span>
+                    <h2 id="batchRecordsViewerTitle">Parti Kayıtları</h2>
+                </div>
+
+                <button
+                    id="closeBatchRecordsViewer"
+                    class="record-close-button"
+                    type="button"
+                    aria-label="Parti kayıtlarını kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="record-document-body">
+                <p class="record-classification">
+                    SON 3 PARTİ — KAYITLI DEĞERLER
+                </p>
+
+                <div class="record-content">
+                    <table class="treatment-table">
+                        <thead>
+                            <tr>
+                                <th>Parti No</th>
+                                <th>Toplam Hacim</th>
+                                <th>A (ml)</th>
+                                <th>B (ml)</th>
+                                <th>C (ml)</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr
+                                class="batch-row"
+                                data-batch="104"
+                                data-correct="false"
+                                tabindex="0"
+                                role="button"
+                                aria-label="Parti 104'ü seç"
+                            >
+                                <td>104</td>
+                                <td>40 ml</td>
+                                <td>8</td>
+                                <td>20</td>
+                                <td>12</td>
+                            </tr>
+
+                            <tr
+                                class="batch-row"
+                                data-batch="111"
+                                data-correct="true"
+                                tabindex="0"
+                                role="button"
+                                aria-label="Parti 111'i seç"
+                            >
+                                <td>111</td>
+                                <td>30 ml</td>
+                                <td>6</td>
+                                <td>15</td>
+                                <td>10</td>
+                            </tr>
+
+                            <tr
+                                class="batch-row"
+                                data-batch="119"
+                                data-correct="false"
+                                tabindex="0"
+                                role="button"
+                                aria-label="Parti 119'u seç"
+                            >
+                                <td>119</td>
+                                <td>50 ml</td>
+                                <td>10</td>
+                                <td>25</td>
+                                <td>15</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p class="batch-hint">
+                        Depo kayıt defterindeki standart orana göre her partinin beklenen A/B/C değerlerini hesapla. Hangi parti bu değerlere uymuyor?
+                    </p>
+
+                    <p id="batchMessage" class="batch-message" aria-live="polite"></p>
+                </div>
+            </div>
+
+            <footer class="record-document-footer">
+                <span>Standart dışı partiye tıkla.</span>
+
+                <button id="closeBatchRecordsFooter" type="button">
+                    KAPAT
+                </button>
+            </footer>
+        </article>
+    </section>
+
+    <section
+        id="dialog"
+        class="dialog"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dialogTitle"
+    >
+        <div class="dialog-window">
+            <header class="dialog-header">
+                <h3 id="dialogTitle">İnceleme</h3>
+
+                <button
+                    id="dialog-x-button"
+                    type="button"
+                    aria-label="Diyaloğu kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="dialog-body">
+                <p id="dialogText"></p>
+            </div>
+
+            <footer class="dialog-footer">
+                <button id="dialogContinue" type="button">
+                    DEVAM
+                </button>
+            </footer>
+        </div>
+    </section>
+
+    <section
+        id="chapterComplete"
+        class="chapter-complete hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="chapterCompleteTitle"
+    >
+        <div class="chapter-complete-content">
+            <span class="chapter-complete-label">ASHVALE HOSPITAL</span>
+
+            <h2 id="chapterCompleteTitle">BÖLÜM 06 TAMAMLANDI</h2>
+
+            <p>
+                Standart dışı parti olan 111 numaralı kaydı buldun. Depo kafesinin kilidi açıldı.
+            </p>
+
+            <button id="nextChapter" type="button" data-href="room7.html">
+                BÖLÜM 7
+            </button>
+        </div>
+    </section>
+
+    <script src="js/core/flashlight.js?v=20260831073155"></script>
+
+    <script src="js/core/save-manager.js?v=20260831073155"></script>
+    <script src="js/core/inventory.js?v=20260831073155"></script>
+    <script src="js/core/audio-manager.js?v=20260831073155"></script>
+    <script src="js/core/dialogue.js?v=20260831073155"></script>
+    <script src="js/effects.js?v=20260831073155"></script>
+    <script src="js/game.js?v=20260831095208"></script>
+    <script src="js/rooms/room6.js?v=20260831073155"></script>
+
+</body>
+</html>

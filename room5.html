@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Whispers of Ashvale - Bölüm 5 Ameliyathane">
+    <title>Whispers of Ashvale - Ameliyathane</title>
+
+    <link rel="stylesheet" href="css/style.css?v=20260828081239">
+    <link rel="stylesheet" href="css/animations.css?v=20260828081239">
+    <link rel="stylesheet" href="css/effects.css?v=20260828081239">
+    <link rel="stylesheet" href="css/room-common.css?v=20260828081239">
+    <link rel="stylesheet" href="css/room5.css?v=20260828093015">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body class="room-page chapter-five">
+
+    <section id="chapter-intro" class="chapter-intro" aria-label="Bölüm girişi">
+        <div class="chapter-intro-content">
+            <span class="chapter-number">BÖLÜM 05</span>
+            <h1>AMELİYATHANE</h1>
+            <p>Bir şeyi bedenden ayırmaya çalışmışlar. Yarıda bırakmışlar.</p>
+            <div class="chapter-intro__line" aria-hidden="true"></div>
+        </div>
+    </section>
+
+    <div class="room-shell">
+
+        <header class="hud">
+            <div class="hud-left">
+                <div class="player-box">
+                    <span class="label">OYUNCU</span>
+                    <span id="playerName">Oyuncu</span>
+                </div>
+            </div>
+
+            <div class="hud-center">
+                <div class="chapter-box">BÖLÜM 05 / 15</div>
+
+                <div class="save-status">
+                    <span class="save-status-light" aria-hidden="true"></span>
+                    <span>Yerel kayıt etkin</span>
+                </div>
+            </div>
+
+            <div class="hud-right">
+                <button id="menuButton" class="menu-button" type="button" aria-label="Ana menüye dön">
+                    ANA MENÜ
+                </button>
+            </div>
+        </header>
+
+        <main id="room" class="room room-five" aria-label="Ashvale Hastanesi Ameliyathane">
+
+            <div id="flashlight" class="flashlight" aria-hidden="true"></div>
+
+            <section class="background-layer" aria-hidden="true">
+                <img
+                    src="images/ui/rooms/room5.png"
+                    class="room-background"
+                    alt=""
+                >
+
+                <div class="dark-overlay"></div>
+                <div class="fog fog-one"></div>
+                <div class="fog fog-two"></div>
+                <div id="roomFlicker" class="room-flicker"></div>
+                <div id="movingShadow" class="moving-shadow"></div>
+                <div id="hallwayFigure" class="hallway-figure"></div>
+                <div id="uvOverlay" class="uv-overlay" aria-hidden="true"></div>
+            </section>
+
+            <section id="hotspotLayer" class="hotspot-layer" aria-label="Etkileşim alanları">
+
+                <button
+                    id="operatingTable"
+                    class="hotspot"
+                    type="button"
+                    data-text="Ameliyat Masasını İncele"
+                    aria-label="Ameliyat masasını incele"
+                ></button>
+
+                <button
+                    id="coveredGurney"
+                    class="hotspot"
+                    type="button"
+                    data-text="Örtülü Sedyeyi İncele"
+                    aria-label="Örtülü sedyeyi incele"
+                ></button>
+
+                <button
+                    id="instrumentCabinet"
+                    class="hotspot"
+                    type="button"
+                    data-text="Alet Dolabını İncele"
+                    aria-label="Alet dolabını incele"
+                ></button>
+
+                <button
+                    id="xrayPanel"
+                    class="hotspot"
+                    type="button"
+                    data-text="Röntgen Panosunu İncele"
+                    aria-label="Röntgen panosunu incele"
+                ></button>
+
+                <button
+                    id="securityMonitor"
+                    class="hotspot"
+                    type="button"
+                    data-text="Güvenlik Monitörünü İncele"
+                    aria-label="Güvenlik monitörünü incele"
+                ></button>
+
+                <button
+                    id="exitDoor"
+                    class="hotspot"
+                    type="button"
+                    data-text="Çıkış Kapısını İncele"
+                    aria-label="Çıkış kapısını incele"
+                ></button>
+
+                <button
+                    id="uvMarkA"
+                    class="hotspot uv-mark"
+                    type="button"
+                    data-symbol="△"
+                    data-digit="4"
+                    data-text="Duvardaki İşareti İncele"
+                    aria-label="Duvardaki işareti incele"
+                >△</button>
+
+                <button
+                    id="uvMarkB"
+                    class="hotspot uv-mark"
+                    type="button"
+                    data-symbol="○"
+                    data-digit="0"
+                    data-text="Duvardaki İşareti İncele"
+                    aria-label="Duvardaki işareti incele"
+                >○</button>
+
+                <button
+                    id="uvMarkC"
+                    class="hotspot uv-mark"
+                    type="button"
+                    data-symbol="☐"
+                    data-digit="5"
+                    data-text="Duvardaki İşareti İncele"
+                    aria-label="Duvardaki işareti incele"
+                >☐</button>
+
+                <button
+                    id="uvMarkD"
+                    class="hotspot uv-mark"
+                    type="button"
+                    data-symbol="✕"
+                    data-digit="2"
+                    data-text="Duvardaki İşareti İncele"
+                    aria-label="Duvardaki işareti incele"
+                >✕</button>
+
+            </section>
+
+            <section id="interactionPrompt" class="interaction-prompt hidden" aria-hidden="true">
+                <div class="prompt-icon" aria-hidden="true">👁</div>
+
+                <div class="prompt-content">
+                    <span class="prompt-action">İNCELE</span>
+                    <span id="promptText">...</span>
+                </div>
+
+                <div class="prompt-key">E</div>
+            </section>
+
+            <section id="storyPanel" class="story-panel">
+                <div class="story-header">
+                    <h3>HİKÂYE</h3>
+                </div>
+
+                <div class="story-body">
+                    <p id="story-text">
+                        Ameliyathanenin ortasında, üzeri örtülmüş bir sedye duruyor. Örtünün altında bir şey olabilir.
+                    </p>
+                </div>
+
+                <div class="objective">
+                    <span class="objective-title">GÖREV</span>
+
+                    <p id="objectiveText">
+                        Örtülü sedyeyi incele.
+                    </p>
+                </div>
+
+                <div id="objectiveProgress" class="objective-progress">
+                    <div class="progress-information">
+                        <span>İLERLEME</span>
+                        <span id="recordProgress">0 / 4</span>
+                    </div>
+
+                    <div class="progress-track">
+                        <div id="recordProgressBar" class="progress-bar"></div>
+                    </div>
+                </div>
+
+                <button id="hintButton" class="hint-button" type="button">
+                    💡 İPUCU
+                </button>
+            </section>
+
+            <section id="inventory" class="inventory" aria-label="Envanter">
+                <div class="inventory-title">ENVANTER</div>
+                <div id="inventorySlots" class="inventory-slots"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <section
+        id="foundCabinetKey"
+        class="item-popup hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="foundCabinetKeyTitle"
+    >
+        <div class="item-popup-glow"></div>
+
+        <div class="item-popup-icon" aria-hidden="true">🔑</div>
+
+        <span class="item-popup-label">YENİ EŞYA</span>
+
+        <h2 id="foundCabinetKeyTitle">Alet Dolabı Anahtarı</h2>
+
+        <p>
+            Örtülü sedyenin altında, sıkıca kavranmış gibi duran ince bir anahtar buldun.
+        </p>
+
+        <button id="collectCabinetKey" type="button">
+            ENVANTERE EKLE
+        </button>
+    </section>
+
+    <section
+        id="cabinetViewer"
+        class="record-viewer hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="cabinetViewerTitle"
+    >
+        <article class="record-document">
+            <header class="record-document-header">
+                <div>
+                    <span class="record-hospital-name">ASHVALE HOSPITAL</span>
+                    <h2 id="cabinetViewerTitle">Alet Dolabı</h2>
+                </div>
+
+                <button
+                    id="closeCabinetViewer"
+                    class="record-close-button"
+                    type="button"
+                    aria-label="Alet dolabını kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="record-document-body">
+                <div class="record-stamp">GİZLİ</div>
+
+                <p class="record-classification">
+                    ENVANTER — TIBBİ MALZEME
+                </p>
+
+                <div class="record-content">
+                    <p class="record-note">
+                        Dolabın en alt rafında, aletlerin arasına sıkışmış küçük bir UV muayene feneri duruyor. Hastane personeli bunu genelde gizli yazı ya da iz taraması için kullanırdı.
+                    </p>
+
+                    <p class="record-note">
+                        Fenerin yanına, silik bir el yazısıyla tek satır karalanmış: “Duvarlar boş değil. Sadece göründükleri gibi değiller.”
+                    </p>
+                </div>
+            </div>
+
+            <footer class="record-document-footer">
+                <span>Fener hâlâ çalışıyor gibi görünüyor.</span>
+
+                <button id="collectUvFlashlight" type="button">
+                    ENVANTERE EKLE
+                </button>
+            </footer>
+        </article>
+    </section>
+
+    <section
+        id="foundUvFlashlight"
+        class="item-popup hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="foundUvFlashlightTitle"
+    >
+        <div class="item-popup-glow"></div>
+
+        <div class="item-popup-icon" aria-hidden="true">🔦</div>
+
+        <span class="item-popup-label">YENİ EŞYA</span>
+
+        <h2 id="foundUvFlashlightTitle">UV Muayene Feneri</h2>
+
+        <p>
+            UV fener envantere eklendi. Envanterden tıklayarak açıp kapatabilirsin.
+        </p>
+
+        <button id="closeFoundUvFlashlight" type="button">
+            TAMAM
+        </button>
+    </section>
+
+    <section
+        id="monitorViewer"
+        class="record-viewer hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="monitorViewerTitle"
+    >
+        <article class="record-document monitor-document">
+            <header class="record-document-header">
+                <div>
+                    <span class="record-hospital-name">GÜVENLİK SİSTEMİ</span>
+                    <h2 id="monitorViewerTitle">Bozuk Kayıt</h2>
+                </div>
+
+                <button
+                    id="closeMonitorViewer"
+                    class="record-close-button"
+                    type="button"
+                    aria-label="Monitörü kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="record-document-body">
+                <div id="monitorStatic" class="monitor-static">
+                    <p class="monitor-static-label">SİNYAL YOK</p>
+
+                    <div class="monitor-static-footage">
+                        <p>03:1_ — AMELİYAT DUR_URULDU</p>
+                        <p>İŞLEM 3179 ÜZE_İNDE...</p>
+                        <p>...GÖRÜNTÜ KAYBOLMADAN ÖNCEKİ SON KARE, DUVAR TARAMASINDAKİ İŞARETLERİ SIRAYLA GÖSTERİYOR:</p>
+                        <p class="symbol-sequence">△ → ○ → ☐ → ✕</p>
+                    </div>
+                </div>
+
+                <p class="record-note">
+                    Görüntü çok bozuk. Sinyali biraz ayarlarsan belki netleşir.
+                </p>
+
+                <button id="monitorRevealButton" type="button" class="hint-button">
+                    SİNYALİ AYARLA
+                </button>
+            </div>
+
+            <footer class="record-document-footer">
+                <span>Eski bir bakım kaydı gibi görünüyor.</span>
+
+                <button id="closeMonitorViewerFooter" type="button">
+                    KAPAT
+                </button>
+            </footer>
+        </article>
+    </section>
+
+    <section
+        id="trayPanel"
+        class="code-panel hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="trayPanelTitle"
+    >
+        <div class="code-panel-window tray-panel-window">
+            <header class="code-panel-header">
+                <div>
+                    <span class="code-panel-label">ÇIKIŞ KAPISI</span>
+                    <h2 id="trayPanelTitle">KAPI TUŞ TAKIMI</h2>
+                </div>
+
+                <button
+                    id="closeTrayPanel"
+                    class="window-close-button"
+                    type="button"
+                    aria-label="Tuş takımını kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="code-panel-body">
+                <p class="code-panel-description">
+                    Duvarlarda bulduğun rakamları, monitördeki sembol sırasına göre gir.
+                </p>
+
+                <div
+                    id="traySlots"
+                    class="code-display four-digit"
+                    aria-label="Girilen kapı kodu"
+                >
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                </div>
+
+                <div id="trayButtons" class="tray-buttons keypad-buttons" aria-label="Tuş takımı">
+                    <button type="button" data-digit="1">1</button>
+                    <button type="button" data-digit="2">2</button>
+                    <button type="button" data-digit="3">3</button>
+                    <button type="button" data-digit="4">4</button>
+                    <button type="button" data-digit="5">5</button>
+                    <button type="button" data-digit="6">6</button>
+                    <button type="button" data-digit="7">7</button>
+                    <button type="button" data-digit="8">8</button>
+                    <button type="button" data-digit="9">9</button>
+                    <button type="button" data-digit="0">0</button>
+                </div>
+
+                <p id="trayMessage" class="code-message" aria-live="polite"></p>
+            </div>
+        </div>
+    </section>
+
+    <section
+        id="dialog"
+        class="dialog"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dialogTitle"
+    >
+        <div class="dialog-window">
+            <header class="dialog-header">
+                <h3 id="dialogTitle">İnceleme</h3>
+
+                <button
+                    id="dialog-x-button"
+                    type="button"
+                    aria-label="Diyaloğu kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="dialog-body">
+                <p id="dialogText"></p>
+            </div>
+
+            <footer class="dialog-footer">
+                <button id="dialogContinue" type="button">
+                    DEVAM
+                </button>
+            </footer>
+        </div>
+    </section>
+
+    <section
+        id="chapterComplete"
+        class="chapter-complete hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="chapterCompleteTitle"
+    >
+        <div class="chapter-complete-content">
+            <span class="chapter-complete-label">ASHVALE HOSPITAL</span>
+
+            <h2 id="chapterCompleteTitle">BÖLÜM 05 TAMAMLANDI</h2>
+
+            <p>
+                Duvarlardaki gizli işaretleri UV ışığıyla çözüp kapının kodunu buldun. "İşlem 3179 üzerinde durduruldu" notunu buldun.
+            </p>
+
+            <button id="nextChapter" type="button" data-href="room6.html">
+                BÖLÜM 6
+            </button>
+        </div>
+    </section>
+
+    <script src="js/core/flashlight.js?v=20260828081239"></script>
+
+    <script src="js/core/save-manager.js?v=20260828081239"></script>
+    <script src="js/core/inventory.js?v=20260828081239"></script>
+    <script src="js/core/audio-manager.js?v=20260828081239"></script>
+    <script src="js/core/dialogue.js?v=20260828081239"></script>
+    <script src="js/effects.js?v=20260828081239"></script>
+    <script src="js/game.js?v=20260831095208"></script>
+    <script src="js/rooms/room5.js?v=20260828084436"></script>
+
+</body>
+</html>

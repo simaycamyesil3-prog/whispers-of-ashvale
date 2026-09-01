@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Whispers of Ashvale - psikolojik korku ve kaçış oyunu"
+    >
+
+    <meta
+        name="theme-color"
+        content="#050706"
+    >
+
+    <title>Whispers of Ashvale</title>
+
+    <!-- Ana tasarım dosyaları -->
+    <link rel="stylesheet" href="css/style.css?v=202608280557">
+    <link rel="stylesheet" href="css/animations.css?v=202608280557">
+
+    <!-- Tarayıcı simgesi -->
+    <link
+        rel="icon"
+        type="image/png"
+        href="images/ui/favicon.png"
+    >
+</head>
+
+<body>
+
+    <!-- ===================================================== -->
+    <!-- SAYFA YÜKLEME EKRANI                                  -->
+    <!-- ===================================================== -->
+
+    <div
+        id="loadingScreen"
+        class="loading-screen"
+        aria-hidden="false"
+    >
+        <div class="loading-screen__content">
+
+            <div class="loading-screen__symbol" aria-hidden="true">
+                <span class="loading-screen__circle"></span>
+                <span class="loading-screen__line"></span>
+            </div>
+
+            <p class="loading-screen__title">
+                WHISPERS OF ASHVALE
+            </p>
+
+            <p class="loading-screen__message">
+                Kayıtlar yükleniyor...
+            </p>
+
+            <div
+                class="loading-bar"
+                role="progressbar"
+                aria-label="Oyun yükleniyor"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+            >
+                <span
+                    id="loadingBarFill"
+                    class="loading-bar__fill"
+                ></span>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- ANA MENÜ EKRANI                                       -->
+    <!-- ===================================================== -->
+
+    <main
+        id="mainMenu"
+        class="main-menu"
+        aria-label="Whispers of Ashvale ana menüsü"
+    >
+
+        <!-- ================================================= -->
+        <!-- ARKA PLAN VE ATMOSFER                             -->
+        <!-- ================================================= -->
+
+        <div
+            class="hospital-background"
+            aria-hidden="true"
+        ></div>
+
+        <div
+            class="hospital-dark-overlay"
+            aria-hidden="true"
+        ></div>
+
+        <div
+            class="background-depth"
+            aria-hidden="true"
+        ></div>
+
+        <div
+            class="window-glow window-glow-one"
+            aria-hidden="true"
+        ></div>
+
+        <div
+            class="window-glow window-glow-two"
+            aria-hidden="true"
+        ></div>
+
+        <div
+            class="window-glow window-glow-three"
+            aria-hidden="true"
+        ></div>
+
+        <div
+            class="emergency-light"
+            aria-hidden="true"
+        ></div>
+
+        <div
+            class="moving-shadow moving-shadow-one"
+            aria-hidden="true"
+        ></div>
+
+        <div
+            class="moving-shadow moving-shadow-two"
+            aria-hidden="true"
+        ></div>
+
+        <div
+            class="fog-layer fog-layer-back"
+            aria-hidden="true"
+        ></div>
+
+        <div
+            class="fog-layer fog-layer-middle"
+            aria-hidden="true"
+        ></div>
+
+        <div
+            class="fog-layer fog-layer-front"
+            aria-hidden="true"
+        ></div>
+
+        <div
+            class="rain rain-back"
+            aria-hidden="true"
+        ></div>
+
+        <div
+            class="rain rain-front"
+            aria-hidden="true"
+        ></div>
+
+        <div
+            class="glass-rain"
+            aria-hidden="true"
+        ></div>
+
+        <div
+            class="light-flicker"
+            aria-hidden="true"
+        ></div>
+
+        <div
+            class="lightning-flash"
+            aria-hidden="true"
+        ></div>
+
+        <div
+            class="film-grain"
+            aria-hidden="true"
+        ></div>
+
+        <div
+            class="screen-noise"
+            aria-hidden="true"
+        ></div>
+
+        <div
+            class="vignette"
+            aria-hidden="true"
+        ></div>
+
+
+        <!-- ================================================= -->
+        <!-- ANA MENÜ İÇERİĞİ                                  -->
+        <!-- ================================================= -->
+
+        <section class="menu-layout">
+
+            <!-- Sol taraftaki oyun başlığı -->
+
+            <header class="title-block">
+
+                <p class="title-block__eyebrow">
+                    ASHVALE PSYCHIATRIC HOSPITAL
+                </p>
+
+                <h1 class="game-title">
+                    <span class="game-title__small">
+                        WHISPERS OF
+                    </span>
+
+                    <span class="game-title__large">
+                        ASHVALE
+                    </span>
+                </h1>
+
+                <p class="game-subtitle">
+                    Bazı kapılar kapalı kalmalıydı.
+                </p>
+
+                <div class="title-divider" aria-hidden="true">
+                    <span class="title-divider__line"></span>
+                    <span class="title-divider__symbol">✦</span>
+                    <span class="title-divider__line"></span>
+                </div>
+
+                <p class="hospital-record">
+                    DOSYA NO: A-1987-20
+                </p>
+
+            </header>
+
+
+            <!-- Menü butonları -->
+
+            <nav
+                class="menu-navigation"
+                aria-label="Oyun seçenekleri"
+            >
+
+                <button
+                    id="continueButton"
+                    class="menu-button menu-button--primary"
+                    type="button"
+                    data-menu-action="continue"
+                    disabled
+                >
+                    <span
+                        class="menu-button__marker"
+                        aria-hidden="true"
+                    ></span>
+
+                    <span class="menu-button__content">
+                        <span class="menu-button__title">
+                            DEVAM ET
+                        </span>
+
+                        <span
+                            id="continueDescription"
+                            class="menu-button__description"
+                        >
+                            Henüz kayıtlı oyun bulunmuyor
+                        </span>
+                    </span>
+
+                    <span
+                        class="menu-button__arrow"
+                        aria-hidden="true"
+                    >
+                        ›
+                    </span>
+                </button>
+
+
+                <button
+                    id="newGameButton"
+                    class="menu-button"
+                    type="button"
+                    data-menu-action="new-game"
+                >
+                    <span
+                        class="menu-button__marker"
+                        aria-hidden="true"
+                    ></span>
+
+                    <span class="menu-button__content">
+                        <span class="menu-button__title">
+                            YENİ OYUN
+                        </span>
+
+                        <span class="menu-button__description">
+                            Ashvale Hastanesi’ne giriş yap
+                        </span>
+                    </span>
+
+                    <span
+                        class="menu-button__arrow"
+                        aria-hidden="true"
+                    >
+                        ›
+                    </span>
+                </button>
+
+
+                <button
+                    id="chapterButton"
+                    class="menu-button"
+                    type="button"
+                    data-menu-action="chapters"
+                >
+                    <span
+                        class="menu-button__marker"
+                        aria-hidden="true"
+                    ></span>
+
+                    <span class="menu-button__content">
+                        <span class="menu-button__title">
+                            BÖLÜMLER
+                        </span>
+
+                        <span class="menu-button__description">
+                            Açılan bölümleri görüntüle
+                        </span>
+                    </span>
+
+                    <span
+                        class="menu-button__arrow"
+                        aria-hidden="true"
+                    >
+                        ›
+                    </span>
+                </button>
+
+
+                <button
+                    id="settingsButton"
+                    class="menu-button"
+                    type="button"
+                    data-menu-action="settings"
+                >
+                    <span
+                        class="menu-button__marker"
+                        aria-hidden="true"
+                    ></span>
+
+                    <span class="menu-button__content">
+                        <span class="menu-button__title">
+                            AYARLAR
+                        </span>
+
+                        <span class="menu-button__description">
+                            Ses ve görüntü seçenekleri
+                        </span>
+                    </span>
+
+                    <span
+                        class="menu-button__arrow"
+                        aria-hidden="true"
+                    >
+                        ›
+                    </span>
+                </button>
+
+
+                <button
+                    id="aboutButton"
+                    class="menu-button"
+                    type="button"
+                    data-menu-action="about"
+                >
+                    <span
+                        class="menu-button__marker"
+                        aria-hidden="true"
+                    ></span>
+
+                    <span class="menu-button__content">
+                        <span class="menu-button__title">
+                            HAKKINDA
+                        </span>
+
+                        <span class="menu-button__description">
+                            Hikâye ve proje bilgileri
+                        </span>
+                    </span>
+
+                    <span
+                        class="menu-button__arrow"
+                        aria-hidden="true"
+                    >
+                        ›
+                    </span>
+                </button>
+
+            </nav>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- ALT BİLGİ ALANI                                   -->
+        <!-- ================================================= -->
+
+        <footer class="menu-footer">
+
+            <div class="menu-footer__left">
+
+                <span
+                    class="connection-indicator"
+                    aria-hidden="true"
+                ></span>
+
+                <span id="saveStatus">
+                    Yerel kayıt sistemi hazır
+                </span>
+
+            </div>
+
+            <div class="menu-footer__center">
+                <span>
+                    Kulaklık kullanılması önerilir
+                </span>
+            </div>
+
+            <div class="menu-footer__right">
+                <span>
+                    v1.0.0
+                </span>
+            </div>
+
+        </footer>
+
+
+        <!-- ================================================= -->
+        <!-- SES KONTROLÜ                                      -->
+        <!-- ================================================= -->
+
+        <button
+            id="soundToggleButton"
+            class="sound-toggle"
+            type="button"
+            aria-label="Sesi aç veya kapat"
+            aria-pressed="false"
+        >
+            <span
+                class="sound-toggle__icon sound-toggle__icon--on"
+                aria-hidden="true"
+            >
+                ♪
+            </span>
+
+            <span
+                class="sound-toggle__icon sound-toggle__icon--off"
+                aria-hidden="true"
+            >
+                ×
+            </span>
+
+            <span class="sound-toggle__label">
+                SES
+            </span>
+        </button>
+
+
+        <!-- ================================================= -->
+        <!-- YENİ OYUN PENCERESİ                               -->
+        <!-- ================================================= -->
+
+        <section
+            id="newGameModal"
+            class="modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="newGameModalTitle"
+            aria-hidden="true"
+        >
+
+            <div
+                class="modal__backdrop"
+                data-close-modal="newGameModal"
+            ></div>
+
+            <div class="modal__panel modal__panel--small">
+
+                <div class="modal__header">
+
+                    <div>
+                        <p class="modal__eyebrow">
+                            YENİ KAYIT
+                        </p>
+
+                        <h2
+                            id="newGameModalTitle"
+                            class="modal__title"
+                        >
+                            Hastaneye Giriş
+                        </h2>
+                    </div>
+
+                    <button
+                        class="modal__close-button"
+                        type="button"
+                        data-close-modal="newGameModal"
+                        aria-label="Pencereyi kapat"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+                <div class="modal__body">
+
+                    <p class="modal__text">
+                        Ashvale Hastanesi’ndeki kayıp kayıtları
+                        araştırmak üzere görevlendirildin.
+                        İçeri girdikten sonra geri dönüşün
+                        olmayabilir.
+                    </p>
+
+                    <label
+                        class="form-field"
+                        for="playerNameInput"
+                    >
+                        <span class="form-field__label">
+                            Oyuncu adı
+                        </span>
+
+                        <input
+                            id="playerNameInput"
+                            class="form-field__input"
+                            type="text"
+                            maxlength="20"
+                            autocomplete="off"
+                            placeholder="Adını yaz..."
+                        >
+
+                        <span class="form-field__hint">
+                            En fazla 20 karakter
+                        </span>
+                    </label>
+
+                    <div
+                        id="playerNameError"
+                        class="form-error"
+                        role="alert"
+                        aria-live="polite"
+                    ></div>
+
+                </div>
+
+                <div class="modal__footer">
+
+                    <button
+                        class="secondary-button"
+                        type="button"
+                        data-close-modal="newGameModal"
+                    >
+                        VAZGEÇ
+                    </button>
+
+                    <button
+                        id="startNewGameButton"
+                        class="primary-button"
+                        type="button"
+                    >
+                        HASTANEYE GİR
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- KAYITLI OYUNU SİLME ONAYI                         -->
+        <!-- ================================================= -->
+
+        <section
+            id="overwriteModal"
+            class="modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="overwriteModalTitle"
+            aria-hidden="true"
+        >
+
+            <div
+                class="modal__backdrop"
+                data-close-modal="overwriteModal"
+            ></div>
+
+            <div class="modal__panel modal__panel--small">
+
+                <div class="modal__header">
+
+                    <div>
+                        <p class="modal__eyebrow">
+                            UYARI
+                        </p>
+
+                        <h2
+                            id="overwriteModalTitle"
+                            class="modal__title"
+                        >
+                            Mevcut Kayıt Silinsin mi?
+                        </h2>
+                    </div>
+
+                    <button
+                        class="modal__close-button"
+                        type="button"
+                        data-close-modal="overwriteModal"
+                        aria-label="Pencereyi kapat"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+                <div class="modal__body">
+
+                    <p class="modal__text">
+                        Yeni oyun başlatılırsa mevcut ilerleme
+                        silinecek. Bu işlem geri alınamaz.
+                    </p>
+
+                </div>
+
+                <div class="modal__footer">
+
+                    <button
+                        class="secondary-button"
+                        type="button"
+                        data-close-modal="overwriteModal"
+                    >
+                        İPTAL
+                    </button>
+
+                    <button
+                        id="confirmOverwriteButton"
+                        class="danger-button"
+                        type="button"
+                    >
+                        KAYDI SİL
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- BÖLÜMLER PENCERESİ                                -->
+        <!-- ================================================= -->
+
+        <section
+            id="chaptersModal"
+            class="modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="chaptersModalTitle"
+            aria-hidden="true"
+        >
+
+            <div
+                class="modal__backdrop"
+                data-close-modal="chaptersModal"
+            ></div>
+
+            <div class="modal__panel modal__panel--large">
+
+                <div class="modal__header">
+
+                    <div>
+                        <p class="modal__eyebrow">
+                            HASTANE KAYITLARI
+                        </p>
+
+                        <h2
+                            id="chaptersModalTitle"
+                            class="modal__title"
+                        >
+                            Bölüm Seçimi
+                        </h2>
+                    </div>
+
+                    <button
+                        class="modal__close-button"
+                        type="button"
+                        data-close-modal="chaptersModal"
+                        aria-label="Pencereyi kapat"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+                <div class="modal__body">
+
+                    <div
+                        id="chapterGrid"
+                        class="chapter-grid"
+                    >
+
+                        <!-- Bölüm kartları menu.js tarafından oluşturulacak -->
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- AYARLAR PENCERESİ                                 -->
+        <!-- ================================================= -->
+
+        <section
+            id="settingsModal"
+            class="modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="settingsModalTitle"
+            aria-hidden="true"
+        >
+
+            <div
+                class="modal__backdrop"
+                data-close-modal="settingsModal"
+            ></div>
+
+            <div class="modal__panel">
+
+                <div class="modal__header">
+
+                    <div>
+                        <p class="modal__eyebrow">
+                            SİSTEM
+                        </p>
+
+                        <h2
+                            id="settingsModalTitle"
+                            class="modal__title"
+                        >
+                            Ayarlar
+                        </h2>
+                    </div>
+
+                    <button
+                        class="modal__close-button"
+                        type="button"
+                        data-close-modal="settingsModal"
+                        aria-label="Pencereyi kapat"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+                <div class="modal__body">
+
+                    <div class="settings-group">
+
+                        <h3 class="settings-group__title">
+                            Ses
+                        </h3>
+
+                        <label class="range-setting">
+
+                            <span class="range-setting__header">
+                                <span>Ana ses</span>
+
+                                <output
+                                    id="masterVolumeOutput"
+                                    for="masterVolume"
+                                >
+                                    70%
+                                </output>
+                            </span>
+
+                            <input
+                                id="masterVolume"
+                                class="range-setting__input"
+                                type="range"
+                                min="0"
+                                max="100"
+                                value="70"
+                            >
+
+                        </label>
+
+                        <label class="range-setting">
+
+                            <span class="range-setting__header">
+                                <span>Müzik</span>
+
+                                <output
+                                    id="musicVolumeOutput"
+                                    for="musicVolume"
+                                >
+                                    55%
+                                </output>
+                            </span>
+
+                            <input
+                                id="musicVolume"
+                                class="range-setting__input"
+                                type="range"
+                                min="0"
+                                max="100"
+                                value="55"
+                            >
+
+                        </label>
+
+                        <label class="range-setting">
+
+                            <span class="range-setting__header">
+                                <span>Efektler</span>
+
+                                <output
+                                    id="effectsVolumeOutput"
+                                    for="effectsVolume"
+                                >
+                                    80%
+                                </output>
+                            </span>
+
+                            <input
+                                id="effectsVolume"
+                                class="range-setting__input"
+                                type="range"
+                                min="0"
+                                max="100"
+                                value="80"
+                            >
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="settings-group">
+
+                        <h3 class="settings-group__title">
+                            Görüntü
+                        </h3>
+
+                        <label class="switch-setting">
+
+                            <span>
+                                <span class="switch-setting__title">
+                                    Film efekti
+                                </span>
+
+                                <span class="switch-setting__description">
+                                    Ekrana sinematik gren ekler
+                                </span>
+                            </span>
+
+                            <input
+                                id="filmGrainToggle"
+                                class="switch-setting__input"
+                                type="checkbox"
+                                checked
+                            >
+
+                            <span
+                                class="switch-setting__control"
+                                aria-hidden="true"
+                            ></span>
+
+                        </label>
+
+
+                        <label class="switch-setting">
+
+                            <span>
+                                <span class="switch-setting__title">
+                                    Yağmur
+                                </span>
+
+                                <span class="switch-setting__description">
+                                    Ana menü yağmur efektini gösterir
+                                </span>
+                            </span>
+
+                            <input
+                                id="rainToggle"
+                                class="switch-setting__input"
+                                type="checkbox"
+                                checked
+                            >
+
+                            <span
+                                class="switch-setting__control"
+                                aria-hidden="true"
+                            ></span>
+
+                        </label>
+
+
+                        <label class="switch-setting">
+
+                            <span>
+                                <span class="switch-setting__title">
+                                    Kamera hareketi
+                                </span>
+
+                                <span class="switch-setting__description">
+                                    Arka planın yavaşça hareket etmesini sağlar
+                                </span>
+                            </span>
+
+                            <input
+                                id="cameraMotionToggle"
+                                class="switch-setting__input"
+                                type="checkbox"
+                                checked
+                            >
+
+                            <span
+                                class="switch-setting__control"
+                                aria-hidden="true"
+                            ></span>
+
+                        </label>
+
+
+                        <label class="select-setting">
+
+                            <span>
+                                <span class="select-setting__title">
+                                    Arayüz dili
+                                </span>
+
+                                <span class="select-setting__description">
+                                    Oyunda kullanılacak dil
+                                </span>
+                            </span>
+
+                            <select
+                                id="languageSelect"
+                                class="select-setting__select"
+                            >
+                                <option value="tr" selected>
+                                    Türkçe
+                                </option>
+
+                                <option value="en">
+                                    English
+                                </option>
+                            </select>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+                <div class="modal__footer">
+
+                    <button
+                        id="resetSettingsButton"
+                        class="secondary-button"
+                        type="button"
+                    >
+                        VARSAYILANLAR
+                    </button>
+
+                    <button
+                        id="saveSettingsButton"
+                        class="primary-button"
+                        type="button"
+                    >
+                        AYARLARI KAYDET
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- HAKKINDA PENCERESİ                                -->
+        <!-- ================================================= -->
+
+        <section
+            id="aboutModal"
+            class="modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="aboutModalTitle"
+            aria-hidden="true"
+        >
+
+            <div
+                class="modal__backdrop"
+                data-close-modal="aboutModal"
+            ></div>
+
+            <div class="modal__panel">
+
+                <div class="modal__header">
+
+                    <div>
+                        <p class="modal__eyebrow">
+                            PROJE DOSYASI
+                        </p>
+
+                        <h2
+                            id="aboutModalTitle"
+                            class="modal__title"
+                        >
+                            Whispers of Ashvale
+                        </h2>
+                    </div>
+
+                    <button
+                        class="modal__close-button"
+                        type="button"
+                        data-close-modal="aboutModal"
+                        aria-label="Pencereyi kapat"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+                <div class="modal__body about-content">
+
+                    <p>
+                        Ashvale Psikiyatri Hastanesi, 1987 yılında
+                        açıklanamayan olayların ardından mühürlendi.
+                        Hastanenin bodrumunda yürütülen yasa dışı
+                        deneylerin ve ritüellerin kayıtları hiçbir
+                        zaman bulunamadı.
+                    </p>
+
+                    <p>
+                        Yıllar sonra binaya gönderilen bir araştırmacı,
+                        hastanenin terk edilmediğini fark eder.
+                        İçeride kalan şeyler hâlâ geçmişin seslerini
+                        tekrar etmektedir.
+                    </p>
+
+                    <div class="about-details">
+
+                        <div class="about-detail">
+
+                            <span class="about-detail__label">
+                                Tür
+                            </span>
+
+                            <span class="about-detail__value">
+                                Psikolojik korku ve kaçış
+                            </span>
+
+                        </div>
+
+                        <div class="about-detail">
+
+                            <span class="about-detail__label">
+                                Teknolojiler
+                            </span>
+
+                            <span class="about-detail__value">
+                                HTML, CSS ve JavaScript
+                            </span>
+
+                        </div>
+
+                        <div class="about-detail">
+
+                            <span class="about-detail__label">
+                                Bölüm sayısı
+                            </span>
+
+                            <span class="about-detail__value">
+                                20
+                            </span>
+
+                        </div>
+
+                        <div class="about-detail">
+
+                            <span class="about-detail__label">
+                                Geliştirici
+                            </span>
+
+                            <span class="about-detail__value">
+                                Simay Çam Yeşil
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- BÖLÜM GEÇİŞ EKRANI                                -->
+        <!-- ================================================= -->
+
+        <section
+            id="chapterTransition"
+            class="chapter-transition"
+            aria-hidden="true"
+        >
+
+            <div class="chapter-transition__content">
+
+                <p
+                    id="transitionChapterNumber"
+                    class="chapter-transition__number"
+                >
+                    BÖLÜM 01
+                </p>
+
+                <h2
+                    id="transitionChapterTitle"
+                    class="chapter-transition__title"
+                >
+                    Hastane Girişi
+                </h2>
+
+                <p
+                    id="transitionChapterQuote"
+                    class="chapter-transition__quote"
+                >
+                    “İçeriden gelen sesler yardım istemiyordu.”
+                </p>
+
+                <div
+                    class="chapter-transition__loader"
+                    aria-hidden="true"
+                >
+                    <span></span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- BİLDİRİM ALANI                                    -->
+        <!-- ================================================= -->
+
+        <div
+            id="toastContainer"
+            class="toast-container"
+            aria-live="polite"
+            aria-atomic="true"
+        ></div>
+
+
+        <!-- ================================================= -->
+        <!-- SES DOSYALARI                                     -->
+        <!-- Dosyalar bulunmasa da menü çalışmaya devam eder.  -->
+        <!-- ================================================= -->
+
+        <audio
+            id="menuAmbience"
+            preload="auto"
+            loop
+        >
+            <source
+                src="audio/menu-ambience.mp3"
+                type="audio/mpeg"
+            >
+        </audio>
+
+        <audio
+            id="rainAmbience"
+            preload="auto"
+            loop
+        >
+            <source
+                src="audio/rain.mp3"
+                type="audio/mpeg"
+            >
+        </audio>
+
+        <audio
+            id="hoverSound"
+            preload="auto"
+        >
+            <source
+                src="audio/menu-hover.mp3"
+                type="audio/mpeg"
+            >
+        </audio>
+
+        <audio
+            id="clickSound"
+            preload="auto"
+        >
+            <source
+                src="audio/menu-click.mp3"
+                type="audio/mpeg"
+            >
+        </audio>
+
+        <audio
+            id="thunderSound"
+            preload="auto"
+        >
+            <source
+                src="audio/thunder.mp3"
+                type="audio/mpeg"
+            >
+        </audio>
+
+    </main>
+
+
+    <!-- ===================================================== -->
+    <!-- JAVASCRIPT DOSYALARI                                  -->
+    <!-- Sıralama önemlidir.                                   -->
+    <!-- ===================================================== -->
+
+    <script src="js/core/save-manager.js?v=202608280557"></script>
+    <script src="js/game.js?v=20260831095208"></script>
+    <script src="js/menu.js?v=20260901104826"></script>
+
+</body>
+</html>

@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Whispers of Ashvale - Kayıt Odası</title>
+
+    <!-- ORTAK CSS DOSYALARI -->
+    <link rel="stylesheet" href="css/style.css?v=202608280557">
+    <link rel="stylesheet" href="css/animations.css?v=202608280557">
+    <link rel="stylesheet" href="css/effects.css?v=202608280557">
+    <link rel="stylesheet" href="css/rooms.css?v=202608280557">
+
+    <!-- BÖLÜM 2 CSS -->
+    <link rel="stylesheet" href="css/room2.css?v=20260828093015">
+
+    <!-- FONTLAR -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet"
+    >
+</head>
+
+<body class="room-page chapter-two">
+
+    <!-- =====================================================
+         BÖLÜM GİRİŞİ
+    ====================================================== -->
+
+    <section
+        id="chapter-intro"
+        class="chapter-intro"
+        aria-label="Bölüm girişi"
+    >
+
+        <div class="chapter-intro-content">
+
+            <span class="chapter-number">
+                BÖLÜM 02
+            </span>
+
+            <h1>
+                KAYIT ODASI
+            </h1>
+
+            <p>
+                Hastanenin geçmişi hiçbir zaman gerçekten gömülmedi...
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         HUD
+    ====================================================== -->
+
+    <header class="hud">
+
+        <div class="hud-left">
+
+            <div class="player-box">
+
+                <span class="label">
+                    OYUNCU
+                </span>
+
+                <span id="playerName">
+                    ...
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="hud-center">
+
+            <div class="chapter-box">
+                BÖLÜM 02 / 15
+            </div>
+
+        </div>
+
+        <div class="hud-right">
+
+            <button
+                id="menuButton"
+                type="button"
+                aria-label="Ana menüye dön"
+            >
+                ANA MENÜ
+            </button>
+
+        </div>
+
+    </header>
+
+    <!-- =====================================================
+         ANA OYUN ALANI
+    ====================================================== -->
+
+    <main id="room">
+        <div
+    id="flashlight"
+    class="flashlight"
+    aria-hidden="true"
+></div>
+
+        <!-- =================================================
+             ARKA PLAN VE ATMOSFER
+        ================================================== -->
+
+        <section
+            class="background-layer"
+            aria-hidden="true"
+        >
+
+            <img
+                src="images/ui/rooms/room2.png"
+                class="room-background"
+                alt=""
+            >
+
+            <div class="dark-overlay"></div>
+
+            <div class="fog fog-one"></div>
+            <div class="fog fog-two"></div>
+
+            <div class="rain-layer"></div>
+
+            <div
+                id="roomFlicker"
+                class="room-flicker"
+            ></div>
+
+            <div
+                id="movingShadow"
+                class="moving-shadow"
+            ></div>
+
+            <div
+                id="hallwayFigure"
+                class="hallway-figure"
+            ></div>
+
+        </section>
+
+        <!-- =================================================
+             ETKİLEŞİM NOKTALARI
+        ================================================== -->
+
+        <section
+            id="hotspotLayer"
+            class="hotspot-layer"
+            aria-label="Etkileşim alanları"
+        >
+
+            <!-- DOSYA DOLAPLARI -->
+
+            <button
+                id="registerA"
+                class="hotspot"
+                type="button"
+                data-text="Dosya Dolabı A"
+                data-record-id="record-a"
+                aria-label="Dosya Dolabı A'yı incele"
+            ></button>
+
+            <button
+                id="registerB"
+                class="hotspot"
+                type="button"
+                data-text="Dosya Dolabı B"
+                data-record-id="record-b"
+                aria-label="Dosya Dolabı B'yi incele"
+            ></button>
+
+            <button
+                id="registerC"
+                class="hotspot"
+                type="button"
+                data-text="Dosya Dolabı C"
+                data-record-id="record-c"
+                aria-label="Dosya Dolabı C'yi incele"
+            ></button>
+
+            <button
+                id="registerD"
+                class="hotspot"
+                type="button"
+                data-text="Dosya Dolabı D"
+                data-record-id="record-d"
+                aria-label="Dosya Dolabı D'yi incele"
+            ></button>
+
+            <button
+                id="registerE"
+                class="hotspot"
+                type="button"
+                data-text="Dosya Dolabı E"
+                data-record-id="record-e"
+                aria-label="Dosya Dolabı E'yi incele"
+            ></button>
+
+            <button
+                id="registerF"
+                class="hotspot"
+                type="button"
+                data-text="Dosya Dolabı F"
+                data-record-id="record-f"
+                aria-label="Dosya Dolabı F'yi incele"
+            ></button>
+
+            <!-- BİLGİSAYAR -->
+
+            <button
+                id="computer"
+                class="hotspot"
+                type="button"
+                data-text="Eski Bilgisayar"
+                aria-label="Eski bilgisayarı incele"
+            ></button>
+
+            <!-- TELEFON -->
+
+            <button
+                id="telephone"
+                class="hotspot"
+                type="button"
+                data-text="Eski Telefon"
+                aria-label="Eski telefonu incele"
+            ></button>
+
+            <!-- SANDALYE -->
+
+            <button
+                id="chair"
+                class="hotspot"
+                type="button"
+                data-text="Devrilmiş Sandalye"
+                aria-label="Devrilmiş sandalyeyi incele"
+            ></button>
+
+            <!-- YERDEKİ EVRAKLAR -->
+
+            <button
+                id="papers"
+                class="hotspot"
+                type="button"
+                data-text="Dağılmış Evraklar"
+                aria-label="Dağılmış evrakları incele"
+            ></button>
+
+            <!-- KİLİTLİ ÇEKMECE -->
+
+            <button
+                id="lockedDrawer"
+                class="hotspot"
+                type="button"
+                data-text="Kilitli Çekmece"
+                aria-label="Kilitli çekmeceyi incele"
+            ></button>
+
+            <!-- RÖNTGEN PANOSU -->
+
+            <button
+                id="xrayBoard"
+                class="hotspot"
+                type="button"
+                data-text="Röntgen Panosu"
+                aria-label="Röntgen panosunu incele"
+            ></button>
+
+            <!-- DUVAR SAATİ -->
+
+            <button
+                id="wallClock"
+                class="hotspot"
+                type="button"
+                data-text="Bozuk Duvar Saati"
+                aria-label="Bozuk duvar saatini incele"
+            ></button>
+
+            <!-- ÇIKIŞ KAPISI -->
+
+            <button
+                id="exitDoor"
+                class="hotspot"
+                type="button"
+                data-text="Şifreli Çıkış Kapısı"
+                aria-label="Şifreli çıkış kapısını incele"
+            ></button>
+
+        </section>
+
+        <!-- =================================================
+             ETKİLEŞİM BİLDİRİMİ
+        ================================================== -->
+
+        <section
+            id="interactionPrompt"
+            class="interaction-prompt hidden"
+            aria-hidden="true"
+        >
+
+            <div
+                class="prompt-icon"
+                aria-hidden="true"
+            >
+                👁
+            </div>
+
+            <div class="prompt-content">
+
+                <span class="prompt-action">
+                    İNCELE
+                </span>
+
+                <span id="promptText">
+                    ...
+                </span>
+
+            </div>
+
+            <div class="prompt-key">
+                E
+            </div>
+
+        </section>
+
+        <!-- =================================================
+             HİKÂYE VE GÖREV PANELİ
+        ================================================== -->
+
+        <section
+            id="storyPanel"
+            class="story-panel"
+        >
+
+            <div class="story-header">
+
+                <h3>
+                    HİKÂYE
+                </h3>
+
+            </div>
+
+            <div class="story-body">
+
+                <p id="story-text">
+                    Eski kayıt odasına ulaştın. Bilgisayarda açık
+                    bırakılmış tek kayıt, 3179 numaralı hastaya ait.
+                    Fakat dosyanın önemli sayfaları ortadan kaldırılmış.
+                </p>
+
+            </div>
+
+            <div class="objective">
+
+                <span class="objective-title">
+                    GÖREV
+                </span>
+
+                <p id="objectiveText">
+                    3179 numaralı hastanın üç kayıp kayıt parçasını bul.
+                </p>
+
+            </div>
+
+            <div
+                id="objectiveProgress"
+                class="objective-progress"
+            >
+
+                <div class="progress-information">
+
+                    <span>
+                        DOSYA İLERLEMESİ
+                    </span>
+
+                    <span id="recordProgress">
+                        0 / 3
+                    </span>
+
+                </div>
+
+                <div class="progress-track">
+
+                    <div
+                        id="recordProgressBar"
+                        class="progress-bar"
+                    ></div>
+
+                </div>
+
+            </div>
+
+            <button id="hintButton" class="hint-button" type="button">
+                💡 İPUCU
+            </button>
+
+        </section>
+
+        <!-- =================================================
+             ENVANTER
+        ================================================== -->
+
+        <section
+            id="inventory"
+            class="inventory"
+            aria-label="Envanter"
+        >
+
+            <div class="inventory-title">
+                ENVANTER
+            </div>
+
+            <div
+                id="inventorySlots"
+                class="inventory-slots"
+            ></div>
+
+        </section>
+
+    </main>
+
+    <!-- =====================================================
+         BİLGİSAYAR EKRANI
+    ====================================================== -->
+
+    <section
+        id="computerScreen"
+        class="computer-screen hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="computerTitle"
+    >
+
+        <div class="terminal">
+
+            <div class="terminal-header">
+
+                <div class="terminal-status">
+
+                    <span class="terminal-light"></span>
+
+                    <span id="computerTitle">
+                        ASHVALE HOSPITAL RECORD SYSTEM
+                    </span>
+
+                </div>
+
+                <button
+                    id="closeComputer"
+                    class="window-close-button"
+                    type="button"
+                    aria-label="Bilgisayar ekranını kapat"
+                >
+                    ✕
+                </button>
+
+            </div>
+
+            <div class="terminal-body">
+
+                <pre id="terminalText">SYSTEM STATUS : PARTIAL FAILURE
+
+PATIENT SEARCH : 3179
+
+PATIENT ID     : 3179
+NAME           : [REDACTED]
+STATUS         : ACTIVE
+WARD           : TREATMENT WING
+ROOM           : 12
+
+LAST UPDATE    : 03:17 AM
+ACCESS LEVEL   : RESTRICTED
+
+WARNING:
+PHYSICAL RECORD INCOMPLETE.
+
+THREE RECORD FRAGMENTS REQUIRED.</pre>
+
+            </div>
+
+            <div class="terminal-footer">
+
+                <span>
+                    ASHVALE MEDICAL DATABASE v1.9.87
+                </span>
+
+                <button
+                    id="computerContinue"
+                    type="button"
+                >
+                    EKRANI KAPAT
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         HASTA KAYDI GÖRÜNTÜLEYİCİ
+    ====================================================== -->
+
+    <section
+        id="recordViewer"
+        class="record-viewer hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="recordTitle"
+    >
+
+        <article class="record-document">
+
+            <header class="record-document-header">
+
+                <div>
+
+                    <span class="record-hospital-name">
+                        ASHVALE HOSPITAL
+                    </span>
+
+                    <h2 id="recordTitle">
+                        Hasta Kaydı
+                    </h2>
+
+                </div>
+
+                <button
+                    id="closeRecordViewer"
+                    class="record-close-button"
+                    type="button"
+                    aria-label="Hasta kaydını kapat"
+                >
+                    ✕
+                </button>
+
+            </header>
+
+            <div class="record-document-body">
+
+                <div class="record-stamp">
+                    GİZLİ
+                </div>
+
+                <p
+                    id="recordClassification"
+                    class="record-classification"
+                >
+                    KISITLI HASTA KAYDI
+                </p>
+
+                <div
+                    id="recordContent"
+                    class="record-content"
+                >
+
+                    <p>
+                        Kayıt içeriği yükleniyor...
+                    </p>
+
+                </div>
+
+            </div>
+
+            <footer class="record-document-footer">
+
+                <span>
+                    Ashvale Hastanesi Arşiv Departmanı
+                </span>
+
+                <button
+                    id="recordContinue"
+                    type="button"
+                >
+                    KAYDI KAPAT
+                </button>
+
+            </footer>
+
+        </article>
+
+    </section>
+
+    <!-- =====================================================
+         KAYIT PARÇASI BULUNDU
+    ====================================================== -->
+
+    <section
+        id="foundRecord"
+        class="item-popup hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="foundRecordTitle"
+    >
+
+        <div class="item-popup-glow"></div>
+
+        <div class="item-popup-icon" aria-hidden="true">📋</div>
+
+        <span class="item-popup-label">
+            YENİ EŞYA
+        </span>
+
+        <h2 id="foundRecordTitle">
+            Hasta Kayıt Parçası
+        </h2>
+
+        <p id="foundRecordText">
+            3179 numaralı hastanın dosyasına ait kayıp bir sayfa buldun.
+        </p>
+
+        <button
+            id="closeFoundRecord"
+            type="button"
+        >
+            ENVANTERE EKLE
+        </button>
+
+    </section>
+
+    <!-- =====================================================
+         ÇEKMECE KİLİDİ
+    ====================================================== -->
+
+    <section
+        id="drawerLockPanel"
+        class="code-panel hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="drawerLockTitle"
+    >
+
+        <div class="code-panel-window">
+
+            <header class="code-panel-header">
+
+                <div>
+
+                    <span class="code-panel-label">
+                        MEKANİK GÜVENLİK
+                    </span>
+
+                    <h2 id="drawerLockTitle">
+                        ÇEKMECE KİLİDİ
+                    </h2>
+
+                </div>
+
+                <button
+                    id="closeDrawerLock"
+                    class="window-close-button"
+                    type="button"
+                    aria-label="Çekmece kilidini kapat"
+                >
+                    ✕
+                </button>
+
+            </header>
+
+            <div class="code-panel-body">
+
+                <p class="code-panel-description">
+                    Çekmece üç haneli bir güvenlik koduyla kilitlenmiş.
+                </p>
+
+                <div
+                    id="drawerCodeDisplay"
+                    class="code-display"
+                    aria-label="Girilen çekmece kodu"
+                >
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                </div>
+
+                <div
+                    id="drawerKeypad"
+                    class="keypad"
+                    aria-label="Çekmece şifre tuşları"
+                >
+
+                    <button type="button" data-drawer-number="1">1</button>
+                    <button type="button" data-drawer-number="2">2</button>
+                    <button type="button" data-drawer-number="3">3</button>
+
+                    <button type="button" data-drawer-number="4">4</button>
+                    <button type="button" data-drawer-number="5">5</button>
+                    <button type="button" data-drawer-number="6">6</button>
+
+                    <button type="button" data-drawer-number="7">7</button>
+                    <button type="button" data-drawer-number="8">8</button>
+                    <button type="button" data-drawer-number="9">9</button>
+
+                    <button
+                        id="clearDrawerCode"
+                        class="keypad-action"
+                        type="button"
+                    >
+                        SİL
+                    </button>
+
+                    <button type="button" data-drawer-number="0">
+                        0
+                    </button>
+
+                    <button
+                        id="submitDrawerCode"
+                        class="keypad-action submit-code"
+                        type="button"
+                    >
+                        AÇ
+                    </button>
+
+                </div>
+
+                <p
+                    id="drawerCodeMessage"
+                    class="code-message"
+                    aria-live="polite"
+                ></p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         ANAHTAR KART BULUNDU
+    ====================================================== -->
+
+    <section
+        id="foundKeycard"
+        class="item-popup hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="foundKeycardTitle"
+    >
+
+        <div class="item-popup-glow"></div>
+
+        <div class="item-popup-icon" aria-hidden="true">💳</div>
+
+        <span class="item-popup-label">
+            YENİ EŞYA
+        </span>
+
+        <h2 id="foundKeycardTitle">
+            Tedavi Kanadı Anahtar Kartı
+        </h2>
+
+        <p>
+            Gizli hasta kaydının altında saklanmış bir erişim kartı
+            buldun.
+        </p>
+
+        <button
+            id="closeFoundKeycard"
+            type="button"
+        >
+            ENVANTERE EKLE
+        </button>
+
+    </section>
+
+    <!-- =====================================================
+         ÇIKIŞ KAPISI GÜVENLİK PANELİ
+    ====================================================== -->
+
+    <section
+        id="doorCodePanel"
+        class="code-panel hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="doorCodeTitle"
+    >
+
+        <div class="code-panel-window door-code-window">
+
+            <header class="code-panel-header">
+
+                <div>
+
+                    <span class="code-panel-label">
+                        TEDAVİ KANADI
+                    </span>
+
+                    <h2 id="doorCodeTitle">
+                        GÜVENLİK PANELİ
+                    </h2>
+
+                </div>
+
+                <button
+                    id="closeDoorCode"
+                    class="window-close-button"
+                    type="button"
+                    aria-label="Kapı panelini kapat"
+                >
+                    ✕
+                </button>
+
+            </header>
+
+            <div class="code-panel-body">
+
+                <div
+                    id="keycardStatus"
+                    class="keycard-status"
+                >
+
+                    <span class="keycard-indicator"></span>
+
+                    <span id="keycardStatusText">
+                        ANAHTAR KART BEKLENİYOR
+                    </span>
+
+                </div>
+
+                <p class="code-panel-description">
+                    Anahtar kart doğrulamasından sonra dört haneli
+                    erişim kodunu gir.
+                </p>
+
+                <div
+                    id="doorCodeDisplay"
+                    class="code-display four-digit"
+                    aria-label="Girilen kapı kodu"
+                >
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                </div>
+
+                <div
+                    id="doorKeypad"
+                    class="keypad"
+                    aria-label="Kapı şifre tuşları"
+                >
+
+                    <button type="button" data-door-number="1">1</button>
+                    <button type="button" data-door-number="2">2</button>
+                    <button type="button" data-door-number="3">3</button>
+
+                    <button type="button" data-door-number="4">4</button>
+                    <button type="button" data-door-number="5">5</button>
+                    <button type="button" data-door-number="6">6</button>
+
+                    <button type="button" data-door-number="7">7</button>
+                    <button type="button" data-door-number="8">8</button>
+                    <button type="button" data-door-number="9">9</button>
+
+                    <button
+                        id="clearDoorCode"
+                        class="keypad-action"
+                        type="button"
+                    >
+                        SİL
+                    </button>
+
+                    <button type="button" data-door-number="0">
+                        0
+                    </button>
+
+                    <button
+                        id="submitDoorCode"
+                        class="keypad-action submit-code"
+                        type="button"
+                    >
+                        GİR
+                    </button>
+
+                </div>
+
+                <p
+                    id="doorCodeMessage"
+                    class="code-message"
+                    aria-live="polite"
+                ></p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         ORTAK DİYALOG KUTUSU
+    ====================================================== -->
+
+    <section
+        id="dialog"
+        class="dialog"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dialogTitle"
+    >
+
+        <div class="dialog-window">
+
+            <header class="dialog-header">
+
+                <h3 id="dialogTitle">
+                    İnceleme
+                </h3>
+
+                <button
+                    id="dialog-x-button"
+                    type="button"
+                    aria-label="Diyaloğu kapat"
+                >
+                    ✕
+                </button>
+
+            </header>
+
+            <div class="dialog-body">
+
+                <p id="dialogText"></p>
+
+            </div>
+
+            <footer class="dialog-footer">
+
+                <button
+                    id="dialogContinue"
+                    type="button"
+                >
+                    DEVAM
+                </button>
+
+            </footer>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         BÖLÜM TAMAMLANDI
+    ====================================================== -->
+
+    <section
+        id="chapterComplete"
+        class="chapter-complete hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="chapterCompleteTitle"
+    >
+
+        <div class="chapter-complete-content">
+
+            <span class="chapter-complete-label">
+                ASHVALE HOSPITAL
+            </span>
+
+            <h2 id="chapterCompleteTitle">
+                BÖLÜM TAMAMLANDI
+            </h2>
+
+            <p>
+                3179 numaralı hastanın silinmiş kayıtlarını ortaya
+                çıkardın ve Tedavi Kanadı'na açılan geçidi buldun.
+            </p>
+
+            <button
+                id="nextChapter"
+                type="button"
+            >
+                BÖLÜM 3
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         JAVASCRIPT DOSYALARI
+    ====================================================== -->
+
+    <script src="js/core/save-manager.js?v=202608280557"></script>
+    <script src="js/core/inventory.js?v=202608280557"></script>
+
+    <script src="js/core/audio-manager.js?v=202608280557"></script>
+    <script src="js/core/dialogue.js?v=202608280557"></script>
+
+    <script src="js/effects.js?v=202608280557"></script>
+    <script src="js/game.js?v=20260831095208"></script>
+    <script src="js/ui.js?v=202608280557"></script>
+
+    <script src="js/core/flashlight.js?v=202608280557"></script>
+    <script src="js/rooms/room2.js?v=202608280557"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Whispers of Ashvale - Bölüm 1 Giriş Koridoru"
+    >
+
+    <title>Bölüm 1 - Giriş Koridoru</title>
+
+    <!-- ORTAK CSS DOSYALARI -->
+    <link rel="stylesheet" href="css/style.css?v=202608280557">
+    <link rel="stylesheet" href="css/animations.css?v=202608280557">
+    <link rel="stylesheet" href="css/effects.css?v=202608280557">
+    <link rel="stylesheet" href="css/rooms.css?v=202608280557">
+
+    <!-- FONTLAR -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet"
+    >
+</head>
+
+<body class="room-page chapter-one">
+
+    <!-- =====================================================
+         BÖLÜM GİRİŞİ
+    ====================================================== -->
+
+    <section
+        id="chapter-intro"
+        class="chapter-intro"
+        aria-label="Bölüm başlangıcı"
+    >
+
+        <div class="chapter-intro__content">
+
+            <p class="chapter-intro__number">
+                BÖLÜM 01
+            </p>
+
+            <h1>
+                Giriş Koridoru
+            </h1>
+
+            <span>
+                Kapı arkandan kilitlendi.
+            </span>
+
+            <div
+                class="chapter-intro__line"
+                aria-hidden="true"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         OYUN EKRANI
+    ====================================================== -->
+
+    <div class="room-shell">
+
+        <!-- =================================================
+             ÜST HUD
+        ================================================== -->
+
+        <header class="hud">
+
+            <div class="hud-left">
+
+                <div class="player-box">
+
+                    <span class="label">
+                        OYUNCU
+                    </span>
+
+                    <span id="hud-player">
+                        Bilinmiyor
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="hud-center">
+
+                <div class="chapter-box">
+                    BÖLÜM 01 / 15
+                </div>
+
+                <div class="save-status">
+
+                    <span
+                        class="save-status-light"
+                        aria-hidden="true"
+                    ></span>
+
+                    <span>
+                        Yerel kayıt etkin
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="hud-right">
+
+                <button
+                    id="menu-button"
+                    class="menu-button"
+                    type="button"
+                    aria-label="Ana menüye dön"
+                >
+                    ANA MENÜ
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             ANA ODA
+        ================================================== -->
+
+        <main
+            id="room"
+            class="room room-one"
+            aria-label="Ashvale Hastanesi giriş koridoru"
+        >
+
+            <!-- SİS -->
+
+            <div
+                class="fog-container"
+                aria-hidden="true"
+            >
+
+                <div class="fog fog-1"></div>
+                <div class="fog fog-2"></div>
+                <div class="fog fog-3"></div>
+
+            </div>
+
+
+            <!-- ESKİ CSS ÇİZİM KATMANLARI -->
+
+            <div
+                class="corridor-wall"
+                aria-hidden="true"
+            ></div>
+
+            <div
+                class="corridor-ceiling"
+                aria-hidden="true"
+            ></div>
+
+            <div
+                class="corridor-floor"
+                aria-hidden="true"
+            ></div>
+
+            <div
+                class="ceiling-light ceiling-light--one"
+                aria-hidden="true"
+            ></div>
+
+            <div
+                class="ceiling-light ceiling-light--two"
+                aria-hidden="true"
+            ></div>
+
+            <div
+                class="ceiling-light ceiling-light--three"
+                aria-hidden="true"
+            ></div>
+
+            <div
+                class="corridor-door corridor-door--left"
+                aria-hidden="true"
+            >
+                <span>
+                    101
+                </span>
+            </div>
+
+            <div
+                class="corridor-door corridor-door--right"
+                aria-hidden="true"
+            >
+                <span>
+                    103
+                </span>
+            </div>
+
+            <div
+                class="exit-door"
+                aria-hidden="true"
+            >
+
+                <span class="exit-door__number">
+                    B-17
+                </span>
+
+                <span class="exit-door__handle"></span>
+
+                <span class="exit-door__keypad">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </span>
+
+            </div>
+
+            <div
+                class="reception-desk"
+                aria-hidden="true"
+            >
+
+                <span class="reception-desk__paper"></span>
+                <span class="reception-desk__lamp"></span>
+
+            </div>
+
+            <div
+                class="wheelchair"
+                aria-hidden="true"
+            >
+
+                <span class="wheelchair__back"></span>
+                <span class="wheelchair__seat"></span>
+
+                <span
+                    class="wheelchair__wheel wheelchair__wheel--left"
+                ></span>
+
+                <span
+                    class="wheelchair__wheel wheelchair__wheel--right"
+                ></span>
+
+            </div>
+
+            <div
+                class="wall-symbol"
+                aria-hidden="true"
+            >
+                ⛧
+            </div>
+
+            <div
+                class="blood-mark blood-mark--one"
+                aria-hidden="true"
+            ></div>
+
+            <div
+                class="blood-mark blood-mark--two"
+                aria-hidden="true"
+            ></div>
+
+
+            <!-- SU DAMLALARI -->
+
+            <div
+                class="dripping-water dripping-water--one"
+                aria-hidden="true"
+            ></div>
+
+            <div
+                class="dripping-water dripping-water--two"
+                aria-hidden="true"
+            ></div>
+
+
+            <!-- UZAKTAKİ FİGÜR -->
+
+            <div
+                id="hallwayFigure"
+                class="hallway-figure"
+                aria-hidden="true"
+            >
+
+                <span class="hallway-figure__head"></span>
+                <span class="hallway-figure__body"></span>
+
+            </div>
+
+
+            <!-- HAREKETLİ GÖLGE -->
+
+            <div
+                id="movingShadow"
+                class="corridor-shadow"
+                aria-hidden="true"
+            ></div>
+
+
+            <!-- ATMOSFER KATMANLARI -->
+
+            <div
+                class="room-fog room-fog--back"
+                aria-hidden="true"
+            ></div>
+
+            <div
+                class="room-fog room-fog--front"
+                aria-hidden="true"
+            ></div>
+
+            <div
+                class="floating-dust"
+                aria-hidden="true"
+            ></div>
+
+            <div
+                class="room-flicker"
+                aria-hidden="true"
+            ></div>
+
+            <div
+                class="room-overlay"
+                aria-hidden="true"
+            ></div>
+
+            <div
+                id="flashlight"
+                class="flashlight"
+                aria-hidden="true"
+            ></div>
+
+
+            <!-- =================================================
+                 ETKİLEŞİM NOKTALARI
+            ================================================== -->
+
+            <button
+                class="hotspot hotspot-register"
+                type="button"
+                data-action="register"
+                data-label="Hasta dosyasını incele"
+                aria-label="Hasta kayıt defterini incele"
+            >
+
+                <span class="hotspot__label">
+                    HASTA DOSYASI
+                </span>
+
+            </button>
+
+            <button
+                class="hotspot hotspot-door"
+                type="button"
+                data-action="door"
+                data-label="Güvenlik kapısını incele"
+                aria-label="Güvenlik kapısını incele"
+            >
+
+                <span class="hotspot__label">
+                    GÜVENLİK KAPISI
+                </span>
+
+            </button>
+
+            <button
+                class="hotspot hotspot-symbol"
+                type="button"
+                data-action="symbol"
+                data-label="Duvardaki sembolü incele"
+                aria-label="Duvardaki sembolü incele"
+            >
+
+                <span class="hotspot__label">
+                    GARİP SEMBOL
+                </span>
+
+            </button>
+
+            <button
+                class="hotspot hotspot-wheelchair"
+                type="button"
+                data-action="wheelchair"
+                data-label="Tekerlekli sandalyeyi incele"
+                aria-label="Tekerlekli sandalyeyi incele"
+            >
+
+                <span class="hotspot__label">
+                    TEKERLEKLİ SANDALYE
+                </span>
+
+            </button>
+
+
+            <!-- =================================================
+                 ETKİLEŞİM BİLDİRİMİ
+            ================================================== -->
+
+            <div
+                id="interactionPrompt"
+                class="interaction-prompt"
+                aria-hidden="true"
+            >
+                İncele
+            </div>
+
+
+            <!-- =================================================
+                 KORKU MESAJI
+            ================================================== -->
+
+            <div
+                id="whisperMessage"
+                class="whisper-message"
+                aria-hidden="true"
+            >
+                Arkana bakma...
+            </div>
+
+        </main>
+
+
+        <!-- =================================================
+             SOL ALT HİKÂYE / GÖREV / İPUCU PANELİ
+        ================================================== -->
+
+        <section
+            id="storyPanel"
+            class="story-panel"
+            aria-label="Hikâye ve görev"
+        >
+
+            <div class="story-header">
+
+                <h3>
+                    HİKÂYE
+                </h3>
+
+            </div>
+
+            <div class="story-body">
+
+                <p id="story-text">
+                    Koridorun sonundaki güvenlik kapısı kilitli.
+                    Resepsiyon masasındaki eski dosya hâlâ açık duruyor.
+                </p>
+
+            </div>
+
+            <div
+                class="panel-divider"
+                aria-hidden="true"
+            ></div>
+
+            <div class="objective">
+
+                <span class="objective-title">
+                    GÖREV
+                </span>
+
+                <p id="objectiveText">
+                    Güvenlik kapısının şifresini bul.
+                </p>
+
+            </div>
+
+            <div class="objective-progress">
+
+                <div class="progress-information">
+                    <span>İLERLEME</span>
+
+                    <span id="progress-count">
+                        0 / 1
+                    </span>
+                </div>
+
+                <div class="progress-track">
+                    <div
+                        id="progress-bar"
+                        class="progress-bar"
+                    ></div>
+                </div>
+
+                <div class="progress-track">
+
+                    <div class="progress-bar"></div>
+
+                </div>
+
+            </div>
+
+            <button
+                id="hint-button"
+                class="hint-button"
+                type="button"
+            >
+
+                <span aria-hidden="true">
+                    💡
+                </span>
+
+                İPUCU
+
+            </button>
+
+        </section>
+
+
+        <!-- =================================================
+             SAĞ ALT ENVANTER
+        ================================================== -->
+
+        <section
+            id="inventory"
+            class="inventory"
+            aria-label="Envanter"
+        >
+
+            <div class="inventory-title">
+                ENVANTER
+            </div>
+
+            <ul id="inventory-list"></ul>
+
+        </section>
+
+    </div>
+
+
+    <!-- =====================================================
+         İNCELEME PENCERESİ
+    ====================================================== -->
+
+    <dialog
+        id="clue-dialog"
+        class="game-dialog"
+    >
+
+        <div class="dialog-card clue-card">
+
+            <button
+                id="dialog-x-button"
+                class="dialog-x-button"
+                type="button"
+                aria-label="Pencereyi kapat"
+            >
+                ×
+            </button>
+
+            <p
+                id="clue-kicker"
+                class="dialog-kicker"
+            ></p>
+
+            <h2 id="clue-title"></h2>
+
+            <div
+                id="clue-visual"
+                class="clue-visual"
+            ></div>
+
+            <p id="clue-text"></p>
+
+
+            <!-- ŞİFRE ALANI -->
+
+            <div
+                id="code-area"
+                class="code-area"
+                hidden
+            >
+
+                <label for="door-code">
+                    Kapı şifresi
+                </label>
+
+                <input
+                    id="door-code"
+                    type="text"
+                    inputmode="numeric"
+                    maxlength="4"
+                    autocomplete="off"
+                    placeholder="••••"
+                >
+
+                <button
+                    id="submit-code-button"
+                    class="primary-small"
+                    type="button"
+                >
+                    KİLİDİ AÇ
+                </button>
+
+                <p
+                    id="code-feedback"
+                    class="code-feedback"
+                    aria-live="polite"
+                ></p>
+
+            </div>
+
+
+            <!-- DİYALOG BUTONLARI -->
+
+            <div class="dialog-actions">
+
+                <button
+                    id="collect-button"
+                    class="primary-small"
+                    type="button"
+                    hidden
+                >
+                    ENVANTERE AL
+                </button>
+
+                <button
+                    id="close-clue"
+                    class="secondary-button"
+                    type="button"
+                >
+                    KAPAT
+                </button>
+
+            </div>
+
+        </div>
+
+    </dialog>
+
+
+    <!-- =====================================================
+         EKRAN EFEKTLERİ
+    ====================================================== -->
+
+    <div
+        id="screenFlash"
+        class="screen-flash"
+        aria-hidden="true"
+    ></div>
+
+
+    <!-- =====================================================
+         BÖLÜM TAMAMLANDI
+    ====================================================== -->
+
+    <div
+        id="chapterComplete"
+        class="chapter-complete"
+        aria-hidden="true"
+    >
+
+        <div class="chapter-complete__content">
+
+            <p>
+                BÖLÜM 01 TAMAMLANDI
+            </p>
+
+            <h2>
+                Kapı açıldı.
+            </h2>
+
+            <span>
+                Fakat koridorun diğer tarafında seni bekleyen bir şey var.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SESLER
+    ====================================================== -->
+
+    <audio
+        id="roomAmbience"
+        preload="auto"
+        loop
+    >
+
+        <source
+            src="audio/hospital-ambience.mp3"
+            type="audio/mpeg"
+        >
+
+    </audio>
+
+    <audio
+        id="fluorescentSound"
+        preload="auto"
+        loop
+    >
+
+        <source
+            src="audio/fluorescent.mp3"
+            type="audio/mpeg"
+        >
+
+    </audio>
+
+    <audio
+        id="metalSound"
+        preload="auto"
+    >
+
+        <source
+            src="audio/metal-hit.mp3"
+            type="audio/mpeg"
+        >
+
+    </audio>
+
+    <audio
+        id="whisperSound"
+        preload="auto"
+    >
+
+        <source
+            src="audio/whisper.mp3"
+            type="audio/mpeg"
+        >
+
+    </audio>
+
+    <audio
+        id="doorSound"
+        preload="auto"
+    >
+
+        <source
+            src="audio/door-open.mp3"
+            type="audio/mpeg"
+        >
+
+    </audio>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="js/core/save-manager.js?v=202608280557"></script>
+    <script src="js/game.js?v=20260831095208"></script>
+    <script src="js/core/inventory.js?v=202608280557"></script>
+    <script src="js/rooms/room1.js?v=202608280557"></script>
+
+</body>
+
+</html>

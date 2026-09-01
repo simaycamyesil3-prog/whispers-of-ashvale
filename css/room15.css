@@ -1,0 +1,359 @@
+/* ==========================================================
+   ROOM 15 — ASHVALE'İN KALBİ (FİNAL)
+   Klasik bulmaca yok. Müzik kutusuna dokununca başlayan
+   tırmanan bir final sekansı var: fısıltı korosu, fotoğraf
+   çarpıtması, ışık/renk titremesi, sonra "KONUŞ / SUS" seçimi.
+   SUS doğru seçim - seçilince tam ekran flaş + ani sessizlik,
+   sonra oda sakinleşiyor ve final ekranı geliyor.
+   ========================================================== */
+
+body.chapter-fifteen .room-background {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+
+    filter:
+        brightness(1.08)
+        contrast(1.02)
+        saturate(0.95)
+        sepia(0.08);
+
+    transition: filter 0.6s ease;
+}
+
+body.chapter-fifteen .dark-overlay {
+    background:
+        radial-gradient(
+            circle at 55% 45%,
+            rgba(0, 0, 0, 0.04),
+            rgba(0, 0, 0, 0.34) 88%
+        );
+}
+
+body.chapter-fifteen .fog-one {
+    opacity: 0.06;
+}
+
+body.chapter-fifteen .fog-two {
+    opacity: 0.04;
+}
+
+/* ==========================================================
+   ROOM 15 — HOTSPOT KONUMLARI
+   Gerçek room15.png üzerinden grid overlay + zoom crop
+   ölçümüyle hizalanmıştır.
+*/
+
+#photos {
+    top: 27%;
+    left: 35%;
+    width: 14%;
+    height: 20%;
+}
+
+#musicBox {
+    top: 55%;
+    left: 28%;
+    width: 11%;
+    height: 12%;
+}
+
+#drawer {
+    top: 70%;
+    left: 28%;
+    width: 8%;
+    height: 8%;
+}
+
+#bed {
+    top: 52%;
+    left: 39%;
+    width: 25%;
+    height: 36%;
+}
+
+#figure {
+    top: 39%;
+    left: 65%;
+    width: 9%;
+    height: 29%;
+}
+
+body.chapter-fifteen #photos.inspected,
+body.chapter-fifteen #drawer.inspected,
+body.chapter-fifteen #bed.inspected,
+body.chapter-fifteen #figure.inspected {
+    outline: 1px solid rgba(210, 185, 140, 0.2);
+}
+
+body.chapter-fifteen #musicBox.climax-triggered {
+    animation: room15MusicBoxGlow 2.4s infinite;
+}
+
+@keyframes room15MusicBoxGlow {
+    0% { box-shadow: 0 0 0 rgba(230, 195, 140, 0); }
+    50% { box-shadow: 0 0 20px rgba(230, 195, 140, 0.34); }
+    100% { box-shadow: 0 0 0 rgba(230, 195, 140, 0); }
+}
+
+/* ==========================================================
+   ROOM 15 — HOTSPOT TIKLAMA ÖNCELİĞİ
+   ========================================================== */
+
+body.chapter-fifteen #photos,
+body.chapter-fifteen #musicBox,
+body.chapter-fifteen #drawer,
+body.chapter-fifteen #bed,
+body.chapter-fifteen #figure {
+    z-index: 145;
+    pointer-events: auto;
+}
+
+/* ==========================================================
+   ROOM 15 — KLİMAKS EFEKTLERİ
+   ========================================================== */
+
+body.chapter-fifteen.climax-active .room-background {
+    animation: room15ColorPulse 3.2s ease-in-out infinite;
+}
+
+@keyframes room15ColorPulse {
+    0%, 100% {
+        filter:
+            brightness(1.08) contrast(1.02) saturate(0.95) sepia(0.08);
+    }
+    50% {
+        filter:
+            brightness(0.86) contrast(1.14) saturate(0.55) sepia(0);
+    }
+}
+
+body.chapter-fifteen.climax-active #photos {
+    animation: room15PhotoGlitch 2.6s steps(6) infinite;
+}
+
+@keyframes room15PhotoGlitch {
+    0%, 100% { filter: none; opacity: 1; }
+    20% { filter: invert(0.12) hue-rotate(30deg); opacity: 0.7; }
+    40% { filter: none; opacity: 1; }
+    60% { filter: invert(0.2) hue-rotate(-20deg); opacity: 0.6; }
+    80% { filter: none; opacity: 1; }
+}
+
+body.chapter-fifteen.climax-active .dark-overlay {
+    animation: room15OverlayPulse 3.2s ease-in-out infinite;
+}
+
+@keyframes room15OverlayPulse {
+    0%, 100% {
+        background:
+            radial-gradient(circle at 55% 45%, rgba(0,0,0,0.04), rgba(0,0,0,0.34) 88%);
+    }
+    50% {
+        background:
+            radial-gradient(circle at 55% 45%, rgba(20,10,25,0.22), rgba(0,0,0,0.62) 88%);
+    }
+}
+
+body.chapter-fifteen.climax-intense .room-background {
+    animation-duration: 1.6s;
+}
+
+body.chapter-fifteen.climax-intense .dark-overlay {
+    animation-duration: 1.6s;
+}
+
+.climax-flash {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    background: #fff;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.climax-flash.flash-active {
+    animation: room15Flash 1.1s ease-out;
+}
+
+@keyframes room15Flash {
+    0% { opacity: 0; }
+    12% { opacity: 1; }
+    45% { opacity: 0.92; }
+    100% { opacity: 0; }
+}
+
+/* ==========================================================
+   ROOM 15 — MODAL SİSTEMİ
+   ========================================================== */
+
+body.chapter-fifteen .dialog {
+    z-index: 2300;
+}
+
+body.chapter-fifteen .dialog.dialog--whisper #dialogText,
+body.chapter-fifteen .dialog.dialog--whisper .dialog-body p {
+    font-style: italic;
+    letter-spacing: 0.04em;
+    opacity: 0.9;
+}
+
+body.chapter-fifteen .dialog.dialog--whisper .dialog-footer {
+    opacity: 0.4;
+}
+
+.chapter-complete-epilogue {
+    max-width: 560px;
+    margin: 0 auto 16px;
+    font-size: 0.92rem;
+}
+
+#nextChapter {
+    min-width: 190px;
+    min-height: 44px;
+    padding: 12px 19px;
+    border: 1px solid rgba(190, 155, 105, 0.75);
+    border-radius: 9px;
+    background: linear-gradient(180deg, #7a5a2e, #4a3216);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    cursor: pointer;
+    box-shadow:
+        inset 0 1px rgba(255, 255, 255, 0.08),
+        0 10px 25px rgba(15, 10, 5, 0.32);
+    transition:
+        transform 170ms ease,
+        filter 170ms ease,
+        border-color 170ms ease;
+}
+
+#nextChapter:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.15);
+    border-color: rgba(220, 185, 130, 0.9);
+}
+
+/* ---- final-choice-panel (KONUŞ / SUS) ---- */
+
+.final-choice-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 2400;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.88);
+    backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
+}
+
+.final-choice-panel[aria-hidden="true"] {
+    display: none;
+}
+
+.final-choice-window {
+    width: min(520px, 94vw);
+    padding: 32px 28px;
+    text-align: center;
+    border: 1px solid rgba(190, 155, 105, 0.4);
+    border-radius: 16px;
+    background:
+        linear-gradient(155deg, rgba(18, 12, 8, 0.99), rgba(6, 4, 3, 0.99));
+    box-shadow:
+        0 40px 110px rgba(0, 0, 0, 0.9),
+        inset 0 1px rgba(255, 255, 255, 0.04);
+    animation: room15ChoicePulse 1.8s ease-in-out infinite;
+}
+
+@keyframes room15ChoicePulse {
+    0%, 100% { box-shadow: 0 40px 110px rgba(0,0,0,0.9), inset 0 1px rgba(255,255,255,0.04), 0 0 0 rgba(200,60,50,0); }
+    50% { box-shadow: 0 40px 110px rgba(0,0,0,0.9), inset 0 1px rgba(255,255,255,0.04), 0 0 40px rgba(200,60,50,0.22); }
+}
+
+.final-choice-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #d3ab74;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+}
+
+.final-choice-window h2 {
+    margin: 0 0 26px;
+    color: #ece7dc;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 1.7rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+}
+
+.final-choice-options {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.final-choice-options button {
+    flex: 1;
+    padding: 20px 14px;
+    border-radius: 10px;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    cursor: pointer;
+    transition:
+        transform 150ms ease,
+        filter 150ms ease;
+}
+
+.final-choice-speak {
+    border: 2px solid rgba(210, 90, 70, 0.75);
+    background: linear-gradient(180deg, rgba(150, 55, 40, 0.4), rgba(80, 25, 18, 0.6));
+    color: #f0d4cc;
+    animation: room15SpeakFlash 1.1s ease-in-out infinite;
+}
+
+@keyframes room15SpeakFlash {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.45); }
+}
+
+.final-choice-silent {
+    border: 1px solid rgba(150, 160, 155, 0.4);
+    background: rgba(255, 255, 255, 0.03);
+    color: #c9d0cb;
+}
+
+.final-choice-options button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.2);
+}
+
+.final-choice-message {
+    min-height: 23px;
+    margin: 0;
+    color: #bfb0a4;
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+.final-choice-message.error,
+.final-choice-message.is-error {
+    color: #e08a72;
+}
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 600px) {
+    .final-choice-options {
+        flex-direction: column;
+    }
+}

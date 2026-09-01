@@ -1,0 +1,2185 @@
+/* =====================================================
+   WHISPERS OF ASHVALE
+   ROOM 2 — KAYIT ODASI
+===================================================== */
+
+
+/* =====================================================
+   TEMEL SAYFA YAPISI
+===================================================== */
+
+body.chapter-two {
+    margin: 0;
+    overflow: hidden;
+    background: #000;
+    color: #fff;
+    font-family: "Inter", sans-serif;
+}
+
+body.chapter-two *,
+body.chapter-two *::before,
+body.chapter-two *::after {
+    box-sizing: border-box;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    color: inherit;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =====================================================
+   ANA OYUN ALANI
+===================================================== */
+
+#room {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.background-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.room-background {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    user-select: none;
+}
+
+.dark-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.12),
+            rgba(0, 0, 0, 0.24)
+        ),
+        radial-gradient(
+            circle at center,
+            transparent 34%,
+            rgba(0, 0, 0, 0.43) 100%
+        );
+}
+
+
+/* =====================================================
+   ATMOSFER KATMANLARI
+===================================================== */
+
+.fog {
+    position: absolute;
+    inset: -15%;
+    background-image: url("../images/effects/fog.png");
+    background-repeat: repeat;
+    background-size: 900px auto;
+    opacity: 0.13;
+    animation: room2FogMove 55s linear infinite;
+    pointer-events: none;
+}
+
+.fog-one {
+    filter: blur(1px);
+}
+
+.fog-two {
+    opacity: 0.07;
+    animation-duration: 82s;
+    animation-direction: reverse;
+    transform: scale(1.1);
+}
+
+.rain-layer {
+    position: absolute;
+    inset: 0;
+    background-image: url("../images/effects/rain.png");
+    background-repeat: repeat;
+    opacity: 0.08;
+    animation: room2RainMove 0.8s linear infinite;
+    pointer-events: none;
+}
+
+.room-flicker {
+    position: absolute;
+    inset: 0;
+    background: rgba(235, 245, 255, 0.12);
+    opacity: 0;
+    mix-blend-mode: screen;
+    pointer-events: none;
+}
+
+.room-flicker.active {
+    animation: room2LightFlicker 0.85s steps(1, end);
+}
+
+.moving-shadow {
+    position: absolute;
+    top: 10%;
+    left: -25%;
+    width: 18%;
+    height: 74%;
+    opacity: 0;
+    background:
+        radial-gradient(
+            ellipse at center,
+            rgba(0, 0, 0, 0.95) 0%,
+            rgba(0, 0, 0, 0.72) 42%,
+            transparent 75%
+        );
+    filter: blur(14px);
+    transform: skewX(-9deg);
+    pointer-events: none;
+}
+
+.moving-shadow.active {
+    animation: room2ShadowPass 1.45s ease-in-out forwards;
+}
+
+.hallway-figure {
+    position: absolute;
+    top: 22%;
+    right: 5%;
+    width: 55px;
+    height: 225px;
+    opacity: 0;
+    background:
+        radial-gradient(
+            ellipse at 50% 12%,
+            rgba(220, 220, 210, 0.72) 0 13%,
+            transparent 15%
+        ),
+        linear-gradient(
+            to bottom,
+            rgba(215, 215, 205, 0.65),
+            rgba(120, 120, 115, 0.23)
+        );
+    border-radius: 45% 45% 18% 18%;
+    filter: blur(2px);
+    pointer-events: none;
+}
+
+.hallway-figure.active {
+    animation: room2FigureReveal 1.15s ease-in-out forwards;
+}
+
+
+/* =====================================================
+   BÖLÜM GİRİŞİ
+===================================================== */
+
+.chapter-intro {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(25, 25, 25, 0.32),
+            rgba(0, 0, 0, 0.97)
+        );
+    text-align: center;
+    transition:
+        opacity 1s ease,
+        visibility 1s ease;
+}
+
+.chapter-intro-content {
+    max-width: 780px;
+    animation: room2IntroReveal 1.15s ease both;
+}
+
+.chapter-number {
+    display: block;
+    margin-bottom: 12px;
+    color: #a43838;
+    font-family: "Cinzel", serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 7px;
+}
+
+.chapter-intro h1 {
+    margin: 0;
+    font-family: "Cinzel", serif;
+    font-size: clamp(45px, 6vw, 88px);
+    font-weight: 700;
+    letter-spacing: clamp(5px, 1vw, 13px);
+    text-shadow:
+        0 0 18px rgba(255, 255, 255, 0.08),
+        0 8px 25px rgba(0, 0, 0, 0.9);
+}
+
+.chapter-intro p {
+    margin: 22px 0 0;
+    color: #b8b8b8;
+    font-size: clamp(14px, 1.6vw, 18px);
+    font-weight: 300;
+    letter-spacing: 1.2px;
+}
+
+
+/* =====================================================
+   HUD
+===================================================== */
+
+.hud {
+    position: fixed;
+    top: 20px;
+    left: 22px;
+    right: 22px;
+    z-index: 500;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: start;
+    gap: 20px;
+    pointer-events: none;
+}
+
+.hud-left {
+    justify-self: start;
+}
+
+.hud-center {
+    justify-self: center;
+}
+
+.hud-right {
+    justify-self: end;
+}
+
+.player-box,
+.chapter-box {
+    min-height: 56px;
+    padding: 11px 19px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 12px;
+    background: rgba(12, 12, 12, 0.76);
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.26),
+        inset 0 1px rgba(255, 255, 255, 0.035);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.player-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    min-width: 160px;
+}
+
+.player-box .label {
+    color: #8f8f8f;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+}
+
+#playerName {
+    max-width: 180px;
+    overflow: hidden;
+    font-size: 16px;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chapter-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 190px;
+    font-family: "Cinzel", serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 3px;
+}
+
+#menuButton {
+    min-height: 52px;
+    padding: 0 21px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 12px;
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(131, 24, 24, 0.96),
+            rgba(91, 12, 12, 0.96)
+        );
+    box-shadow:
+        0 10px 26px rgba(0, 0, 0, 0.32),
+        inset 0 1px rgba(255, 255, 255, 0.08);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        filter 0.2s ease,
+        border-color 0.2s ease;
+    pointer-events: auto;
+}
+
+#menuButton:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.3);
+    filter: brightness(1.15);
+}
+
+#menuButton:active {
+    transform: translateY(0);
+}
+
+
+/* =====================================================
+   HOTSPOT KATMANI
+   ROOM 1 İLE AYNI PIRILTI — SADECE HOVER'DA GÖRÜNÜR
+===================================================== */
+
+.hotspot-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 120;
+}
+
+
+/* Tıklama alanının kendisi görünmez kalır. */
+
+.chapter-two .hotspot {
+    position: absolute;
+
+    padding: 0;
+    margin: 0;
+
+    border: none !important;
+    border-radius: 0 !important;
+    outline: none !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    overflow: visible;
+
+    cursor: pointer;
+
+    transition: none;
+
+    --sparkle-color: rgba(222, 235, 228, 0.82);
+    --sparkle-glow: rgba(164, 205, 185, 0.48);
+}
+
+
+.chapter-two .hotspot:hover,
+.chapter-two .hotspot:focus,
+.chapter-two .hotspot:focus-visible {
+    border: none !important;
+    outline: none !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+
+/* Eski yuvarlak işareti tamamen kapatır. */
+
+.chapter-two .hotspot::after {
+    content: none !important;
+}
+
+
+/* Normal durumda pırıltı görünmez. */
+
+.chapter-two .hotspot::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 4px;
+    height: 4px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: var(--sparkle-color);
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transform:
+        translate(-50%, -50%)
+        scale(0.72);
+
+    box-shadow:
+        20px -15px 0 -1px var(--sparkle-color),
+        -23px 13px 0 -1px var(--sparkle-color),
+        10px 24px 0 -1px var(--sparkle-color),
+        -11px -24px 0 -1px var(--sparkle-color),
+        0 0 8px 2px var(--sparkle-glow);
+
+    transition:
+        opacity 140ms ease,
+        transform 180ms ease,
+        box-shadow 180ms ease;
+}
+
+
+/* Mouse alanın üzerine gelince Room 1 görünümünde çıkar. */
+
+.chapter-two .hotspot:hover::before,
+.chapter-two .hotspot:focus-visible::before {
+    opacity: 1;
+
+    transform:
+        translate(-50%, -50%)
+        scale(1);
+
+    box-shadow:
+        20px -15px 0 -1px rgba(255, 255, 255, 0.95),
+        -23px 13px 0 -1px rgba(255, 255, 255, 0.95),
+        10px 24px 0 -1px rgba(255, 255, 255, 0.95),
+        -11px -24px 0 -1px rgba(255, 255, 255, 0.95),
+        0 0 12px 4px rgba(184, 225, 205, 0.72);
+
+    animation:
+        room2SparkleHover
+        1.15s
+        ease-in-out
+        infinite;
+}
+
+
+/* Tıklarken alanın kendisi küçülmez. */
+
+.chapter-two .hotspot:active {
+    transform: none !important;
+}
+
+
+/* =====================================================
+   DOSYA DOLAPLARI
+===================================================== */
+
+/*
+   NOT (güncelleme): Aşağıdaki konumlar gerçek room2.png
+   görseline (dosya dolapları, masa, saat, çıkış kapısı vb.)
+   göre yeniden hizalandı. Hikâye paneli (sol alt) ve envanter
+   panosu (sağ alt) ile çakışan alanlar kısaltıldı.
+*/
+
+/* Panodaki (mantar pano) not - dosya dolabı değil, ayrı bir kayıt */
+#registerA {
+    top: 1.7%;
+    left: 9.8%;
+    width: 9.4%;
+    height: 34.8%;
+}
+
+#registerB {
+    top: 13.3%;
+    left: 21.5%;
+    width: 8.5%;
+    height: 58.5%;
+}
+
+#registerC {
+    top: 13.3%;
+    left: 30%;
+    width: 8.4%;
+    height: 58.5%;
+}
+
+#registerD {
+    top: 13.3%;
+    left: 38.4%;
+    width: 8.5%;
+    height: 58.5%;
+}
+
+#registerE {
+    top: 13.3%;
+    left: 46.9%;
+    width: 8.5%;
+    height: 58.5%;
+}
+
+#registerF {
+    top: 13.3%;
+    left: 55.3%;
+    width: 8.5%;
+    height: 58.5%;
+}
+
+
+/* =====================================================
+   DİĞER ETKİLEŞİM NOKTALARI
+===================================================== */
+
+#computer {
+    left: 0.6%;
+    top: 36.5%;
+
+    width: 18.2%;
+    height: 30.7%;
+
+    right: auto;
+    bottom: auto;
+}
+#telephone {
+    left: 18.9%;
+    top: 46.3%;
+
+    width: 8.7%;
+    height: 16.2%;
+
+    right: auto;
+    bottom: auto;
+}
+
+#chair {
+    left: 37.8%;
+    top: 60.2%;
+    width: 12.4%;
+    height: 17.2%;
+    bottom: auto;
+}
+
+#papers {
+    left: 31.9%;
+    top: 84.5%;
+    width: 20.2%;
+    height: 15.5%;
+    bottom: auto;
+}
+
+/* Küçük 3 çekmeceli dolap (kilitli çekmece bulmacası) */
+#lockedDrawer {
+    left: 64.8%;
+    top: 37%;
+    width: 7.2%;
+    height: 34.7%;
+    right: auto;
+    bottom: auto;
+}
+
+#xrayBoard {
+    left: 64.8%;
+    top: 13.3%;
+    width: 7.2%;
+    height: 23.2%;
+    right: auto;
+}
+
+#wallClock {
+    left: 35.5%;
+    top: 0%;
+    width: 7.2%;
+    height: 9.8%;
+    border-radius: 50%;
+}
+
+#exitDoor {
+    top: 5.2%;
+    left: 74.5%;
+    width: 13.7%;
+    height: 64.3%;
+}
+
+
+/* =====================================================
+   ETKİLEŞİM BİLDİRİMİ
+===================================================== */
+
+.interaction-prompt {
+    position: fixed;
+    left: 50%;
+    bottom: 28px;
+    z-index: 650;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 260px;
+    max-width: calc(100vw - 40px);
+    padding: 11px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    background: rgba(12, 12, 12, 0.9);
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.42);
+    transform: translateX(-50%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    animation: room2PromptAppear 0.2s ease both;
+}
+
+.prompt-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.045);
+    font-size: 18px;
+}
+
+.prompt-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.prompt-action {
+    color: #969696;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+}
+
+#promptText {
+    overflow: hidden;
+    font-size: 14px;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.prompt-key {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 8px;
+    background: #2d2d2d;
+    box-shadow: inset 0 -2px rgba(0, 0, 0, 0.35);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   HİKÂYE VE GÖREV PANELİ
+===================================================== */
+
+.story-panel {
+    position: fixed;
+    left: 24px;
+    bottom: 24px;
+    z-index: 220;
+    width: min(350px, calc(100vw - 48px));
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    border-radius: 16px;
+    background: rgba(12, 12, 12, 0.82);
+    box-shadow:
+        0 16px 46px rgba(0, 0, 0, 0.34),
+        inset 0 1px rgba(255, 255, 255, 0.025);
+    backdrop-filter: blur(11px);
+    -webkit-backdrop-filter: blur(11px);
+    animation: room2PanelUp 0.75s ease both;
+}
+
+.story-header h3 {
+    margin: 0 0 12px;
+    font-family: "Cinzel", serif;
+    font-size: 16px;
+    letter-spacing: 2.5px;
+}
+
+.story-body {
+    color: #d1d1d1;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.65;
+}
+
+.story-body p,
+.objective p {
+    margin: 0;
+}
+
+.objective {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.075);
+}
+
+.objective-title {
+    display: block;
+    margin-bottom: 7px;
+    color: #a43838;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.4px;
+}
+
+#objectiveText {
+    color: #eee;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.55;
+}
+
+.objective-progress {
+    margin-top: 15px;
+}
+
+.progress-information {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    color: #8e8e8e;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1.7px;
+}
+
+#recordProgress {
+    color: #d7d7d7;
+    font-size: 10px;
+}
+
+.progress-track {
+    width: 100%;
+    height: 6px;
+    overflow: hidden;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.progress-bar {
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background:
+        linear-gradient(
+            to right,
+            #671111,
+            #ad3030
+        );
+    box-shadow: 0 0 10px rgba(154, 34, 34, 0.42);
+    transition: width 0.45s ease;
+}
+
+
+/* =====================================================
+   ENVANTER
+===================================================== */
+
+.inventory {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 220;
+    width: min(350px, calc(100vw - 48px));
+    padding: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    border-radius: 16px;
+    background: rgba(12, 12, 12, 0.82);
+    box-shadow:
+        0 16px 46px rgba(0, 0, 0, 0.34),
+        inset 0 1px rgba(255, 255, 255, 0.025);
+    backdrop-filter: blur(11px);
+    -webkit-backdrop-filter: blur(11px);
+    animation: room2PanelUp 0.75s 0.08s ease both;
+}
+
+.inventory-title {
+    margin-bottom: 14px;
+    font-family: "Cinzel", serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 2.3px;
+}
+
+.inventory-slots {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.inventory-slot {
+    position: relative;
+    aspect-ratio: 1;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.095);
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.035);
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.inventory-slot:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.065);
+}
+
+.inventory-slot img {
+    width: 72%;
+    height: 72%;
+    object-fit: contain;
+}
+
+
+/* =====================================================
+   TAM EKRAN PENCERELERİN ORTAK YAPISI
+===================================================== */
+
+.computer-screen,
+.record-viewer,
+.code-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.79);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    animation: room2OverlayFade 0.22s ease both;
+}
+
+.window-close-button,
+.record-close-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 auto;
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    color: #ccc;
+    font-size: 16px;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.window-close-button:hover,
+.record-close-button:hover {
+    border-color: rgba(255, 255, 255, 0.24);
+    background: rgba(145, 24, 24, 0.42);
+    color: #fff;
+}
+
+
+/* =====================================================
+   BİLGİSAYAR TERMİNALİ
+===================================================== */
+
+.terminal {
+    width: min(720px, 94vw);
+    max-height: 86vh;
+    overflow: hidden;
+    border: 1px solid rgba(104, 173, 118, 0.36);
+    border-radius: 12px;
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(15, 55, 24, 0.18),
+            transparent 65%
+        ),
+        #071009;
+    box-shadow:
+        0 0 0 7px #141414,
+        0 25px 80px rgba(0, 0, 0, 0.72),
+        inset 0 0 50px rgba(27, 115, 48, 0.12);
+    color: #78dd8b;
+    animation: room2WindowScale 0.28s ease both;
+}
+
+.terminal-header,
+.terminal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 14px 18px;
+    background: #101710;
+}
+
+.terminal-header {
+    border-bottom: 1px solid rgba(104, 173, 118, 0.2);
+}
+
+.terminal-footer {
+    border-top: 1px solid rgba(104, 173, 118, 0.2);
+}
+
+.terminal-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    font-family: monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+}
+
+.terminal-light {
+    width: 8px;
+    height: 8px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: #61db75;
+    box-shadow: 0 0 10px rgba(97, 219, 117, 0.8);
+    animation: room2TerminalLight 1.7s ease-in-out infinite;
+}
+
+.terminal-body {
+    position: relative;
+    max-height: 58vh;
+    overflow: auto;
+    padding: 28px;
+}
+
+.terminal-body::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0,
+            transparent 3px,
+            rgba(100, 255, 125, 0.025) 4px
+        );
+    pointer-events: none;
+}
+
+#terminalText {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    color: #7bea8e;
+    font-family: "Courier New", monospace;
+    font-size: 14px;
+    line-height: 1.75;
+    white-space: pre-wrap;
+    text-shadow: 0 0 8px rgba(109, 239, 133, 0.25);
+}
+
+.terminal-footer > span {
+    color: rgba(120, 221, 139, 0.56);
+    font-family: monospace;
+    font-size: 10px;
+    letter-spacing: 0.6px;
+}
+
+#computerContinue {
+    padding: 9px 15px;
+    border: 1px solid rgba(108, 228, 131, 0.34);
+    border-radius: 7px;
+    background: rgba(74, 168, 91, 0.12);
+    color: #8cea9d;
+    font-family: monospace;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+
+/* =====================================================
+   HASTA KAYDI GÖRÜNTÜLEYİCİ
+===================================================== */
+
+.record-document {
+    position: relative;
+    width: min(660px, 94vw);
+    max-height: 88vh;
+    overflow: hidden;
+    border: 1px solid rgba(78, 51, 27, 0.42);
+    border-radius: 8px;
+    background:
+        linear-gradient(
+            rgba(255, 250, 225, 0.94),
+            rgba(215, 203, 165, 0.96)
+        );
+    box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.72),
+        inset 0 0 80px rgba(68, 38, 16, 0.15);
+    color: #2e2318;
+    animation: room2RecordReveal 0.35s ease both;
+}
+
+.record-document::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.2;
+    background:
+        repeating-linear-gradient(
+            0deg,
+            transparent 0,
+            transparent 4px,
+            rgba(71, 47, 25, 0.04) 5px
+        );
+    pointer-events: none;
+}
+
+.record-document-header,
+.record-document-footer {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 17px 22px;
+}
+
+.record-document-header {
+    border-bottom: 1px solid rgba(71, 47, 25, 0.25);
+}
+
+.record-document-footer {
+    border-top: 1px solid rgba(71, 47, 25, 0.22);
+}
+
+.record-hospital-name {
+    display: block;
+    margin-bottom: 4px;
+    color: rgba(46, 35, 24, 0.64);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2.2px;
+}
+
+.record-document-header h2 {
+    margin: 0;
+    font-family: "Cinzel", serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+}
+
+.record-close-button {
+    border-color: rgba(46, 35, 24, 0.18);
+    background: rgba(46, 35, 24, 0.055);
+    color: #493626;
+}
+
+.record-close-button:hover {
+    border-color: rgba(91, 18, 18, 0.45);
+    background: rgba(118, 21, 21, 0.14);
+    color: #6d1515;
+}
+
+.record-document-body {
+    position: relative;
+    z-index: 1;
+    max-height: 60vh;
+    overflow: auto;
+    padding: 30px 34px;
+}
+
+.record-stamp {
+    position: absolute;
+    top: 30px;
+    right: 26px;
+    padding: 7px 15px;
+    border: 3px solid rgba(132, 16, 16, 0.55);
+    color: rgba(132, 16, 16, 0.6);
+    font-family: "Cinzel", serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    transform: rotate(-8deg);
+}
+
+.record-classification {
+    margin: 0 0 26px;
+    padding-right: 120px;
+    color: #711717;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2.2px;
+}
+
+.record-content {
+    font-family: "Courier New", monospace;
+    font-size: 14px;
+    line-height: 1.75;
+}
+
+.record-content p {
+    margin: 0 0 15px;
+}
+
+.record-content strong {
+    color: #561414;
+}
+
+.record-document-footer > span {
+    color: rgba(46, 35, 24, 0.57);
+    font-size: 10px;
+    font-style: italic;
+}
+
+#recordContinue {
+    padding: 9px 17px;
+    border: 1px solid rgba(46, 35, 24, 0.27);
+    border-radius: 7px;
+    background: rgba(46, 35, 24, 0.09);
+    color: #35271b;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+#recordContinue:hover {
+    border-color: rgba(46, 35, 24, 0.46);
+    background: rgba(46, 35, 24, 0.15);
+}
+
+
+/* =====================================================
+   EŞYA BULMA PENCERELERİ
+===================================================== */
+
+.item-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 1450;
+    width: min(430px, calc(100vw - 40px));
+    overflow: hidden;
+    padding: 30px 30px 27px;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 18px;
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(126, 24, 24, 0.16),
+            transparent 55%
+        ),
+        rgba(13, 13, 13, 0.98);
+    box-shadow:
+        0 28px 90px rgba(0, 0, 0, 0.76),
+        inset 0 1px rgba(255, 255, 255, 0.035);
+    text-align: center;
+    transform: translate(-50%, -50%);
+    animation: room2ItemReveal 0.38s ease both;
+}
+
+.item-popup::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background: rgba(0, 0, 0, 0.76);
+    pointer-events: none;
+}
+
+.item-popup-glow {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    width: 260px;
+    height: 230px;
+    border-radius: 50%;
+    background: rgba(130, 23, 23, 0.13);
+    filter: blur(35px);
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+.item-popup img {
+    position: relative;
+    z-index: 1;
+    width: 115px;
+    height: 115px;
+    margin-bottom: 13px;
+    object-fit: contain;
+    filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.45));
+}
+
+/* Eşya ikonu için görsel dosyası yerine sembol (emoji) gösterilir -
+   bkz. room4.css .cable-popup-icon, aynı desen. */
+.item-popup-icon {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 115px;
+    height: 115px;
+    margin: 0 auto 13px;
+    font-size: 58px;
+    line-height: 1;
+    border: 1px solid rgba(190, 160, 105, 0.24);
+    border-radius: 18px;
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.06),
+            rgba(255, 255, 255, 0.01) 68%
+        );
+    filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.45));
+}
+
+.item-popup-label {
+    position: relative;
+    z-index: 1;
+    display: block;
+    margin-bottom: 8px;
+    color: #9f2c2c;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 3px;
+}
+
+.item-popup h2 {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 10px;
+    font-family: "Cinzel", serif;
+    font-size: 23px;
+    letter-spacing: 0.6px;
+}
+
+.item-popup p {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    color: #c8c8c8;
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+.item-popup button {
+    position: relative;
+    z-index: 1;
+    margin-top: 22px;
+    padding: 11px 21px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 9px;
+    background:
+        linear-gradient(
+            to bottom,
+            #842020,
+            #5e1111
+        );
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        filter 0.2s ease;
+}
+
+.item-popup button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.15);
+}
+
+
+/* =====================================================
+   ŞİFRE PANELLERİ
+===================================================== */
+
+.code-panel-window {
+    width: min(430px, 94vw);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 15px;
+    background:
+        linear-gradient(
+            145deg,
+            #202020,
+            #0f0f0f
+        );
+    box-shadow:
+        0 28px 90px rgba(0, 0, 0, 0.74),
+        inset 0 1px rgba(255, 255, 255, 0.045);
+    animation: room2WindowScale 0.28s ease both;
+}
+
+.door-code-window {
+    border-color: rgba(131, 39, 39, 0.38);
+}
+
+.code-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 18px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.085);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.code-panel-label {
+    display: block;
+    margin-bottom: 4px;
+    color: #8a8a8a;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 2.3px;
+}
+
+.code-panel-header h2 {
+    margin: 0;
+    font-family: "Cinzel", serif;
+    font-size: 20px;
+    letter-spacing: 1.5px;
+}
+
+.code-panel-body {
+    padding: 22px;
+}
+
+.code-panel-description {
+    margin: 0 0 19px;
+    color: #bdbdbd;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.code-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 68px;
+    margin-bottom: 18px;
+    border: 1px solid rgba(150, 37, 37, 0.35);
+    border-radius: 10px;
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(76, 9, 9, 0.36),
+            rgba(20, 4, 4, 0.48)
+        );
+    box-shadow:
+        inset 0 0 22px rgba(0, 0, 0, 0.65),
+        0 0 16px rgba(106, 13, 13, 0.11);
+}
+
+.code-display span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 39px;
+    height: 44px;
+    border-bottom: 2px solid rgba(255, 105, 105, 0.45);
+    color: #d94e4e;
+    font-family: "Courier New", monospace;
+    font-size: 28px;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(215, 55, 55, 0.28);
+}
+
+.code-display.four-digit {
+    gap: 9px;
+}
+
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 9px;
+}
+
+.keypad button {
+    min-height: 49px;
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    border-radius: 8px;
+    background:
+        linear-gradient(
+            to bottom,
+            #292929,
+            #191919
+        );
+    box-shadow:
+        inset 0 1px rgba(255, 255, 255, 0.04),
+        0 3px 7px rgba(0, 0, 0, 0.3);
+    color: #e4e4e4;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background 0.16s ease,
+        border-color 0.16s ease,
+        transform 0.16s ease;
+}
+
+.keypad button:hover {
+    border-color: rgba(255, 255, 255, 0.27);
+    background:
+        linear-gradient(
+            to bottom,
+            #353535,
+            #202020
+        );
+}
+
+.keypad button:active {
+    transform: scale(0.96);
+}
+
+.keypad .keypad-action {
+    color: #bbb;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+}
+
+.keypad .submit-code {
+    border-color: rgba(149, 41, 41, 0.48);
+    background:
+        linear-gradient(
+            to bottom,
+            #7d1e1e,
+            #521010
+        );
+    color: #fff;
+}
+
+.keypad .submit-code:hover {
+    border-color: rgba(211, 75, 75, 0.66);
+    background:
+        linear-gradient(
+            to bottom,
+            #992626,
+            #671515
+        );
+}
+
+.code-message {
+    min-height: 18px;
+    margin: 15px 0 0;
+    color: #bdbdbd;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.code-message.error {
+    color: #dd5858;
+}
+
+.code-message.success {
+    color: #71c784;
+}
+
+.keycard-status {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 15px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.085);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.025);
+    color: #999;
+    font-family: monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.keycard-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #8d2828;
+    box-shadow: 0 0 8px rgba(141, 40, 40, 0.68);
+}
+
+.keycard-status.verified {
+    color: #79ca88;
+}
+
+.keycard-status.verified .keycard-indicator {
+    background: #62ca76;
+    box-shadow: 0 0 9px rgba(98, 202, 118, 0.75);
+}
+
+
+/* =====================================================
+   ORTAK DİYALOG
+===================================================== */
+
+.dialog {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.dialog[aria-hidden="true"] {
+    display: none;
+}
+
+.dialog-window {
+    width: min(590px, 94vw);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    border-radius: 15px;
+    background: #141414;
+    box-shadow:
+        0 25px 85px rgba(0, 0, 0, 0.74),
+        inset 0 1px rgba(255, 255, 255, 0.035);
+    animation: room2WindowScale 0.25s ease both;
+}
+
+.dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 17px 21px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: #1c1c1c;
+}
+
+.dialog-header h3 {
+    margin: 0;
+    font-family: "Cinzel", serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+#dialog-x-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 33px;
+    height: 33px;
+    border: 1px solid rgba(255, 255, 255, 0.095);
+    border-radius: 8px;
+    background: transparent;
+    color: #bbb;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+#dialog-x-button:hover {
+    border-color: rgba(255, 255, 255, 0.23);
+    background: rgba(128, 25, 25, 0.35);
+    color: #fff;
+}
+
+.dialog-body {
+    min-height: 145px;
+    padding: 27px 23px;
+    color: #d1d1d1;
+    font-size: 14px;
+    line-height: 1.75;
+    white-space: pre-line;
+}
+
+.dialog-body p {
+    margin: 0;
+}
+
+.dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 17px 21px;
+    border-top: 1px solid rgba(255, 255, 255, 0.075);
+}
+
+#dialogContinue {
+    padding: 10px 21px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    background:
+        linear-gradient(
+            to bottom,
+            #831f1f,
+            #591111
+        );
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        filter 0.2s ease;
+}
+
+#dialogContinue:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.15);
+}
+
+
+/* =====================================================
+   BÖLÜM TAMAMLANDI
+===================================================== */
+
+.chapter-complete {
+    position: fixed;
+    inset: 0;
+    z-index: 2500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(55, 10, 10, 0.18),
+            rgba(0, 0, 0, 0.96) 68%
+        );
+    text-align: center;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.chapter-complete-content {
+    max-width: 740px;
+    animation: room2CompleteReveal 0.7s ease both;
+}
+
+.chapter-complete-label {
+    display: block;
+    margin-bottom: 12px;
+    color: #9a2b2b;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 4px;
+}
+
+.chapter-complete h2 {
+    margin: 0;
+    font-family: "Cinzel", serif;
+    font-size: clamp(36px, 5vw, 64px);
+    letter-spacing: clamp(3px, 0.7vw, 8px);
+}
+
+.chapter-complete p {
+    max-width: 620px;
+    margin: 21px auto 34px;
+    color: #c9c9c9;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.7;
+}
+
+#nextChapter {
+    padding: 14px 32px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 10px;
+    background:
+        linear-gradient(
+            to bottom,
+            #8c2424,
+            #5b1111
+        );
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+    cursor: pointer;
+    transition:
+        transform 0.22s ease,
+        filter 0.22s ease;
+}
+
+#nextChapter:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.17);
+}
+
+
+/* =====================================================
+   KLAVYE ODAK STİLLERİ
+===================================================== */
+
+button:focus-visible {
+    outline: 2px solid rgba(229, 92, 92, 0.8);
+    outline-offset: 3px;
+}
+
+
+/* =====================================================
+   ANİMASYONLAR
+===================================================== */
+
+@keyframes room2FogMove {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+
+    to {
+        transform: translate3d(-360px, 35px, 0);
+    }
+}
+
+@keyframes room2RainMove {
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: -120px 250px;
+    }
+}
+
+@keyframes room2IntroReveal {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.98);
+        filter: blur(7px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+@keyframes room2PanelUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes room2PromptAppear {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+@keyframes room2OverlayFade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes room2WindowScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes room2RecordReveal {
+    from {
+        opacity: 0;
+        transform: rotate(-1.7deg) scale(0.94);
+    }
+
+    to {
+        opacity: 1;
+        transform: rotate(-0.25deg) scale(1);
+    }
+}
+
+@keyframes room2ItemReveal {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -46%) scale(0.91);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes room2CompleteReveal {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+        filter: blur(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+@keyframes room2SparkleIdle{
+
+    0%,100%{
+        opacity:0.58;
+        transform:translate(-50%,-50%) scale(0.84);
+    }
+
+    50%{
+        opacity:1;
+        transform:translate(-50%,-50%) scale(1.08);
+    }
+}
+
+@keyframes room2LightFlicker {
+    0% {
+        opacity: 0;
+    }
+
+    8% {
+        opacity: 0.55;
+    }
+
+    14% {
+        opacity: 0.05;
+    }
+
+    26% {
+        opacity: 0.35;
+    }
+
+    34% {
+        opacity: 0;
+    }
+
+    48% {
+        opacity: 0.6;
+    }
+
+    58% {
+        opacity: 0.08;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes room2ShadowPass {
+    0% {
+        left: -25%;
+        opacity: 0;
+    }
+
+    18% {
+        opacity: 0.72;
+    }
+
+    74% {
+        opacity: 0.52;
+    }
+
+    100% {
+        left: 112%;
+        opacity: 0;
+    }
+}
+
+@keyframes room2FigureReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    25% {
+        opacity: 0.56;
+    }
+
+    70% {
+        opacity: 0.42;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+}
+
+@keyframes room2TerminalLight {
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+
+/* =====================================================
+   KÜÇÜK EKRANLAR
+===================================================== */
+
+@media (max-width: 1050px) {
+
+    .hud {
+        top: 14px;
+        left: 14px;
+        right: 14px;
+    }
+
+    .story-panel,
+    .inventory {
+        bottom: 15px;
+    }
+
+    .story-panel {
+        left: 15px;
+        width: 310px;
+    }
+
+    .inventory {
+        right: 15px;
+        width: 310px;
+    }
+
+    .story-body,
+    #objectiveText {
+        font-size: 12px;
+    }
+
+    .inventory-slots {
+        gap: 6px;
+    }
+
+    #registerA,
+    #registerB,
+    #registerC,
+    #registerD,
+    #registerE,
+    #registerF {
+        height: 21%;
+    }
+}
+
+@media (max-width: 760px) {
+
+    body.chapter-two {
+        overflow: auto;
+    }
+
+    #room {
+        min-width: 900px;
+        min-height: 620px;
+    }
+
+    .hud {
+        position: absolute;
+    }
+
+    .story-panel,
+    .inventory {
+        position: absolute;
+    }
+
+    .interaction-prompt {
+        position: absolute;
+    }
+
+    .computer-screen,
+    .record-viewer,
+    .code-panel,
+    .dialog,
+    .chapter-complete {
+        min-width: 100vw;
+    }
+}
+
+
+/* =====================================================
+   HAREKET AZALTMA TERCİHİ
+===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* =====================================================
+   ROOM 2 — NET VE GENİŞ EL FENERİ
+===================================================== */
+
+#flashlight {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 520px;
+    height: 520px;
+
+    z-index: 111;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    transform:
+        translate(-50%, -50%)
+        scale(
+            var(
+                --flashlight-radius-scale,
+                1
+            )
+        );
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 249, 225, 0.23) 0%,
+            rgba(255, 246, 215, 0.16) 32%,
+            rgba(235, 231, 210, 0.08) 55%,
+            rgba(220, 220, 205, 0.025) 70%,
+            transparent 82%
+        );
+
+    opacity:
+        calc(
+            var(--flashlight-intensity, 1) *
+            var(--flashlight-active-state, 0.72)
+        );
+
+    mix-blend-mode: screen;
+
+    will-change:
+        left,
+        top,
+        transform;
+
+    /* Bulanıklığı kaldırıyoruz. */
+    filter: none;
+}
+
+
+/* =====================================================
+   HAREKET EDEN KARANLIK ÖRTÜSÜ
+===================================================== */
+
+#room::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    z-index: 110;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at
+            var(--flashlight-x, 50%)
+            var(--flashlight-y, 50%),
+
+            rgba(0, 0, 0, 0) 0,
+
+            rgba(0, 0, 0, 0) 145px,
+
+            rgba(0, 0, 0, 0.08) 210px,
+
+            rgba(0, 0, 0, 0.32) 290px,
+
+            rgba(0, 0, 0, 0.68) 390px,
+
+            rgba(0, 0, 0, 0.93) 540px,
+
+            rgba(0, 0, 0, 0.97) 100%
+        );
+
+    will-change:
+        background;
+}
+
+
+/* Fare oda dışındayken ışık merkezde daha sakin kalır. */
+
+#room.flashlight-idle #flashlight {
+    opacity: 0.5;
+}
+
+
+/* Pil biterse ışığı kapatmaya hazır altyapı. */
+
+#room.flashlight-empty #flashlight {
+    opacity: 0;
+}
+
+#room.flashlight-empty::after {
+    background:
+        rgba(0, 0, 0, 0.97);
+}

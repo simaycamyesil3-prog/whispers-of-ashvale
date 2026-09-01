@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Whispers of Ashvale - Bölüm 11 Pediatri Koğuşu">
+    <title>Whispers of Ashvale - Pediatri Koğuşu</title>
+
+    <link rel="stylesheet" href="css/style.css?v=20260901082620">
+    <link rel="stylesheet" href="css/animations.css?v=20260901082620">
+    <link rel="stylesheet" href="css/effects.css?v=20260901082620">
+    <link rel="stylesheet" href="css/room-common.css?v=20260901082620">
+    <link rel="stylesheet" href="css/room11.css?v=20260901082620">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body class="room-page chapter-eleven">
+
+    <section id="chapter-intro" class="chapter-intro" aria-label="Bölüm girişi">
+        <div class="chapter-intro-content">
+            <span class="chapter-number">BÖLÜM 11</span>
+            <h1>PEDİATRİ KOĞUŞU</h1>
+            <p>Büyüme çizelgeleri, oyuncaklar ve devam kayıtları arasında, eksik bir dosya var.</p>
+            <div class="chapter-intro__line" aria-hidden="true"></div>
+        </div>
+    </section>
+
+    <div class="room-shell">
+
+        <header class="hud">
+            <div class="hud-left">
+                <div class="player-box">
+                    <span class="label">OYUNCU</span>
+                    <span id="playerName">Oyuncu</span>
+                </div>
+            </div>
+
+            <div class="hud-center">
+                <div class="chapter-box">BÖLÜM 11 / 15</div>
+
+                <div class="save-status">
+                    <span class="save-status-light" aria-hidden="true"></span>
+                    <span>Yerel kayıt etkin</span>
+                </div>
+            </div>
+
+            <div class="hud-right">
+                <button id="menuButton" class="menu-button" type="button" aria-label="Ana menüye dön">
+                    ANA MENÜ
+                </button>
+            </div>
+        </header>
+
+        <main id="room" class="room room-eleven" aria-label="Ashvale Hastanesi Pediatri Koğuşu">
+
+            <div id="flashlight" class="flashlight" aria-hidden="true"></div>
+
+            <section class="background-layer" aria-hidden="true">
+                <img
+                    src="images/ui/rooms/room11.png"
+                    class="room-background"
+                    alt=""
+                >
+
+                <div class="dark-overlay"></div>
+                <div class="fog fog-one"></div>
+                <div class="fog fog-two"></div>
+                <div id="roomFlicker" class="room-flicker"></div>
+                <div id="movingShadow" class="moving-shadow"></div>
+                <div id="hallwayFigure" class="hallway-figure"></div>
+            </section>
+
+            <section id="hotspotLayer" class="hotspot-layer" aria-label="Etkileşim alanları">
+
+                <button
+                    id="growthChart"
+                    class="hotspot"
+                    type="button"
+                    data-text="Büyüme Çizelgesini İncele"
+                    aria-label="Büyüme çizelgesini incele"
+                ></button>
+
+                <button
+                    id="toyShelf"
+                    class="hotspot"
+                    type="button"
+                    data-text="Oyuncak Rafını İncele"
+                    aria-label="Oyuncak rafını incele"
+                ></button>
+
+                <button
+                    id="recordCabinet"
+                    class="hotspot"
+                    type="button"
+                    data-text="Dosya Dolabını İncele"
+                    aria-label="Dosya dolabını incele"
+                ></button>
+
+                <button
+                    id="bed"
+                    class="hotspot"
+                    type="button"
+                    data-text="Yatağı İncele"
+                    aria-label="Yatağı incele"
+                ></button>
+
+                <button
+                    id="exitDoor"
+                    class="hotspot"
+                    type="button"
+                    data-text="Çıkış Kapısını İncele"
+                    aria-label="Çıkış kapısını incele"
+                ></button>
+
+            </section>
+
+            <section id="interactionPrompt" class="interaction-prompt hidden" aria-hidden="true">
+                <div class="prompt-icon" aria-hidden="true">👁</div>
+
+                <div class="prompt-content">
+                    <span class="prompt-action">İNCELE</span>
+                    <span id="promptText">...</span>
+                </div>
+
+                <div class="prompt-key">E</div>
+            </section>
+
+            <section id="storyPanel" class="story-panel">
+                <div class="story-header">
+                    <h3>HİKÂYE</h3>
+                </div>
+
+                <div class="story-body">
+                    <p id="story-text">
+                        Kapatılmış bir çocuk servisi. Duvarda bir büyüme çizelgesi, köşede bir oyuncak rafı, yanında dosyalarla dolu bir dolap var. Ortadaki yatak hâlâ toplanmamış.
+                    </p>
+                </div>
+
+                <div class="objective">
+                    <span class="objective-title">GÖREV</span>
+
+                    <p id="objectiveText">
+                        Büyüme çizelgesini incele.
+                    </p>
+                </div>
+
+                <div id="objectiveProgress" class="objective-progress">
+                    <div class="progress-information">
+                        <span>İLERLEME</span>
+                        <span id="recordProgress">0 / 3</span>
+                    </div>
+
+                    <div class="progress-track">
+                        <div id="recordProgressBar" class="progress-bar"></div>
+                    </div>
+                </div>
+
+                <button id="hintButton" class="hint-button" type="button">
+                    💡 İPUCU
+                </button>
+            </section>
+
+            <section id="inventory" class="inventory" aria-label="Envanter">
+                <div class="inventory-title">ENVANTER</div>
+                <div id="inventorySlots" class="inventory-slots"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <section
+        id="chartViewer"
+        class="record-viewer hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="chartViewerTitle"
+    >
+        <article class="record-document">
+            <header class="record-document-header">
+                <div>
+                    <span class="record-hospital-name">ASHVALE HOSPITAL — PEDİATRİ</span>
+                    <h2 id="chartViewerTitle">Büyüme Çizelgesi</h2>
+                </div>
+
+                <button
+                    id="closeChartViewer"
+                    class="record-close-button"
+                    type="button"
+                    aria-label="Çizelgeyi kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="record-document-body">
+                <div class="record-stamp">SERVİS KAYDI</div>
+
+                <p class="record-classification">
+                    5 HASTA — SON ÖLÇÜM TARİHLERİ VE HASTA NUMARALARI
+                </p>
+
+                <div class="record-content">
+                    <p class="record-note">
+                        Duvardaki bantta, servisteki çocukların boy ölçümleri ve hasta numaraları yazılı. Bazı isimlerin yanında küçük çentikler var.
+                    </p>
+
+                    <div id="chartEntries" class="chart-entries-11">
+
+                        <div class="chart-entry-11">
+                            <span class="chart-entry-11-name">ELİF K.</span>
+                            <span class="chart-entry-11-detail">1991 · 118 cm · H.No: 3062</span>
+                        </div>
+
+                        <div class="chart-entry-11">
+                            <span class="chart-entry-11-name">DENİZ Y.</span>
+                            <span class="chart-entry-11-detail">1990 · 122 cm · H.No: 3117</span>
+                        </div>
+
+                        <div class="chart-entry-11">
+                            <span class="chart-entry-11-name">KEREM T.</span>
+                            <span class="chart-entry-11-detail">1989 · 115 cm · H.No: 3054</span>
+                        </div>
+
+                        <div class="chart-entry-11">
+                            <span class="chart-entry-11-name">ASLI M.</span>
+                            <span class="chart-entry-11-detail">1991 · 120 cm · H.No: 4271</span>
+                        </div>
+
+                        <div class="chart-entry-11">
+                            <span class="chart-entry-11-name">MERT B.</span>
+                            <span class="chart-entry-11-detail">1992 · 117 cm · H.No: 3298</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <footer class="record-document-footer">
+                <span>Bu beş isim servisin o dönemki tüm hastaları. Diğer kayıtlarla karşılaştır.</span>
+
+                <button id="closeChartFooter" type="button">
+                    KAPAT
+                </button>
+            </footer>
+        </article>
+    </section>
+
+    <section
+        id="toyViewer"
+        class="record-viewer hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="toyViewerTitle"
+    >
+        <article class="record-document">
+            <header class="record-document-header">
+                <div>
+                    <span class="record-hospital-name">ASHVALE HOSPITAL — PEDİATRİ</span>
+                    <h2 id="toyViewerTitle">Oyuncak Rafı</h2>
+                </div>
+
+                <button
+                    id="closeToyViewer"
+                    class="record-close-button"
+                    type="button"
+                    aria-label="Rafı kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="record-document-body">
+                <div class="record-stamp">KİŞİSEL EŞYA</div>
+
+                <p class="record-classification">
+                    RAFTAKİ HER OYUNCAĞA SAHİBİNİN ADI DİKİLMİŞ ETİKETLE İLİŞTİRİLMİŞ
+                </p>
+
+                <div class="record-content">
+                    <p class="record-note">
+                        Taburcu olan ya da nakledilen çocukların eşyaları genelde onlarla birlikte gider. Burada kalanlar, geride kalanlar.
+                    </p>
+
+                    <div id="toyEntries" class="chart-entries-11">
+
+                        <div class="chart-entry-11">
+                            <span class="chart-entry-11-name">Kumaş ayı</span>
+                            <span class="chart-entry-11-detail">Etiket: “ELİF”</span>
+                        </div>
+
+                        <div class="chart-entry-11">
+                            <span class="chart-entry-11-name">Bez bebek (ayakta)</span>
+                            <span class="chart-entry-11-detail">Etiket: “DENİZ”</span>
+                        </div>
+
+                        <div class="chart-entry-11">
+                            <span class="chart-entry-11-name">Ahşap küpler</span>
+                            <span class="chart-entry-11-detail">Etiket: “KEREM”</span>
+                        </div>
+
+                        <div class="chart-entry-11">
+                            <span class="chart-entry-11-name">Bez bebek (oturan)</span>
+                            <span class="chart-entry-11-detail chart-entry-11-detail--blank">Etiket yok - iplik izi dışında bir şey kalmamış</span>
+                        </div>
+
+                        <div class="chart-entry-11">
+                            <span class="chart-entry-11-name">Teneke oyuncak</span>
+                            <span class="chart-entry-11-detail">Etiket: “MERT”</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <footer class="record-document-footer">
+                <span>Bir oyuncağın etiketi yok. Sahibinin adı hiçbir yerde geçmiyor mu?</span>
+
+                <button id="closeToyFooter" type="button">
+                    KAPAT
+                </button>
+            </footer>
+        </article>
+    </section>
+
+    <section
+        id="cabinetViewer"
+        class="record-viewer hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="cabinetViewerTitle"
+    >
+        <article class="record-document">
+            <header class="record-document-header">
+                <div>
+                    <span class="record-hospital-name">ASHVALE HOSPITAL — PEDİATRİ</span>
+                    <h2 id="cabinetViewerTitle">Dosya Dolabı</h2>
+                </div>
+
+                <button
+                    id="closeCabinetViewer"
+                    class="record-close-button"
+                    type="button"
+                    aria-label="Dolabı kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="record-document-body">
+                <div class="record-stamp">DEVAM KAYDI</div>
+
+                <p class="record-classification">
+                    KAPANMIŞ DOSYALAR — TABURCU / NAKİL KAYITLARI
+                </p>
+
+                <div class="record-content">
+                    <p class="record-note">
+                        Dolapta, servisten ayrılan her çocuk için bir kapanış kartı olması gerekiyor. Beş isimden biri burada yok.
+                    </p>
+
+                    <div id="cabinetEntries" class="chart-entries-11">
+
+                        <div class="chart-entry-11">
+                            <span class="chart-entry-11-name">ELİF K.</span>
+                            <span class="chart-entry-11-detail">TABURCU EDİLDİ · 12.04.1991</span>
+                        </div>
+
+                        <div class="chart-entry-11">
+                            <span class="chart-entry-11-name">DENİZ Y.</span>
+                            <span class="chart-entry-11-detail">NAKİL EDİLDİ · 03.09.1990</span>
+                        </div>
+
+                        <div class="chart-entry-11">
+                            <span class="chart-entry-11-name">KEREM T.</span>
+                            <span class="chart-entry-11-detail">TABURCU EDİLDİ · 22.11.1989</span>
+                        </div>
+
+                        <div class="chart-entry-11">
+                            <span class="chart-entry-11-name">MERT B.</span>
+                            <span class="chart-entry-11-detail">TABURCU EDİLDİ · 08.01.1992</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <footer class="record-document-footer">
+                <span>Dört kart var. Çizelgedeki beşinci isim burada yok.</span>
+
+                <button id="closeCabinetFooter" type="button">
+                    KAPAT
+                </button>
+            </footer>
+        </article>
+    </section>
+
+    <section
+        id="doorPanel"
+        class="code-panel hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="doorPanelTitle"
+    >
+        <div class="code-panel-window">
+            <header class="code-panel-header">
+                <div>
+                    <span class="code-panel-label">PEDİATRİ KOĞUŞU</span>
+                    <h2 id="doorPanelTitle">KOMBİNASYON KİLİDİ</h2>
+                </div>
+
+                <button
+                    id="closeDoorPanel"
+                    class="window-close-button"
+                    type="button"
+                    aria-label="Paneli kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="code-panel-body">
+                <p class="code-panel-description">
+                    Eski asma kilidin üzerinde 4 haneli bir kombinasyon çarkı var.
+                </p>
+
+                <div
+                    id="doorCodeSlots"
+                    class="code-display four-digit"
+                    aria-label="Girilen kombinasyon"
+                >
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                </div>
+
+                <div id="doorCodeButtons" class="tray-buttons keypad-buttons" aria-label="Tuş takımı">
+                    <button type="button" data-digit="1">1</button>
+                    <button type="button" data-digit="2">2</button>
+                    <button type="button" data-digit="3">3</button>
+                    <button type="button" data-digit="4">4</button>
+                    <button type="button" data-digit="5">5</button>
+                    <button type="button" data-digit="6">6</button>
+                    <button type="button" data-digit="7">7</button>
+                    <button type="button" data-digit="8">8</button>
+                    <button type="button" data-digit="9">9</button>
+                    <button type="button" data-digit="0">0</button>
+                </div>
+
+                <p id="doorCodeMessage" class="code-message" aria-live="polite"></p>
+            </div>
+        </div>
+    </section>
+
+    <section
+        id="dialog"
+        class="dialog"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dialogTitle"
+    >
+        <div class="dialog-window">
+            <header class="dialog-header">
+                <h3 id="dialogTitle">İnceleme</h3>
+
+                <button
+                    id="dialog-x-button"
+                    type="button"
+                    aria-label="Diyaloğu kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="dialog-body">
+                <p id="dialogText"></p>
+            </div>
+
+            <footer class="dialog-footer">
+                <button id="dialogContinue" type="button">
+                    DEVAM
+                </button>
+            </footer>
+        </div>
+    </section>
+
+    <section
+        id="chapterComplete"
+        class="chapter-complete hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="chapterCompleteTitle"
+    >
+        <div class="chapter-complete-content">
+            <span class="chapter-complete-label">ASHVALE HOSPITAL</span>
+
+            <h2 id="chapterCompleteTitle">BÖLÜM 11 TAMAMLANDI</h2>
+
+            <p>
+                Aslı M.'nin dosyası hiç kapanmamış. Neden olduğunu bilmiyorsun - ama bilmek istiyorsun.
+            </p>
+
+            <button id="nextChapter" type="button" data-href="room12.html">
+                BÖLÜM 12
+            </button>
+        </div>
+    </section>
+
+    <script src="js/core/flashlight.js?v=20260901082620"></script>
+
+    <script src="js/core/save-manager.js?v=20260901082620"></script>
+    <script src="js/core/inventory.js?v=20260901082620"></script>
+    <script src="js/core/audio-manager.js?v=20260901082620"></script>
+    <script src="js/core/dialogue.js?v=20260901082620"></script>
+    <script src="js/effects.js?v=20260901082620"></script>
+    <script src="js/game.js?v=20260901082620"></script>
+    <script src="js/rooms/room11.js?v=20260901082620"></script>
+
+</body>
+</html>

@@ -1,0 +1,865 @@
+/* ==========================================================
+   ELEKTRİK PANOSU
+   ========================================================== */
+
+.electrical-document .record-content{
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+}
+
+.electrical-document ul{
+    list-style:none;
+    padding:0;
+    margin:0;
+
+    display:grid;
+    gap:14px;
+}
+
+.electrical-document li{
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:14px 18px;
+
+    border:1px solid rgba(155,140,105,.25);
+
+    border-radius:8px;
+
+    background:rgba(255,255,255,.03);
+
+    font-weight:600;
+
+}
+
+.electrical-document li.connected{
+
+    border-color:#5f9258;
+
+    background:rgba(80,140,80,.15);
+
+}
+
+.electrical-document li.connected::after{
+
+    content:"✓";
+
+    color:#8fd48a;
+
+    font-weight:bold;
+
+}
+
+/* ==========================================================
+   ANA ŞALTER
+   ========================================================== */
+
+.main-breaker{
+
+    margin-top:18px;
+
+    width:100%;
+
+    padding:18px;
+
+    border-radius:8px;
+
+    border:1px solid #735a37;
+
+    background:#222;
+
+    color:#ddd;
+
+    font-size:16px;
+
+    letter-spacing:2px;
+
+    cursor:not-allowed;
+
+    opacity:.45;
+
+    transition:.25s;
+
+}
+
+.main-breaker.active{
+
+    cursor:pointer;
+
+    opacity:1;
+
+    background:#64461d;
+
+    border-color:#b28a56;
+
+}
+
+.main-breaker.active:hover{
+
+    background:#86602c;
+
+}
+
+/* ==========================================================
+   KART OKUYUCU
+   ========================================================== */
+
+.card-reader-panel{
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+
+    padding:14px 18px;
+
+    border:1px solid rgba(155,140,105,.25);
+
+    border-radius:8px;
+
+    background:rgba(255,255,255,.03);
+
+}
+
+.card-reader-status{
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    font-weight:600;
+    letter-spacing:.05em;
+    font-size:.78rem;
+
+    color:#c9958a;
+
+}
+
+.card-reader-indicator{
+
+    width:10px;
+    height:10px;
+
+    border-radius:50%;
+
+    background:#b5432f;
+    box-shadow:0 0 8px rgba(181,67,47,.7);
+
+    transition:background .3s ease, box-shadow .3s ease;
+
+}
+
+.card-reader-status.verified{
+
+    color:#8fd48a;
+
+}
+
+.card-reader-status.verified .card-reader-indicator{
+
+    background:#5f9258;
+    box-shadow:0 0 8px rgba(95,146,88,.7);
+
+}
+
+.scan-card-button{
+
+    flex:0 0 auto;
+
+    padding:12px 18px;
+
+    border-radius:8px;
+
+    border:1px solid #735a37;
+
+    background:#222;
+
+    color:#ddd;
+
+    font-size:13px;
+    letter-spacing:1.5px;
+
+    cursor:pointer;
+
+    transition:background .25s ease, border-color .25s ease;
+
+}
+
+.scan-card-button:hover{
+
+    background:#333;
+    border-color:#b28a56;
+
+}
+
+.scan-card-button.verified{
+
+    cursor:default;
+
+    background:#2d4a2a;
+    border-color:#5f9258;
+    color:#c8e6c4;
+
+}
+
+/* ==========================================================
+   GÜVENLİK MONİTÖRLERİ
+   ========================================================== */
+
+.monitor-window{
+
+    width:min(920px,92vw);
+
+}
+
+.monitor-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:18px;
+
+    margin-top:20px;
+
+}
+
+.monitor{
+
+    height:180px;
+
+    background:#080808;
+
+    border:2px solid #2e2e2e;
+
+    border-radius:6px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#666;
+
+    font-size:14px;
+
+    text-transform:uppercase;
+
+    letter-spacing:2px;
+
+}
+
+/* ==========================================================
+   KABLO POPUPLARI
+   ========================================================== */
+
+#foundRedCable img,
+#foundBlueCable img,
+#foundGreenCable img{
+
+    width:150px;
+
+    height:auto;
+
+}
+
+#foundRedCable h2{
+
+    color:#d25c5c;
+
+}
+
+#foundBlueCable h2{
+
+    color:#5ca0ff;
+
+}
+
+#foundGreenCable h2{
+
+    color:#77c977;
+
+}
+
+#foundAccessCard img{
+
+    width:150px;
+
+    height:auto;
+
+}
+
+#foundAccessCard h2{
+
+    color:#e0c15c;
+
+}
+
+/* ==========================================================
+   ÇIKIŞ KAPISI
+   ========================================================== */
+
+#exitDoor.locked{
+
+    cursor:not-allowed;
+
+}
+
+#exitDoor.unlocked{
+
+    animation:doorGlow 2.5s infinite;
+
+}
+
+@keyframes doorGlow{
+
+    0%{
+
+        box-shadow:0 0 0 rgba(210,180,120,0);
+
+    }
+
+    50%{
+
+        box-shadow:0 0 20px rgba(210,180,120,.35);
+
+    }
+
+    100%{
+
+        box-shadow:0 0 0 rgba(210,180,120,0);
+
+    }
+
+}
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width:1100px){
+
+    #securityMonitors{
+
+        left:15%;
+        width:26%;
+
+    }
+
+    #electricalPanel{
+
+        width:31%;
+
+    }
+
+}
+
+/* =========================================================
+   ROOM 4 — GÜNCEL HOTSPOT KONUMLARI
+========================================================= */
+
+/* Sol üstteki kapalı güvenlik ekranları — HUD'un hemen altındaki
+   görünür alt kenara taşındı, üst kısmı HUD tarafından örtülüyordu. */
+#securityMonitors {
+    top: 17.5%;
+    left: 1%;
+    width: 22%;
+    height: 8.5%;
+}
+
+/* "Yetkisiz Personel Giremez" yazısı ve altındaki masa. Masanın alt
+   kısmı hikâye paneli uzunken (oyunun başında) panelin arkasında
+   kalabiliyor; panel kısaldıkça (kablolar bulundukça metin kısalır)
+   masanın tamamı görünür hale geliyor. Üstteki tabela kısmı her
+   durumda açıkta kaldığı için hotspot her zaman tıklanabilir. */
+/* Kullanıcının kendi ekran görüntüsüne göre gerçek masa yüzeyine
+   (kontrol paneli, kupa, kağıtlar) hizalandı - eskiden tabelanın
+   olduğu üst bölgedeydi, masanın kendisini kapsamıyordu. */
+#staffDesk {
+    top: 45%;
+    left: 1%;
+    width: 27%;
+    height: 20%;
+}
+
+/* Elektrik panosunun solundaki açık raflı alet dolabı */
+#toolCabinet {
+    top: 17%;
+    left: 24%;
+    width: 15%;
+    height: 28%;
+}
+
+/* Ortadaki büyük ana elektrik panosu */
+#electricalPanel {
+    top: 17%;
+    left: 41%;
+    width: 36%;
+    height: 47%;
+}
+
+/* Alt orta-sol kısımdaki çalışma masası */
+#workbench {
+    top: 64%;
+    left: 30%;
+    width: 21%;
+    height: 35%;
+}
+
+/* Sağ alttaki büyük jeneratör — envanter kutusunun üstünde kalacak
+   şekilde kısaltıldı. */
+#generator {
+    top: 57%;
+    left: 78%;
+    width: 20%;
+    height: 19%;
+}
+
+/* En sağdaki çıkış kapısı */
+#exitDoor {
+    top: 17%;
+    left: 88%;
+    width: 12%;
+    height: 37%;
+}
+
+@media (max-width:600px){
+
+    .electrical-document{
+
+        width:96vw;
+
+    }
+
+    .monitor-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+.cable-popup-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 18px;
+
+    font-size: 76px;
+    line-height: 1;
+
+    border: 1px solid rgba(190, 160, 105, 0.24);
+    border-radius: 18px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.06),
+            rgba(255, 255, 255, 0.01) 68%
+        );
+}
+
+.chapter-four .chapter-intro {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transition:
+        opacity 900ms ease,
+        visibility 900ms ease;
+}
+
+.chapter-four .chapter-intro.chapter-intro--hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* ==========================================================
+ROOM 4 — EL FENERİ
+ROOM 3 İLE AYNI MOUSE TAKİPLİ FENER SİSTEMİ
+========================================================== */
+
+
+/* ==========================================================
+FENER IŞIĞI
+========================================================== */
+
+body.chapter-four #flashlight {
+    position: absolute;
+
+    left: var(--flashlight-x, 50%);
+    top: var(--flashlight-y, 50%);
+
+    width: 620px;
+    height: 620px;
+
+    z-index: 111;
+    pointer-events: none;
+
+    border-radius: 50%;
+
+    transform:
+        translate(-50%, -50%)
+        scale(var(--flashlight-radius-scale, 1));
+
+    background:
+        radial-gradient(
+            circle,
+
+            rgba(255, 248, 220, 0.32) 0%,
+            rgba(255, 246, 218, 0.20) 28%,
+            rgba(245, 238, 210, 0.09) 52%,
+            rgba(235, 230, 210, 0.025) 70%,
+            transparent 84%
+        );
+
+    mix-blend-mode: screen;
+
+    opacity:
+        calc(
+            var(--flashlight-intensity, 1) *
+            var(--flashlight-active-state, 0.9)
+        );
+
+    filter: none;
+
+    will-change:
+        left,
+        top,
+        transform;
+}
+
+
+/* ==========================================================
+HAREKET EDEN KARANLIK ÖRTÜSÜ
+Mouse nereye giderse aydınlık alan oraya gider.
+========================================================== */
+
+body.chapter-four .room-four::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    z-index: 110;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at
+            var(--flashlight-x, 50%)
+            var(--flashlight-y, 50%),
+
+            /* Fenerin merkezindeki tamamen açık alan */
+            rgba(0, 0, 0, 0) 0,
+
+            rgba(0, 0, 0, 0) 145px,
+
+            /* Kenarlara doğru karanlık başlar */
+            rgba(0, 0, 0, 0.08) 210px,
+
+            rgba(0, 0, 0, 0.32) 290px,
+
+            rgba(0, 0, 0, 0.68) 390px,
+
+            rgba(0, 0, 0, 0.93) 540px,
+
+            rgba(0, 0, 0, 0.97) 100%
+        );
+
+    will-change: background;
+}
+
+
+/* ==========================================================
+FARE ODA DIŞINDAYKEN
+========================================================== */
+
+body.chapter-four .room-four.flashlight-idle #flashlight {
+    opacity: 0.5;
+}
+
+
+/* ==========================================================
+PİL BİTERSE
+========================================================== */
+
+body.chapter-four .room-four.flashlight-empty #flashlight {
+    opacity: 0;
+}
+
+body.chapter-four .room-four.flashlight-empty::after {
+    background: rgba(0, 0, 0, 0.97);
+}
+
+/* ==========================================================
+ROOM 4 — GÜÇ GERİ GELİNCE EL FENERİ SÖNER, IŞIKLAR YANAR
+========================================================== */
+
+body.chapter-four .room-four.power-restored::after {
+    opacity: 0;
+    transition: opacity 1.6s ease;
+}
+
+body.chapter-four .room-four.power-restored #flashlight {
+    opacity: 0 !important;
+    transition: opacity 1.6s ease;
+}
+
+/* ==========================================================
+ROOM 4 — HOTSPOT TIKLAMA ÖNCELİĞİ
+Fener katmanlarının üstünde kalırlar
+========================================================== */
+
+body.chapter-four #securityMonitors,
+body.chapter-four #staffDesk,
+body.chapter-four #toolCabinet,
+body.chapter-four #electricalPanel,
+body.chapter-four #workbench,
+body.chapter-four #generator,
+body.chapter-four #exitDoor {
+    z-index: 145;
+    pointer-events: auto;
+}
+
+/* Elektrik panosu biraz daha öncelikli */
+body.chapter-four #electricalPanel {
+    z-index: 150;
+}
+
+/* Çıkış kapısı */
+body.chapter-four #exitDoor {
+    z-index: 145;
+}
+
+/* ==========================================================
+   ROOM 4 — ARKA PLAN
+   ========================================================== */
+
+body.chapter-four .room-background {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 46%;
+
+    filter:
+        brightness(1)
+        contrast(1.03)
+        saturate(0.94);
+}
+
+body.chapter-four .background-layer {
+    filter: none;
+}
+
+body.chapter-four .dark-overlay {
+    background: transparent !important;
+}
+
+body.chapter-four .fog-one {
+    opacity: 0.04;
+}
+
+body.chapter-four .fog-two {
+    opacity: 0.02;
+}
+/* ==========================================================
+ROOM 4 — KABLO POPUP DÜZELTMESİ
+========================================================== */
+
+body.chapter-four #foundRedCable,
+body.chapter-four #foundBlueCable,
+body.chapter-four #foundGreenCable,
+body.chapter-four #foundAccessCard {
+    position: fixed;
+    inset: 0;
+
+    z-index: 3000;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 34px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(45, 66, 56, 0.18),
+            rgba(0, 0, 0, 0.92) 58%
+        );
+
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+
+    pointer-events: auto;
+}
+
+
+/* Kapalıyken tamamen gizle */
+body.chapter-four #foundRedCable.hidden,
+body.chapter-four #foundBlueCable.hidden,
+body.chapter-four #foundGreenCable.hidden,
+body.chapter-four #foundAccessCard.hidden,
+body.chapter-four #foundRedCable[aria-hidden="true"],
+body.chapter-four #foundBlueCable[aria-hidden="true"],
+body.chapter-four #foundGreenCable[aria-hidden="true"],
+body.chapter-four #foundAccessCard[aria-hidden="true"] {
+    display: none !important;
+}
+
+
+/* Açıldığında görünür */
+body.chapter-four #foundRedCable[aria-hidden="false"],
+body.chapter-four #foundBlueCable[aria-hidden="false"],
+body.chapter-four #foundGreenCable[aria-hidden="false"],
+body.chapter-four #foundAccessCard[aria-hidden="false"] {
+    display: flex !important;
+}
+/* ==========================================================
+ROOM 4 — BÖLÜM GİRİŞİ ORTALAMA DÜZELTMESİ
+========================================================== */
+
+body.chapter-four .chapter-intro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+body.chapter-four .chapter-intro-content {
+    width: min(1100px, 90vw);
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+body.chapter-four .chapter-intro .chapter-number,
+body.chapter-four .chapter-intro h1,
+body.chapter-four .chapter-intro p {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+body.chapter-four .chapter-intro p {
+    max-width: 850px;
+}
+
+/* ==========================================================
+ROOM 4 — ELEKTRİK PANOSU PENCERE ÖNCELİĞİ
+========================================================== */
+
+body.chapter-four #electricalPanelWindow {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 3500 !important;
+
+    pointer-events: auto;
+
+    display: grid;
+    place-items: center;
+}
+
+/* Kapalıyken */
+body.chapter-four #electricalPanelWindow.hidden,
+body.chapter-four #electricalPanelWindow[aria-hidden="true"] {
+    display: none !important;
+}
+
+/* Açıldığında */
+body.chapter-four #electricalPanelWindow[aria-hidden="false"] {
+    display: grid !important;
+}
+
+/* ==========================================================
+ROOM 4 — ELEKTRİK PANOSU MODAL ARKA PLAN
+========================================================== */
+
+body.chapter-four #electricalPanelWindow {
+    position: fixed;
+    inset: 0;
+
+    z-index: 3500 !important;
+
+    display: grid;
+    place-items: center;
+
+    padding: 40px;
+
+    background: rgba(0, 0, 0, 0.78);
+
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+
+    pointer-events: auto;
+}
+
+body.chapter-four #electricalPanelWindow.hidden,
+body.chapter-four #electricalPanelWindow[aria-hidden="true"] {
+    display: none !important;
+}
+
+body.chapter-four #electricalPanelWindow[aria-hidden="false"] {
+    display: grid !important;
+}
+
+/* ==========================================================
+ROOM 4 — ÇIKIŞ KAPISI KART OKUYUCU PENCERESİ
+Elektrik panosu penceresiyle aynı kalıp; bu blok hiç eklenmemişti,
+bu yüzden pencere "hidden" sınıfı kaldırılınca bile görünmüyordu.
+========================================================== */
+
+body.chapter-four #doorCardReader {
+    position: fixed;
+    inset: 0;
+
+    z-index: 3500 !important;
+
+    display: grid;
+    place-items: center;
+
+    padding: 40px;
+
+    background: rgba(0, 0, 0, 0.78);
+
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+
+    pointer-events: auto;
+}
+
+body.chapter-four #doorCardReader.hidden,
+body.chapter-four #doorCardReader[aria-hidden="true"] {
+    display: none !important;
+}
+
+body.chapter-four #doorCardReader[aria-hidden="false"] {
+    display: grid !important;
+}
+
+/* Genel diyalog (ör. "Elektrik Geldi" bildirimi), panel açık kalsa bile
+   onun üstünde görünsün — kapatılmasını beklemesin. */
+body.chapter-four .dialog {
+    z-index: 4000 !important;
+}

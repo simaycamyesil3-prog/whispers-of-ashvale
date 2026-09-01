@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Whispers of Ashvale - Bölüm 10 Dinleme Odası">
+    <title>Whispers of Ashvale - Dinleme Odası</title>
+
+    <link rel="stylesheet" href="css/style.css?v=20260901073401">
+    <link rel="stylesheet" href="css/animations.css?v=20260901073401">
+    <link rel="stylesheet" href="css/effects.css?v=20260901073401">
+    <link rel="stylesheet" href="css/room-common.css?v=20260901073401">
+    <link rel="stylesheet" href="css/room10.css?v=20260901073401">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body class="room-page chapter-ten">
+
+    <section id="chapter-intro" class="chapter-intro" aria-label="Bölüm girişi">
+        <div class="chapter-intro-content">
+            <span class="chapter-number">BÖLÜM 10</span>
+            <h1>DİNLEME ODASI</h1>
+            <p>Cümlenin yıllar içinde denenmiş biçimleri, bobinlerde saklı.</p>
+            <div class="chapter-intro__line" aria-hidden="true"></div>
+        </div>
+    </section>
+
+    <div class="room-shell">
+
+        <header class="hud">
+            <div class="hud-left">
+                <div class="player-box">
+                    <span class="label">OYUNCU</span>
+                    <span id="playerName">Oyuncu</span>
+                </div>
+            </div>
+
+            <div class="hud-center">
+                <div class="chapter-box">BÖLÜM 10 / 15</div>
+
+                <div class="save-status">
+                    <span class="save-status-light" aria-hidden="true"></span>
+                    <span>Yerel kayıt etkin</span>
+                </div>
+            </div>
+
+            <div class="hud-right">
+                <button id="menuButton" class="menu-button" type="button" aria-label="Ana menüye dön">
+                    ANA MENÜ
+                </button>
+            </div>
+        </header>
+
+        <main id="room" class="room room-ten" aria-label="Ashvale Hastanesi Dinleme Odası">
+
+            <div id="flashlight" class="flashlight" aria-hidden="true"></div>
+
+            <section class="background-layer" aria-hidden="true">
+                <img
+                    src="images/ui/rooms/room10.png"
+                    class="room-background"
+                    alt=""
+                >
+
+                <div class="dark-overlay"></div>
+                <div class="fog fog-one"></div>
+                <div class="fog fog-two"></div>
+                <div id="roomFlicker" class="room-flicker"></div>
+                <div id="movingShadow" class="moving-shadow"></div>
+                <div id="hallwayFigure" class="hallway-figure"></div>
+            </section>
+
+            <section id="hotspotLayer" class="hotspot-layer" aria-label="Etkileşim alanları">
+
+                <button
+                    id="tapeArchive"
+                    class="hotspot"
+                    type="button"
+                    data-text="Makara Dolabını İncele"
+                    aria-label="Makara dolabını incele"
+                ></button>
+
+                <button
+                    id="catalogLog"
+                    class="hotspot"
+                    type="button"
+                    data-text="Katalog Defterini İncele"
+                    aria-label="Katalog defterini incele"
+                ></button>
+
+                <button
+                    id="dipCekmece"
+                    class="hotspot"
+                    type="button"
+                    data-text="Dip Çekmeceyi İncele"
+                    aria-label="Dip çekmeceyi incele"
+                ></button>
+
+                <button
+                    id="deskConsole"
+                    class="hotspot"
+                    type="button"
+                    data-text="Ses Konsolunu İncele"
+                    aria-label="Ses konsolunu incele"
+                ></button>
+
+                <button
+                    id="exitDoor"
+                    class="hotspot"
+                    type="button"
+                    data-text="Çıkış Kapısını İncele"
+                    aria-label="Çıkış kapısını incele"
+                ></button>
+
+            </section>
+
+            <section id="interactionPrompt" class="interaction-prompt hidden" aria-hidden="true">
+                <div class="prompt-icon" aria-hidden="true">👁</div>
+
+                <div class="prompt-content">
+                    <span class="prompt-action">İNCELE</span>
+                    <span id="promptText">...</span>
+                </div>
+
+                <div class="prompt-key">E</div>
+            </section>
+
+            <section id="storyPanel" class="story-panel">
+                <div class="story-header">
+                    <h3>HİKÂYE</h3>
+                </div>
+
+                <div class="story-body">
+                    <p id="story-text">
+                        Eski bir ses-terapi odası. Camlı bir bölmede, bir zamanlar birinin oturtulup dinlendiği ses yalıtımlı bir koltuk duruyor. Duvardaki bobinli teyp arşivinde, cümlenin yıllar içinde denenmiş farklı biçimleri kayıtlı. Yakınında bir katalog defteri, kenarda kilitli bir çekmece var.
+                    </p>
+                </div>
+
+                <div class="objective">
+                    <span class="objective-title">GÖREV</span>
+
+                    <p id="objectiveText">
+                        Katalog defterini incele.
+                    </p>
+                </div>
+
+                <div id="objectiveProgress" class="objective-progress">
+                    <div class="progress-information">
+                        <span>İLERLEME</span>
+                        <span id="recordProgress">0 / 3</span>
+                    </div>
+
+                    <div class="progress-track">
+                        <div id="recordProgressBar" class="progress-bar"></div>
+                    </div>
+                </div>
+
+                <button id="hintButton" class="hint-button" type="button">
+                    💡 İPUCU
+                </button>
+            </section>
+
+            <section id="inventory" class="inventory" aria-label="Envanter">
+                <div class="inventory-title">ENVANTER</div>
+                <div id="inventorySlots" class="inventory-slots"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <section
+        id="catalogViewer"
+        class="record-viewer hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="catalogViewerTitle"
+    >
+        <article class="record-document">
+            <header class="record-document-header">
+                <div>
+                    <span class="record-hospital-name">ASHVALE HOSPITAL — SES ARŞİVİ</span>
+                    <h2 id="catalogViewerTitle">Katalog Defteri</h2>
+                </div>
+
+                <button
+                    id="closeCatalogViewer"
+                    class="record-close-button"
+                    type="button"
+                    aria-label="Defteri kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="record-document-body">
+                <div class="record-stamp">TEKNİK NOT</div>
+
+                <p class="record-classification">
+                    BEŞ KAYIT — MAKARA DOLABINDAKİ SIRAYLA
+                </p>
+
+                <div class="record-content">
+                    <p class="record-note">
+                        Ses mühendisinin notları hiçbir kaydın hızını doğrudan söylemiyor - sadece kaydın nasıl davrandığını anlatıyor. Doğru hızı bu ipuçlarından çıkarman gerekiyor.
+                    </p>
+
+                    <div id="catalogEntries" class="catalog-entries">
+
+                        <div class="catalog-entry">
+                            <span class="catalog-entry-number">KAYIT 1</span>
+                            <p>Net bir konuşma kaydı. Standart hızda sorunsuz dinlenebiliyor - başka bir işleme gerek yok.</p>
+                        </div>
+
+                        <div class="catalog-entry">
+                            <span class="catalog-entry-number">KAYIT 2</span>
+                            <p>Normal hızda sadece boğuk bir uğultu var. Mühendisin notu: “Bant esnemiş - ancak yavaşlatılınca çözülüyor.”</p>
+                        </div>
+
+                        <div class="catalog-entry">
+                            <span class="catalog-entry-number">KAYIT 3</span>
+                            <p>Kısa, döngüsel bir müzik parçası. Not: “Hızlandırıldığında döngü bir söze dönüşüyor - tuhaf ama doğrulandı.”</p>
+                        </div>
+
+                        <div class="catalog-entry">
+                            <span class="catalog-entry-number">KAYIT 4</span>
+                            <p>Kesik kesik bir ses. Mühendisin notu: “Bu da Kayıt 2 gibi - ancak yavaşlatılırsa anlaşılıyor.”</p>
+                        </div>
+
+                        <div class="catalog-entry">
+                            <span class="catalog-entry-number">KAYIT 5</span>
+                            <p>Sakin, tekrarlayan bir ezgi - neredeyse bir ninni. Not: “Olduğu gibi bırak. Hızlandırmaya, yavaşlatmaya gerek yok.”</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <footer class="record-document-footer">
+                <span>Çekmecenin kodu, beş kayıttan çıkan rakamların, makara sırasına göre birleşimi.</span>
+
+                <button id="closeCatalogFooter" type="button">
+                    KAPAT
+                </button>
+            </footer>
+        </article>
+    </section>
+
+    <section
+        id="archivePanel"
+        class="tape-console hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="archivePanelTitle"
+    >
+        <div class="tape-console-window">
+            <header class="tape-console-header">
+                <div>
+                    <span class="tape-console-label">SES ARŞİVİ</span>
+                    <h2 id="archivePanelTitle">MAKARA DOLABI</h2>
+                </div>
+
+                <button
+                    id="closeArchivePanel"
+                    class="window-close-button"
+                    type="button"
+                    aria-label="Arşivi kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="tape-console-body">
+                <p class="tape-console-description">
+                    Her makarayı bir hızda çal. Yanlış hız sadece parazit verir - doğru hız bir rakam ortaya çıkarır.
+                </p>
+
+                <div id="tapeRows" class="tape-rows">
+
+                    <div class="tape-row" data-reel="1">
+                        <span class="tape-row-label">KAYIT 1</span>
+
+                        <div class="tape-speed-buttons" data-reel="1">
+                            <button type="button" data-speed="yavas">YAVAŞ</button>
+                            <button type="button" data-speed="normal">NORMAL</button>
+                            <button type="button" data-speed="hizli">HIZLI</button>
+                        </div>
+
+                        <button type="button" class="tape-play-button" data-reel="1">ÇAL</button>
+                        <span class="tape-status" data-reel="1">?</span>
+                    </div>
+
+                    <div class="tape-row" data-reel="2">
+                        <span class="tape-row-label">KAYIT 2</span>
+
+                        <div class="tape-speed-buttons" data-reel="2">
+                            <button type="button" data-speed="yavas">YAVAŞ</button>
+                            <button type="button" data-speed="normal">NORMAL</button>
+                            <button type="button" data-speed="hizli">HIZLI</button>
+                        </div>
+
+                        <button type="button" class="tape-play-button" data-reel="2">ÇAL</button>
+                        <span class="tape-status" data-reel="2">?</span>
+                    </div>
+
+                    <div class="tape-row" data-reel="3">
+                        <span class="tape-row-label">KAYIT 3</span>
+
+                        <div class="tape-speed-buttons" data-reel="3">
+                            <button type="button" data-speed="yavas">YAVAŞ</button>
+                            <button type="button" data-speed="normal">NORMAL</button>
+                            <button type="button" data-speed="hizli">HIZLI</button>
+                        </div>
+
+                        <button type="button" class="tape-play-button" data-reel="3">ÇAL</button>
+                        <span class="tape-status" data-reel="3">?</span>
+                    </div>
+
+                    <div class="tape-row" data-reel="4">
+                        <span class="tape-row-label">KAYIT 4</span>
+
+                        <div class="tape-speed-buttons" data-reel="4">
+                            <button type="button" data-speed="yavas">YAVAŞ</button>
+                            <button type="button" data-speed="normal">NORMAL</button>
+                            <button type="button" data-speed="hizli">HIZLI</button>
+                        </div>
+
+                        <button type="button" class="tape-play-button" data-reel="4">ÇAL</button>
+                        <span class="tape-status" data-reel="4">?</span>
+                    </div>
+
+                    <div class="tape-row" data-reel="5">
+                        <span class="tape-row-label">KAYIT 5</span>
+
+                        <div class="tape-speed-buttons" data-reel="5">
+                            <button type="button" data-speed="yavas">YAVAŞ</button>
+                            <button type="button" data-speed="normal">NORMAL</button>
+                            <button type="button" data-speed="hizli">HIZLI</button>
+                        </div>
+
+                        <button type="button" class="tape-play-button" data-reel="5">ÇAL</button>
+                        <span class="tape-status" data-reel="5">?</span>
+                    </div>
+
+                </div>
+
+                <p id="archiveMessage" class="code-message" aria-live="polite"></p>
+            </div>
+        </div>
+    </section>
+
+    <section
+        id="drawerPanel"
+        class="code-panel hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="drawerPanelTitle"
+    >
+        <div class="code-panel-window">
+            <header class="code-panel-header">
+                <div>
+                    <span class="code-panel-label">DİNLEME ODASI</span>
+                    <h2 id="drawerPanelTitle">DİP ÇEKMECE</h2>
+                </div>
+
+                <button
+                    id="closeDrawerPanel"
+                    class="window-close-button"
+                    type="button"
+                    aria-label="Paneli kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="code-panel-body">
+                <p class="code-panel-description">
+                    Beş kayıttan çıkan rakamları, makara sırasına göre gir.
+                </p>
+
+                <div
+                    id="drawerCodeSlots"
+                    class="code-display"
+                    aria-label="Girilen çekmece kodu"
+                >
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                </div>
+
+                <div id="drawerCodeButtons" class="tray-buttons keypad-buttons" aria-label="Tuş takımı">
+                    <button type="button" data-digit="1">1</button>
+                    <button type="button" data-digit="2">2</button>
+                    <button type="button" data-digit="3">3</button>
+                    <button type="button" data-digit="4">4</button>
+                    <button type="button" data-digit="5">5</button>
+                    <button type="button" data-digit="6">6</button>
+                    <button type="button" data-digit="7">7</button>
+                    <button type="button" data-digit="8">8</button>
+                    <button type="button" data-digit="9">9</button>
+                    <button type="button" data-digit="0">0</button>
+                </div>
+
+                <p id="drawerCodeMessage" class="code-message" aria-live="polite"></p>
+            </div>
+        </div>
+    </section>
+
+    <section
+        id="dialog"
+        class="dialog"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dialogTitle"
+    >
+        <div class="dialog-window">
+            <header class="dialog-header">
+                <h3 id="dialogTitle">İnceleme</h3>
+
+                <button
+                    id="dialog-x-button"
+                    type="button"
+                    aria-label="Diyaloğu kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="dialog-body">
+                <p id="dialogText"></p>
+            </div>
+
+            <footer class="dialog-footer">
+                <button id="dialogContinue" type="button">
+                    DEVAM
+                </button>
+            </footer>
+        </div>
+    </section>
+
+    <section
+        id="chapterComplete"
+        class="chapter-complete hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="chapterCompleteTitle"
+    >
+        <div class="chapter-complete-content">
+            <span class="chapter-complete-label">ASHVALE HOSPITAL</span>
+
+            <h2 id="chapterCompleteTitle">BÖLÜM 10 TAMAMLANDI</h2>
+
+            <p>
+                Kişisel kaydı dinledin. Ezgi tanıdık geliyordu - nedenini henüz bilmiyorsun.
+            </p>
+
+            <button id="nextChapter" type="button" data-href="room11.html">
+                BÖLÜM 11
+            </button>
+        </div>
+    </section>
+
+    <script src="js/core/flashlight.js?v=20260901073401"></script>
+
+    <script src="js/core/save-manager.js?v=20260901073401"></script>
+    <script src="js/core/inventory.js?v=20260901073401"></script>
+    <script src="js/core/audio-manager.js?v=20260901073401"></script>
+    <script src="js/core/dialogue.js?v=20260901073401"></script>
+    <script src="js/effects.js?v=20260901073401"></script>
+    <script src="js/game.js?v=20260901073401"></script>
+    <script src="js/rooms/room10.js?v=20260901073401"></script>
+
+</body>
+</html>

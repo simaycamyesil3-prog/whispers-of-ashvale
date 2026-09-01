@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Whispers of Ashvale - Bölüm 8 Baş Hekim Ofisi">
+    <title>Whispers of Ashvale - Baş Hekim Ofisi</title>
+
+    <link rel="stylesheet" href="css/style.css?v=20260901075414">
+    <link rel="stylesheet" href="css/animations.css?v=20260901075414">
+    <link rel="stylesheet" href="css/effects.css?v=20260901075414">
+    <link rel="stylesheet" href="css/room-common.css?v=20260901075414">
+    <link rel="stylesheet" href="css/room8.css?v=20260901075414">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body class="room-page chapter-eight">
+
+    <section id="chapter-intro" class="chapter-intro" aria-label="Bölüm girişi">
+        <div class="chapter-intro-content">
+            <span class="chapter-number">BÖLÜM 08</span>
+            <h1>BAŞ HEKİM OFİSİ</h1>
+            <p>Yedi vaka, tek bir dosya dolabında. Hepsi aynı sayısal etiketle anılmış.</p>
+            <div class="chapter-intro__line" aria-hidden="true"></div>
+        </div>
+    </section>
+
+    <div class="room-shell">
+
+        <header class="hud">
+            <div class="hud-left">
+                <div class="player-box">
+                    <span class="label">OYUNCU</span>
+                    <span id="playerName">Oyuncu</span>
+                </div>
+            </div>
+
+            <div class="hud-center">
+                <div class="chapter-box">BÖLÜM 08 / 15</div>
+
+                <div class="save-status">
+                    <span class="save-status-light" aria-hidden="true"></span>
+                    <span>Yerel kayıt etkin</span>
+                </div>
+            </div>
+
+            <div class="hud-right">
+                <button id="menuButton" class="menu-button" type="button" aria-label="Ana menüye dön">
+                    ANA MENÜ
+                </button>
+            </div>
+        </header>
+
+        <main id="room" class="room room-eight" aria-label="Ashvale Hastanesi Baş Hekim Ofisi">
+
+            <div id="flashlight" class="flashlight" aria-hidden="true"></div>
+
+            <section class="background-layer" aria-hidden="true">
+                <img
+                    src="images/ui/rooms/room8.png"
+                    class="room-background"
+                    alt=""
+                >
+
+                <div class="dark-overlay"></div>
+                <div class="fog fog-one"></div>
+                <div class="fog fog-two"></div>
+                <div id="roomFlicker" class="room-flicker"></div>
+                <div id="movingShadow" class="moving-shadow"></div>
+                <div id="hallwayFigure" class="hallway-figure"></div>
+            </section>
+
+            <section id="hotspotLayer" class="hotspot-layer" aria-label="Etkileşim alanları">
+
+                <button
+                    id="journal"
+                    class="hotspot"
+                    type="button"
+                    data-text="Baş Hekimin Günlüğünü İncele"
+                    aria-label="Baş hekimin günlüğünü incele"
+                ></button>
+
+                <button
+                    id="safe"
+                    class="hotspot"
+                    type="button"
+                    data-text="Kasayı İncele"
+                    aria-label="Kasayı incele"
+                ></button>
+
+                <button
+                    id="portrait"
+                    class="hotspot"
+                    type="button"
+                    data-text="Diploma Duvarını İncele"
+                    aria-label="Diploma duvarını incele"
+                ></button>
+
+                <button
+                    id="bookshelf"
+                    class="hotspot"
+                    type="button"
+                    data-text="Dosya Rafını İncele"
+                    aria-label="Dosya rafını incele"
+                ></button>
+
+                <button
+                    id="exitDoor"
+                    class="hotspot"
+                    type="button"
+                    data-text="Ofis Kapısını İncele"
+                    aria-label="Ofis kapısını incele"
+                ></button>
+
+            </section>
+
+            <section id="interactionPrompt" class="interaction-prompt hidden" aria-hidden="true">
+                <div class="prompt-icon" aria-hidden="true">👁</div>
+
+                <div class="prompt-content">
+                    <span class="prompt-action">İNCELE</span>
+                    <span id="promptText">...</span>
+                </div>
+
+                <div class="prompt-key">E</div>
+            </section>
+
+            <section id="storyPanel" class="story-panel">
+                <div class="story-header">
+                    <h3>HİKÂYE</h3>
+                </div>
+
+                <div class="story-body">
+                    <p id="story-text">
+                        Baş hekimin ofisi, hastanenin geri kalanından tuhaf bir şekilde bakımlı. Masada açık bir günlük, duvarda kilitli bir kasa var.
+                    </p>
+                </div>
+
+                <div class="objective">
+                    <span class="objective-title">GÖREV</span>
+
+                    <p id="objectiveText">
+                        Baş hekimin günlüğünü incele.
+                    </p>
+                </div>
+
+                <div id="objectiveProgress" class="objective-progress">
+                    <div class="progress-information">
+                        <span>İLERLEME</span>
+                        <span id="recordProgress">0 / 3</span>
+                    </div>
+
+                    <div class="progress-track">
+                        <div id="recordProgressBar" class="progress-bar"></div>
+                    </div>
+                </div>
+
+                <button id="hintButton" class="hint-button" type="button">
+                    💡 İPUCU
+                </button>
+            </section>
+
+            <section id="inventory" class="inventory" aria-label="Envanter">
+                <div class="inventory-title">ENVANTER</div>
+                <div id="inventorySlots" class="inventory-slots"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <section
+        id="journalViewer"
+        class="record-viewer hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="journalViewerTitle"
+    >
+        <article class="record-document">
+            <header class="record-document-header">
+                <div>
+                    <span class="record-hospital-name">ASHVALE HOSPITAL — BAŞ HEKİM</span>
+                    <h2 id="journalViewerTitle">Vaka Arşivi</h2>
+                </div>
+
+                <button
+                    id="closeJournalViewer"
+                    class="record-close-button"
+                    type="button"
+                    aria-label="Günlüğü kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="record-document-body">
+                <div class="record-stamp">GİZLİ</div>
+
+                <p class="record-classification">
+                    SEKİZ DOSYA — TARİH SIRASINA GÖRE DEĞİL
+                </p>
+
+                <div class="record-content">
+                    <p class="record-note">
+                        Aralarında bu fenomenle hiçbir ilgisi olmayan, yanlışlıkla arşive karışmış bir dosya var. Gerçek vakaları bul, en eskisinden en yenisine doğru sırala ve her dosyanın numarasının son rakamını sırasıyla not et.
+                    </p>
+
+                    <div id="caseFiles" class="case-files">
+
+                        <div class="case-file" data-date="2011-04">
+                            <span class="case-file-number">Dosya No: 2011-042</span>
+                            <p>Beşinci gözlem. Aynı fısıltı, aynı doku - göğüste, kalbe yakın. Hastane bunu artık bir “protokol” olarak görüyor, isim koymuyor.</p>
+                        </div>
+
+                        <div class="case-file" data-date="1987-03">
+                            <span class="case-file-number">Dosya No: 1987-033</span>
+                            <p>Hasta: E. Varlık. 17 Mart 1987. İlk tam gözlemlenen vaka. Göğüste, kalbe yakın bir doku - kişi farkında olmadan fısıltı hâlinde konuşmaya başlıyor. Vaka, kayıtlara isim yerine sayısal kodla geçti.</p>
+                        </div>
+
+                        <div class="case-file" data-date="2019-01">
+                            <span class="case-file-number">Dosya No: 2019-018</span>
+                            <p>Yedinci ve şimdiye kadarki en dirençli vaka. Nakil sırasında kayboldu. Kayıtlarda son not: “Devam ediyor.”</p>
+                        </div>
+
+                        <div class="case-file" data-date="1996-08">
+                            <span class="case-file-number">Dosya No: 1996-087</span>
+                            <p>Üçüncü tekrar. Aynı doku, aynı fısıltı. Sessizlik Serumu tedavisine başlandı - büyümeyi geciktiriyor, durdurmuyor.</p>
+                        </div>
+
+                        <div class="case-file" data-date="2007-06" data-distractor="true">
+                            <span class="case-file-number">Dosya No: 2007-065</span>
+                            <p>Kalp yetmezliği. Rutin ölüm, herhangi bir anormallik kaydedilmedi. Dosya standart prosedürle kapatıldı.</p>
+                        </div>
+
+                        <div class="case-file" data-date="1991-11">
+                            <span class="case-file-number">Dosya No: 1991-111</span>
+                            <p>İkinci vaka. Aynı belirti tekrar görüldü - göğüste aynı doku, aynı fısıltı. Personel yeni bir isim koymak yerine ilk dosyanın rakamlarını kullanmaya devam etti.</p>
+                        </div>
+
+                        <div class="case-file" data-date="2015-10">
+                            <span class="case-file-number">Dosya No: 2015-104</span>
+                            <p>Altıncı vaka. Doku tamamen olgunlaştığında, konak klinik olarak öldükten sonra bile bir süre işlevini sürdürüyor.</p>
+                        </div>
+
+                        <div class="case-file" data-date="2003-02">
+                            <span class="case-file-number">Dosya No: 2003-029</span>
+                            <p>Dördüncü vaka. Cerrahi çıkarma denendi, başarısız oldu. Doku bedenin bir parçası hâline gelmiş - ayrılamıyor. Kod hiç değişmedi.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <footer class="record-document-footer">
+                <span>Kasanın kodu, gerçek vakaların kronolojik sırasında gizli.</span>
+
+                <button id="closeJournalFooter" type="button">
+                    KAPAT
+                </button>
+            </footer>
+        </article>
+    </section>
+
+    <section
+        id="safePanel"
+        class="code-panel hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="safePanelTitle"
+    >
+        <div class="code-panel-window safe-panel-window">
+            <header class="code-panel-header">
+                <div>
+                    <span class="code-panel-label">BAŞ HEKİM OFİSİ</span>
+                    <h2 id="safePanelTitle">KASA</h2>
+                </div>
+
+                <button
+                    id="closeSafePanel"
+                    class="window-close-button"
+                    type="button"
+                    aria-label="Kasayı kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="code-panel-body">
+                <p class="code-panel-description">
+                    Gerçek vakaları en eskisinden en yenisine sırala, her dosyanın numarasının son rakamını sırayla gir.
+                </p>
+
+                <div
+                    id="safeCodeSlots"
+                    class="code-display seven-digit"
+                    aria-label="Girilen kasa kodu"
+                >
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                </div>
+
+                <div id="safeCodeButtons" class="tray-buttons keypad-buttons" aria-label="Tuş takımı">
+                    <button type="button" data-digit="1">1</button>
+                    <button type="button" data-digit="2">2</button>
+                    <button type="button" data-digit="3">3</button>
+                    <button type="button" data-digit="4">4</button>
+                    <button type="button" data-digit="5">5</button>
+                    <button type="button" data-digit="6">6</button>
+                    <button type="button" data-digit="7">7</button>
+                    <button type="button" data-digit="8">8</button>
+                    <button type="button" data-digit="9">9</button>
+                    <button type="button" data-digit="0">0</button>
+                </div>
+
+                <p id="safeCodeMessage" class="code-message" aria-live="polite"></p>
+            </div>
+        </div>
+    </section>
+
+    <section
+        id="dialog"
+        class="dialog"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dialogTitle"
+    >
+        <div class="dialog-window">
+            <header class="dialog-header">
+                <h3 id="dialogTitle">İnceleme</h3>
+
+                <button
+                    id="dialog-x-button"
+                    type="button"
+                    aria-label="Diyaloğu kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="dialog-body">
+                <p id="dialogText"></p>
+            </div>
+
+            <footer class="dialog-footer">
+                <button id="dialogContinue" type="button">
+                    DEVAM
+                </button>
+            </footer>
+        </div>
+    </section>
+
+    <section
+        id="chapterComplete"
+        class="chapter-complete hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="chapterCompleteTitle"
+    >
+        <div class="chapter-complete-content">
+            <span class="chapter-complete-label">ASHVALE HOSPITAL</span>
+
+            <h2 id="chapterCompleteTitle">BÖLÜM 08 TAMAMLANDI</h2>
+
+            <p>
+                Kasayı açtın. Baş hekimin son emrini ve günlüğün son sayfasını okudun.
+            </p>
+
+            <button id="nextChapter" type="button" data-href="room9.html">
+                BÖLÜM 9
+            </button>
+        </div>
+    </section>
+
+    <script src="js/core/flashlight.js?v=20260901075414"></script>
+
+    <script src="js/core/save-manager.js?v=20260901075414"></script>
+    <script src="js/core/inventory.js?v=20260901075414"></script>
+    <script src="js/core/audio-manager.js?v=20260901075414"></script>
+    <script src="js/core/dialogue.js?v=20260901075414"></script>
+    <script src="js/effects.js?v=20260901075414"></script>
+    <script src="js/game.js?v=20260901075414"></script>
+    <script src="js/rooms/room8.js?v=20260901075414"></script>
+
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Whispers of Ashvale - Bölüm 7 Arşiv & Morg">
+    <title>Whispers of Ashvale - Arşiv & Morg</title>
+
+    <link rel="stylesheet" href="css/style.css?v=20260831082145">
+    <link rel="stylesheet" href="css/animations.css?v=20260831082145">
+    <link rel="stylesheet" href="css/effects.css?v=20260831082145">
+    <link rel="stylesheet" href="css/room-common.css?v=20260831082145">
+    <link rel="stylesheet" href="css/room7.css?v=20260831082145">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body class="room-page chapter-seven">
+
+    <section id="chapter-intro" class="chapter-intro" aria-label="Bölüm girişi">
+        <div class="chapter-intro-content">
+            <span class="chapter-number">BÖLÜM 07</span>
+            <h1>ARŞİV &amp; MORG</h1>
+            <p>Soğuk hava dolapları sıra sıra duruyor. Bazılarının etiketi var - ama içi boş.</p>
+            <div class="chapter-intro__line" aria-hidden="true"></div>
+        </div>
+    </section>
+
+    <div class="room-shell">
+
+        <header class="hud">
+            <div class="hud-left">
+                <div class="player-box">
+                    <span class="label">OYUNCU</span>
+                    <span id="playerName">Oyuncu</span>
+                </div>
+            </div>
+
+            <div class="hud-center">
+                <div class="chapter-box">BÖLÜM 07 / 15</div>
+
+                <div class="save-status">
+                    <span class="save-status-light" aria-hidden="true"></span>
+                    <span>Yerel kayıt etkin</span>
+                </div>
+            </div>
+
+            <div class="hud-right">
+                <button id="menuButton" class="menu-button" type="button" aria-label="Ana menüye dön">
+                    ANA MENÜ
+                </button>
+            </div>
+        </header>
+
+        <main id="room" class="room room-seven" aria-label="Ashvale Hastanesi Arşiv ve Morg">
+
+            <div id="flashlight" class="flashlight" aria-hidden="true"></div>
+
+            <section class="background-layer" aria-hidden="true">
+                <img
+                    src="images/ui/rooms/room7.png"
+                    class="room-background"
+                    alt=""
+                >
+
+                <div class="dark-overlay"></div>
+                <div class="fog fog-one"></div>
+                <div class="fog fog-two"></div>
+                <div id="roomFlicker" class="room-flicker"></div>
+                <div id="movingShadow" class="moving-shadow"></div>
+                <div id="hallwayFigure" class="hallway-figure"></div>
+            </section>
+
+            <section id="hotspotLayer" class="hotspot-layer" aria-label="Etkileşim alanları">
+
+                <button
+                    id="registryLog"
+                    class="hotspot"
+                    type="button"
+                    data-text="Ölüm Kayıt Defterini İncele"
+                    aria-label="Ölüm kayıt defterini incele"
+                ></button>
+
+                <button
+                    id="coldStorage"
+                    class="hotspot"
+                    type="button"
+                    data-text="Soğuk Hava Dolaplarını İncele"
+                    aria-label="Soğuk hava dolaplarını incele"
+                ></button>
+
+                <button
+                    id="tapeRecorder"
+                    class="hotspot"
+                    type="button"
+                    data-text="Ses Kayıt Cihazını İncele"
+                    aria-label="Ses kayıt cihazını incele"
+                ></button>
+
+                <button
+                    id="guardDesk"
+                    class="hotspot"
+                    type="button"
+                    data-text="Nöbetçi Panosunu İncele"
+                    aria-label="Nöbetçi panosunu incele"
+                ></button>
+
+                <button
+                    id="exitDoor"
+                    class="hotspot"
+                    type="button"
+                    data-text="Arka Bölme Kapısını İncele"
+                    aria-label="Arka bölme kapısını incele"
+                ></button>
+
+            </section>
+
+            <section id="interactionPrompt" class="interaction-prompt hidden" aria-hidden="true">
+                <div class="prompt-icon" aria-hidden="true">👁</div>
+
+                <div class="prompt-content">
+                    <span class="prompt-action">İNCELE</span>
+                    <span id="promptText">...</span>
+                </div>
+
+                <div class="prompt-key">E</div>
+            </section>
+
+            <section id="storyPanel" class="story-panel">
+                <div class="story-header">
+                    <h3>HİKÂYE</h3>
+                </div>
+
+                <div class="story-body">
+                    <p id="story-text">
+                        Arşiv ve morg, bodrumun en soğuk köşesinde. Havada metal ve eski kağıt kokusu var. Bir teyp, hâlâ oynatılmayı bekliyor gibi duruyor.
+                    </p>
+                </div>
+
+                <div class="objective">
+                    <span class="objective-title">GÖREV</span>
+
+                    <p id="objectiveText">
+                        Ölüm kayıt defterini incele.
+                    </p>
+                </div>
+
+                <div id="objectiveProgress" class="objective-progress">
+                    <div class="progress-information">
+                        <span>İLERLEME</span>
+                        <span id="recordProgress">0 / 3</span>
+                    </div>
+
+                    <div class="progress-track">
+                        <div id="recordProgressBar" class="progress-bar"></div>
+                    </div>
+                </div>
+
+                <button id="hintButton" class="hint-button" type="button">
+                    💡 İPUCU
+                </button>
+            </section>
+
+            <section id="inventory" class="inventory" aria-label="Envanter">
+                <div class="inventory-title">ENVANTER</div>
+                <div id="inventorySlots" class="inventory-slots"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <section
+        id="registryLogViewer"
+        class="record-viewer hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="registryLogViewerTitle"
+    >
+        <article class="record-document">
+            <header class="record-document-header">
+                <div>
+                    <span class="record-hospital-name">ASHVALE HOSPITAL</span>
+                    <h2 id="registryLogViewerTitle">Ölüm Kayıt Defteri</h2>
+                </div>
+
+                <button
+                    id="closeRegistryLogViewer"
+                    class="record-close-button"
+                    type="button"
+                    aria-label="Ölüm kayıt defterini kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="record-document-body">
+                <div class="record-stamp">ARŞİV</div>
+
+                <p class="record-classification">
+                    SOĞUK HAVA DEPOSU — ÇEKMECE DURUM LİSTESİ
+                </p>
+
+                <div class="record-content">
+                    <p class="record-note">
+                        Son üç haftada, "HASTA" etiketli beş çekmece "BOŞ" olarak işaretlenmiş. Hiçbirinde çıkış, nakil ya da defin kaydı yok - defter sadece "BOŞ" yazıyor, başka hiçbir şey değil.
+                    </p>
+
+                    <p class="record-note">
+                        Standart prosedür, boşalan her çekmece için bir çıkış imzası ister. Bu beş çekmecede o imza satırı tamamen karalanmış.
+                    </p>
+                </div>
+            </div>
+
+            <footer class="record-document-footer">
+                <span>Bu çekmeceler hâlâ dolu görünmeli.</span>
+
+                <button id="closeRegistryLogFooter" type="button">
+                    KAPAT
+                </button>
+            </footer>
+        </article>
+    </section>
+
+    <section
+        id="tapeRecorderViewer"
+        class="record-viewer hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="tapeRecorderViewerTitle"
+    >
+        <article class="record-document">
+            <header class="record-document-header">
+                <div>
+                    <span class="record-hospital-name">NÖBETÇİ KAYITLARI</span>
+                    <h2 id="tapeRecorderViewerTitle">Ses Kayıt Cihazı</h2>
+                </div>
+
+                <button
+                    id="closeTapeRecorderViewer"
+                    class="record-close-button"
+                    type="button"
+                    aria-label="Ses kayıt cihazını kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="record-document-body">
+                <p class="record-classification">
+                    BEŞ PARÇAYA AYRILMIŞ KAYIT ŞERİDİ
+                </p>
+
+                <div class="record-content">
+                    <p class="record-note">
+                        Eski bir teyp. Üzerinde elle numaralanmış beş kayıt parçası var - nöbetçinin son gecesine ait olduğu belli. Hepsini dinlemeden hangisinin gerçek olduğunu anlayamazsın.
+                    </p>
+
+                    <div id="tapeSegments" class="tape-segments">
+                        <button type="button" class="tape-segment" data-segment="1">
+                            <span class="tape-segment-label">KAYIT 1</span>
+                            <span class="tape-segment-time">00:02</span>
+                        </button>
+
+                        <button type="button" class="tape-segment" data-segment="2">
+                            <span class="tape-segment-label">KAYIT 2</span>
+                            <span class="tape-segment-time">00:47</span>
+                        </button>
+
+                        <button type="button" class="tape-segment" data-segment="3">
+                            <span class="tape-segment-label">KAYIT 3</span>
+                            <span class="tape-segment-time">01:15</span>
+                        </button>
+
+                        <button type="button" class="tape-segment" data-segment="4">
+                            <span class="tape-segment-label">KAYIT 4</span>
+                            <span class="tape-segment-time">01:52</span>
+                        </button>
+
+                        <button type="button" class="tape-segment" data-segment="5">
+                            <span class="tape-segment-label">KAYIT 5</span>
+                            <span class="tape-segment-time">02:30</span>
+                        </button>
+                    </div>
+
+                    <p class="tape-hint">
+                        Kayıtlardan biri tamamen parazit - hiçbir rakam içermiyor. Diğerlerini numara sırasına göre dinle.
+                    </p>
+                </div>
+            </div>
+
+            <footer class="record-document-footer">
+                <span>Tüm parçaları dinledikten sonra arka bölme kapısına dön.</span>
+
+                <button id="closeTapeRecorderFooter" type="button">
+                    KAPAT
+                </button>
+            </footer>
+        </article>
+    </section>
+
+    <section
+        id="exitCodePanel"
+        class="code-panel hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="exitCodePanelTitle"
+    >
+        <div class="code-panel-window tray-panel-window">
+            <header class="code-panel-header">
+                <div>
+                    <span class="code-panel-label">ARKA BÖLME</span>
+                    <h2 id="exitCodePanelTitle">KAPI TUŞ TAKIMI</h2>
+                </div>
+
+                <button
+                    id="closeExitCodePanel"
+                    class="window-close-button"
+                    type="button"
+                    aria-label="Tuş takımını kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="code-panel-body">
+                <p class="code-panel-description">
+                    Nöbetçinin kayıtlarında bıraktığı rakamları, kayıt sırasına göre gir.
+                </p>
+
+                <div
+                    id="exitCodeSlots"
+                    class="code-display four-digit"
+                    aria-label="Girilen kapı kodu"
+                >
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                </div>
+
+                <div id="exitCodeButtons" class="tray-buttons keypad-buttons" aria-label="Tuş takımı">
+                    <button type="button" data-digit="1">1</button>
+                    <button type="button" data-digit="2">2</button>
+                    <button type="button" data-digit="3">3</button>
+                    <button type="button" data-digit="4">4</button>
+                    <button type="button" data-digit="5">5</button>
+                    <button type="button" data-digit="6">6</button>
+                    <button type="button" data-digit="7">7</button>
+                    <button type="button" data-digit="8">8</button>
+                    <button type="button" data-digit="9">9</button>
+                    <button type="button" data-digit="0">0</button>
+                </div>
+
+                <p id="exitCodeMessage" class="code-message" aria-live="polite"></p>
+            </div>
+        </div>
+    </section>
+
+    <section
+        id="dialog"
+        class="dialog"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dialogTitle"
+    >
+        <div class="dialog-window">
+            <header class="dialog-header">
+                <h3 id="dialogTitle">İnceleme</h3>
+
+                <button
+                    id="dialog-x-button"
+                    type="button"
+                    aria-label="Diyaloğu kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="dialog-body">
+                <p id="dialogText"></p>
+            </div>
+
+            <footer class="dialog-footer">
+                <button id="dialogContinue" type="button">
+                    DEVAM
+                </button>
+            </footer>
+        </div>
+    </section>
+
+    <section
+        id="chapterComplete"
+        class="chapter-complete hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="chapterCompleteTitle"
+    >
+        <div class="chapter-complete-content">
+            <span class="chapter-complete-label">ASHVALE HOSPITAL</span>
+
+            <h2 id="chapterCompleteTitle">BÖLÜM 07 TAMAMLANDI</h2>
+
+            <p>
+                Nöbetçinin son kaydındaki rakamları buldun. Arka bölmenin kilidi açıldı.
+            </p>
+
+            <button id="nextChapter" type="button" data-href="room8.html">
+                BÖLÜM 8
+            </button>
+        </div>
+    </section>
+
+    <script src="js/core/flashlight.js?v=20260831082145"></script>
+
+    <script src="js/core/save-manager.js?v=20260831082145"></script>
+    <script src="js/core/inventory.js?v=20260831082145"></script>
+    <script src="js/core/audio-manager.js?v=20260831082145"></script>
+    <script src="js/core/dialogue.js?v=20260831082145"></script>
+    <script src="js/effects.js?v=20260831082145"></script>
+    <script src="js/game.js?v=20260831095208"></script>
+    <script src="js/rooms/room7.js?v=20260831082145"></script>
+
+</body>
+</html>

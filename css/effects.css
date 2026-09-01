@@ -1,0 +1,413 @@
+/* =======================================================
+   WHISPERS OF ASHVALE
+   GLOBAL EFFECTS
+======================================================= */
+
+.effect-overlay{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:0;
+    transition:opacity .25s ease;
+    z-index:9998;
+}
+
+.effect-overlay.is-active{
+    opacity:1;
+}
+
+/* ================= FLASH ================= */
+
+.effect-flash-overlay{
+    background:white;
+}
+
+/* ================= BLACKOUT ================= */
+
+.effect-blackout-overlay{
+    background:black;
+}
+
+/* ================= FADE ================= */
+
+.effect-fade-overlay{
+    background:black;
+}
+
+/* ================= VIGNETTE ================= */
+
+.effect-vignette-overlay{
+
+    position:fixed;
+    inset:0;
+
+    pointer-events:none;
+
+    opacity:0;
+
+    transition:.35s;
+
+    z-index:9995;
+
+    box-shadow:
+    inset 0 0 220px rgba(0,0,0,.85);
+
+}
+
+.effect-vignette-overlay.is-active{
+
+    opacity:1;
+
+}
+
+/* ================= BLOOD ================= */
+
+.effect-blood-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    pointer-events:none;
+
+    opacity:0;
+
+    transition:.3s;
+
+    background:
+
+    radial-gradient(circle at center,
+    rgba(120,0,0,.05),
+    rgba(120,0,0,.65));
+
+    mix-blend-mode:multiply;
+
+    z-index:9994;
+
+}
+
+.effect-blood-overlay.is-active{
+
+    opacity:1;
+
+}
+
+/* ================= STATIC ================= */
+
+.effect-static-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    z-index:9996;
+
+    background-image:url("../images/ui/backgrounds/static.png");
+
+    background-size:cover;
+
+}
+
+.effect-static-overlay.is-active{
+
+    opacity:.30;
+
+    animation:staticNoise .18s steps(2) infinite;
+
+}
+
+/* ================= JUMPSCARE ================= */
+
+.effect-jumpscare-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    opacity:0;
+
+    transition:.15s;
+
+    background:black;
+
+    z-index:9999;
+
+    pointer-events:none;
+
+}
+
+.effect-jumpscare-overlay.is-active{
+
+    opacity:1;
+
+}
+
+.effect-jumpscare-overlay img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+/* ================= SHADOW ================= */
+
+.effect-shadow-figure{
+
+    position:absolute;
+
+    right:12%;
+
+    bottom:12%;
+
+    width:180px;
+
+    height:420px;
+
+    opacity:0;
+
+    transition:.35s;
+
+    background:url("../images/ui/rooms/shadow.png")
+    center/contain
+    no-repeat;
+
+    pointer-events:none;
+
+}
+
+.effect-shadow-figure.is-active{
+
+    opacity:.85;
+
+}
+
+/* ================= SHAKE ================= */
+
+.effect-shake-light{
+
+    animation:shakeLight .25s;
+
+}
+
+.effect-shake-medium{
+
+    animation:shakeMedium .45s;
+
+}
+
+.effect-shake-heavy{
+
+    animation:shakeHeavy .7s;
+
+}
+
+/* ================= HEART ================= */
+
+.effect-heartbeat{
+
+    animation:heartbeat .9s ease infinite;
+
+}
+
+/* ================= ANIMATIONS ================= */
+
+@keyframes staticNoise{
+
+0%{
+
+transform:translate(0,0);
+
+}
+
+25%{
+
+transform:translate(-2px,2px);
+
+}
+
+50%{
+
+transform:translate(2px,-2px);
+
+}
+
+75%{
+
+transform:translate(-3px,-1px);
+
+}
+
+100%{
+
+transform:translate(0,0);
+
+}
+
+}
+
+@keyframes heartbeat{
+
+0%{
+
+transform:scale(1);
+
+}
+
+20%{
+
+transform:scale(1.015);
+
+}
+
+40%{
+
+transform:scale(1);
+
+}
+
+60%{
+
+transform:scale(1.02);
+
+}
+
+100%{
+
+transform:scale(1);
+
+}
+
+}
+
+@keyframes shakeLight{
+
+0%,100%{
+
+transform:translateX(0);
+
+}
+
+25%{
+
+transform:translateX(-2px);
+
+}
+
+75%{
+
+transform:translateX(2px);
+
+}
+
+}
+
+@keyframes shakeMedium{
+
+0%,100%{
+
+transform:translate(0,0);
+
+}
+
+20%{
+
+transform:translate(-4px,2px);
+
+}
+
+40%{
+
+transform:translate(4px,-3px);
+
+}
+
+60%{
+
+transform:translate(-3px,-2px);
+
+}
+
+80%{
+
+transform:translate(3px,3px);
+
+}
+
+}
+
+@keyframes shakeHeavy{
+
+0%,100%{
+
+transform:translate(0);
+
+}
+
+10%{
+
+transform:translate(-8px,5px);
+
+}
+
+20%{
+
+transform:translate(9px,-6px);
+
+}
+
+30%{
+
+transform:translate(-7px,-5px);
+
+}
+
+40%{
+
+transform:translate(8px,7px);
+
+}
+
+50%{
+
+transform:translate(-9px,4px);
+
+}
+
+60%{
+
+transform:translate(7px,-6px);
+
+}
+
+70%{
+
+transform:translate(-7px,6px);
+
+}
+
+80%{
+
+transform:translate(9px,-4px);
+
+}
+
+90%{
+
+transform:translate(-8px,5px);
+
+}
+
+}

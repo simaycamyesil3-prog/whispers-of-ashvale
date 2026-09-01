@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Whispers of Ashvale - Bölüm 14 Karşılaşma">
+    <title>Whispers of Ashvale - Karşılaşma</title>
+
+    <link rel="stylesheet" href="css/style.css?v=20260901102213">
+    <link rel="stylesheet" href="css/animations.css?v=20260901102213">
+    <link rel="stylesheet" href="css/effects.css?v=20260901102213">
+    <link rel="stylesheet" href="css/room-common.css?v=20260901102213">
+    <link rel="stylesheet" href="css/room14.css?v=20260901102213">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body class="room-page chapter-fourteen">
+
+    <section id="chapter-intro" class="chapter-intro" aria-label="Bölüm girişi">
+        <div class="chapter-intro-content">
+            <span class="chapter-number">BÖLÜM 14</span>
+            <h1>KARŞILAŞMA</h1>
+            <p>Koridorun sonunda biri duruyor. Kaçmıyor. Seni bekliyor.</p>
+            <div class="chapter-intro__line" aria-hidden="true"></div>
+        </div>
+    </section>
+
+    <div class="room-shell">
+
+        <header class="hud">
+            <div class="hud-left">
+                <div class="player-box">
+                    <span class="label">OYUNCU</span>
+                    <span id="playerName">Oyuncu</span>
+                </div>
+            </div>
+
+            <div class="hud-center">
+                <div class="chapter-box">BÖLÜM 14 / 15</div>
+
+                <div class="save-status">
+                    <span class="save-status-light" aria-hidden="true"></span>
+                    <span>Yerel kayıt etkin</span>
+                </div>
+            </div>
+
+            <div class="hud-right">
+                <button id="menuButton" class="menu-button" type="button" aria-label="Ana menüye dön">
+                    ANA MENÜ
+                </button>
+            </div>
+        </header>
+
+        <main id="room" class="room room-fourteen" aria-label="Ashvale Hastanesi Karşılaşma Koridoru">
+
+            <div id="flashlight" class="flashlight" aria-hidden="true"></div>
+
+            <section class="background-layer" aria-hidden="true">
+                <img
+                    src="images/ui/rooms/room14.png"
+                    class="room-background"
+                    alt=""
+                >
+
+                <div class="dark-overlay"></div>
+                <div class="fog fog-one"></div>
+                <div class="fog fog-two"></div>
+                <div id="roomFlicker" class="room-flicker"></div>
+                <div id="movingShadow" class="moving-shadow"></div>
+                <div id="hallwayFigure" class="hallway-figure"></div>
+            </section>
+
+            <section id="hotspotLayer" class="hotspot-layer" aria-label="Etkileşim alanları">
+
+                <button
+                    id="scatteredFiles"
+                    class="hotspot"
+                    type="button"
+                    data-text="Yerdeki Dosyaları İncele"
+                    aria-label="Yerdeki dağılmış dosyaları incele"
+                ></button>
+
+                <button
+                    id="leftDoor"
+                    class="hotspot"
+                    type="button"
+                    data-text="Sol Koğuş Kapısını İncele"
+                    aria-label="Sol taraftaki koğuş kapısını incele"
+                ></button>
+
+                <button
+                    id="rightDoor"
+                    class="hotspot"
+                    type="button"
+                    data-text="Sağ Koğuş Kapısını İncele"
+                    aria-label="Sağ taraftaki koğuş kapısını incele"
+                ></button>
+
+                <button
+                    id="hangingLamp"
+                    class="hotspot"
+                    type="button"
+                    data-text="Tavandaki Lambayı İncele"
+                    aria-label="Tavandan sarkan lambayı incele"
+                ></button>
+
+                <button
+                    id="figure"
+                    class="hotspot"
+                    type="button"
+                    data-text="Karşındaki Figürle Konuş"
+                    aria-label="Koridorda duran figürle konuş"
+                ></button>
+
+            </section>
+
+            <section id="interactionPrompt" class="interaction-prompt hidden" aria-hidden="true">
+                <div class="prompt-icon" aria-hidden="true">👁</div>
+
+                <div class="prompt-content">
+                    <span class="prompt-action">İNCELE</span>
+                    <span id="promptText">...</span>
+                </div>
+
+                <div class="prompt-key">E</div>
+            </section>
+
+            <section id="storyPanel" class="story-panel">
+                <div class="story-header">
+                    <h3>HİKÂYE</h3>
+                </div>
+
+                <div class="story-body">
+                    <p id="story-text">
+                        Koridorun ortasında biri duruyor. Kıpırdamıyor. Sadece bekliyor - sanki seni tanıyormuş gibi.
+                    </p>
+                </div>
+
+                <div class="objective">
+                    <span class="objective-title">GÖREV</span>
+
+                    <p id="objectiveText">
+                        Yerdeki dosyaları incele.
+                    </p>
+                </div>
+
+                <div id="objectiveProgress" class="objective-progress">
+                    <div class="progress-information">
+                        <span>İLERLEME</span>
+                        <span id="recordProgress">0 / 3</span>
+                    </div>
+
+                    <div class="progress-track">
+                        <div id="recordProgressBar" class="progress-bar"></div>
+                    </div>
+                </div>
+
+                <button id="hintButton" class="hint-button" type="button">
+                    💡 İPUCU
+                </button>
+            </section>
+
+            <section id="inventory" class="inventory" aria-label="Envanter">
+                <div class="inventory-title">ENVANTER</div>
+                <div id="inventorySlots" class="inventory-slots"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <section
+        id="filesViewer"
+        class="record-viewer hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="filesViewerTitle"
+    >
+        <article class="record-document">
+            <header class="record-document-header">
+                <div>
+                    <span class="record-hospital-name">DAĞILMIŞ VAKA DOSYALARI</span>
+                    <h2 id="filesViewerTitle">Yerdeki Kayıtlar</h2>
+                </div>
+
+                <button
+                    id="closeFilesViewer"
+                    class="record-close-button"
+                    type="button"
+                    aria-label="Kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="record-document-body">
+                <div class="record-stamp">3179 — TEKRAR EDEN ETİKET</div>
+
+                <p class="record-classification">
+                    DÖRT AYRI YILDAN, DÖRT AYRI VAKA
+                </p>
+
+                <div class="record-content">
+                    <div class="case-entries-14">
+                        <div class="case-entry-14">
+                            <span class="case-entry-14-label">VAKA 3179 — 1994</span>
+                            <p class="case-entry-14-text">
+                                Kaçmaya çalıştı, koridor boyunca bağırdı. Doku ertesi sabah iki katına çıkmıştı. Vaka üç gün içinde konuşma yetisini kaybetti.
+                            </p>
+                        </div>
+
+                        <div class="case-entry-14">
+                            <span class="case-entry-14-label">VAKA 3179 — 2003</span>
+                            <p class="case-entry-14-text">
+                                Karşı çıktı, inkâr etti, kayıtları yırtmaya çalıştı. Sonraki nöbette oda boştu.
+                            </p>
+                        </div>
+
+                        <div class="case-entry-14">
+                            <span class="case-entry-14-label">VAKA 3179 — 2011</span>
+                            <p class="case-entry-14-text">
+                                Hiçbir şey söylemedi. Sadece dinledi. Personel notu: "Beklenmedik biçimde sakinleşti. Neden bilinmiyor."
+                            </p>
+                        </div>
+
+                        <div class="case-entry-14">
+                            <span class="case-entry-14-label">VAKA 3179 — 1988</span>
+                            <p class="case-entry-14-text">
+                                Kayıt hasarlı, çoğu okunamıyor. "...odaya girdiğinde zaten..." cümlesi yarım kalmış.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="record-document-footer">
+                <span>Dördü de aynı etiketi taşıyor. Ama hepsi aynı şekilde bitmemiş.</span>
+
+                <button id="closeFilesViewerFooter" type="button">
+                    KAPAT
+                </button>
+            </footer>
+        </article>
+    </section>
+
+    <section
+        id="choicePanel"
+        class="choice-panel hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="choicePanelTitle"
+    >
+        <div class="choice-panel-window">
+            <header class="choice-panel-header">
+                <span class="choice-panel-label">KARŞILAŞMA</span>
+                <h2 id="choicePanelTitle">Nasıl Tepki Verirsin?</h2>
+            </header>
+
+            <div class="choice-panel-body">
+                <div id="choiceOptions" class="choice-options"></div>
+                <p id="choiceMessage" class="choice-message" aria-live="polite"></p>
+            </div>
+        </div>
+    </section>
+
+    <section
+        id="dialog"
+        class="dialog"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dialogTitle"
+    >
+        <div class="dialog-window">
+            <header class="dialog-header">
+                <h3 id="dialogTitle">İnceleme</h3>
+
+                <button
+                    id="dialog-x-button"
+                    type="button"
+                    aria-label="Diyaloğu kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="dialog-body">
+                <p id="dialogText"></p>
+            </div>
+
+            <footer class="dialog-footer">
+                <button id="dialogContinue" type="button">
+                    DEVAM
+                </button>
+            </footer>
+        </div>
+    </section>
+
+    <section
+        id="chapterComplete"
+        class="chapter-complete hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="chapterCompleteTitle"
+    >
+        <div class="chapter-complete-content">
+            <span class="chapter-complete-label">ASHVALE HOSPITAL</span>
+
+            <h2 id="chapterCompleteTitle">BÖLÜM 14 TAMAMLANDI</h2>
+
+            <p>
+                Şimdiki vaka, senin kim olduğunu zaten biliyordu.
+            </p>
+
+            <button id="nextChapter" type="button" data-href="room15.html">
+                BÖLÜM 15
+            </button>
+        </div>
+    </section>
+
+    <script src="js/core/flashlight.js?v=20260901102213"></script>
+
+    <script src="js/core/save-manager.js?v=20260901102213"></script>
+    <script src="js/core/inventory.js?v=20260901102213"></script>
+    <script src="js/core/audio-manager.js?v=20260901102213"></script>
+    <script src="js/core/dialogue.js?v=20260901102213"></script>
+    <script src="js/effects.js?v=20260901102213"></script>
+    <script src="js/game.js?v=20260901102213"></script>
+    <script src="js/rooms/room14.js?v=20260901102213"></script>
+
+</body>
+</html>

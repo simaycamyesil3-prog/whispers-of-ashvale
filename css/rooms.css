@@ -1,0 +1,6637 @@
+/* =========================================================
+   WHISPERS OF ASHVALE
+   ROOM 1 — CLEAN VERSION
+   ========================================================= */
+
+.room-page {
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    background: #020303;
+    color: #d7ded9;
+}
+
+.room-page * {
+    box-sizing: border-box;
+}
+
+.room-shell {
+    min-height: 100vh;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+/* =========================================================
+   HUD
+   ========================================================= */
+
+.hud {
+    position: relative;
+    z-index: 50;
+    display: grid;
+    grid-template-columns: minmax(120px, 1fr) minmax(90px, 0.7fr) minmax(150px, 1fr) auto;
+    gap: 24px;
+    align-items: center;
+    padding: 13px 22px;
+    border-bottom: 1px solid rgba(142, 165, 153, 0.18);
+    background: linear-gradient(180deg, rgba(5, 9, 8, 0.99), rgba(3, 6, 6, 0.96));
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.58);
+}
+
+.hud p,
+.hud strong {
+    margin: 0;
+}
+
+.hud__group {
+    min-width: 0;
+}
+
+.hud-label {
+    margin: 0 0 4px;
+    color: #788981;
+    font-size: 0.66rem;
+    letter-spacing: 0.22em;
+}
+
+.hud strong {
+    color: #e1e7e3;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+}
+
+.hud__status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #75857d;
+    font-size: 0.76rem;
+}
+
+.hud__status-light {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #6eaa87;
+    box-shadow: 0 0 10px rgba(110, 170, 135, 0.7);
+}
+
+.hud-button,
+.hint-button {
+    min-height: 42px;
+    padding: 10px 18px;
+    border: 1px solid rgba(136, 157, 147, 0.28);
+    background: linear-gradient(180deg, rgba(21, 29, 26, 0.94), rgba(8, 13, 11, 0.96));
+    color: #cbd5d0;
+    font-size: 0.74rem;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.hud-button:hover,
+.hint-button:hover {
+    border-color: rgba(175, 202, 188, 0.6);
+    background: linear-gradient(180deg, rgba(35, 47, 42, 0.96), rgba(12, 19, 16, 0.98));
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* =========================================================
+   ANA ODA VE GERÇEK ARKA PLAN
+   ========================================================= */
+
+.room {
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.room-one {
+    --flashlight-x: 50%;
+    --flashlight-y: 50%;
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.38)),
+        url("../images/ui/rooms/room1.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* HTML içinde duran eski CSS çizimlerini devre dışı bırakır. */
+.corridor-wall,
+.corridor-ceiling,
+.corridor-floor,
+.ceiling-light,
+.corridor-door,
+.exit-door,
+.reception-desk,
+.wheelchair,
+.wall-symbol,
+.blood-mark,
+.room-fog,
+.room-flicker {
+    display: none;
+}
+
+/* =========================================================
+   SU DAMLALARI
+   ========================================================= */
+
+.dripping-water {
+    position: absolute;
+    z-index: 11;
+    top: -20px;
+    width: 2px;
+    height: 45px;
+    background: linear-gradient(transparent, rgba(194, 214, 204, 0.44));
+    animation: water-drop 4.6s infinite;
+}
+
+.dripping-water--one { left: 35%; }
+.dripping-water--two { right: 28%; animation-delay: -2.2s; }
+
+@keyframes water-drop {
+    0% { transform: translateY(-80px); opacity: 0; }
+    18% { opacity: 0.7; }
+    100% { transform: translateY(80vh); opacity: 0; }
+}
+
+/* =========================================================
+   UZAKTAKİ FİGÜR
+   ========================================================= */
+
+.hallway-figure {
+    position: absolute;
+    z-index: 12;
+    left: 50%;
+    top: 31%;
+    width: 34px;
+    height: 140px;
+    transform: translateX(-50%) scale(0.55);
+    opacity: 0;
+    filter: blur(1px) drop-shadow(0 0 20px rgba(210, 224, 217, 0.18));
+    pointer-events: none;
+}
+
+.hallway-figure__head {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 26px;
+    height: 30px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: rgba(205, 211, 207, 0.65);
+}
+
+.hallway-figure__body {
+    position: absolute;
+    left: 50%;
+    top: 24px;
+    width: 48px;
+    height: 118px;
+    transform: translateX(-50%);
+    clip-path: polygon(36% 0, 64% 0, 100% 100%, 0 100%);
+    background: linear-gradient(180deg, rgba(205, 211, 207, 0.66), rgba(156, 165, 160, 0.12));
+}
+
+.hallway-figure.hallway-figure--visible {
+    animation: figure-appearance 2.4s ease forwards;
+}
+
+@keyframes figure-appearance {
+    0% { opacity: 0; }
+    18% { opacity: 0.74; }
+    72% { opacity: 0.58; }
+    100% { opacity: 0; }
+}
+
+/* =========================================================
+   HAREKETLİ GÖLGE
+   ========================================================= */
+
+.corridor-shadow {
+    position: absolute;
+    z-index: 13;
+    top: 18%;
+    left: -35%;
+    width: 32%;
+    height: 62%;
+    transform: skewX(-15deg);
+    background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.72), transparent);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.corridor-shadow.corridor-shadow--move {
+    animation: shadow-pass 1.4s ease-in-out;
+}
+
+@keyframes shadow-pass {
+    0% { left: -35%; opacity: 0; }
+    25% { opacity: 0.85; }
+    100% { left: 105%; opacity: 0; }
+}
+
+/* =========================================================
+   YENİ HAREKETLİ SİS
+   ========================================================= */
+
+.fog-container {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.fog {
+    position: absolute;
+    left: -40%;
+    bottom: -6%;
+    width: 180%;
+    height: 35%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.035) 40%, transparent 75%);
+    filter: blur(45px);
+    opacity: 0.55;
+    will-change: transform;
+}
+
+.fog-1 { animation: fog-left 42s linear infinite; }
+.fog-2 { bottom: 2%; opacity: 0.38; filter: blur(70px); animation: fog-right 55s linear infinite; }
+.fog-3 { bottom: 7%; opacity: 0.22; filter: blur(90px); animation: fog-float 30s ease-in-out infinite; }
+
+@keyframes fog-left {
+    from { transform: translateX(0); }
+    to { transform: translateX(-12%); }
+}
+
+@keyframes fog-right {
+    from { transform: translateX(-12%); }
+    to { transform: translateX(10%); }
+}
+
+@keyframes fog-float {
+    0%, 100% { transform: translate(-2%, 0); }
+    50% { transform: translate(2%, -8px); }
+}
+
+/* =========================================================
+   TOZ PARÇACIKLARI
+   ========================================================= */
+
+.floating-dust {
+    position: absolute;
+    inset: 0;
+    z-index: 15;
+    pointer-events: none;
+    opacity: 0.24;
+    background-image:
+        radial-gradient(circle, rgba(255, 255, 255, 0.58) 0 1px, transparent 2px),
+        radial-gradient(circle, rgba(255, 255, 255, 0.3) 0 1px, transparent 2px);
+    background-size: 110px 110px, 170px 170px;
+    animation: dust-drift 18s linear infinite;
+}
+
+@keyframes dust-drift {
+    from { background-position: 0 0, 20px 40px; }
+    to { background-position: 100px 220px, -90px 160px; }
+}
+
+/* =========================================================
+   KARANLIK VE EL FENERİ
+   ========================================================= */
+
+.room-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 17;
+    pointer-events: none;
+    background: radial-gradient(circle at center, transparent 18%, rgba(0, 0, 0, 0.14) 48%, rgba(0, 0, 0, 0.8) 100%);
+}
+
+.room-one::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 19;
+    pointer-events: none;
+    background: radial-gradient(
+        circle 240px at var(--flashlight-x) var(--flashlight-y),
+        transparent 0%,
+        rgba(0, 0, 0, 0.08) 42%,
+        rgba(0, 0, 0, 0.52) 68%,
+        rgba(0, 0, 0, 0.93) 100%
+    );
+}
+
+.flashlight {
+    position: absolute;
+    z-index: 20;
+    width: 460px;
+    height: 460px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(218, 233, 224, 0.16) 0%, rgba(179, 207, 191, 0.08) 34%, transparent 72%);
+    filter: blur(3px);
+    mix-blend-mode: screen;
+    opacity: 0.9;
+    transition: opacity 200ms ease;
+}
+
+.room-one.flashlight-idle .flashlight { opacity: 0.42; }
+
+/* =========================================================
+   HİKÂYE METNİ
+   ========================================================= */
+
+.room-story {
+    position: absolute;
+    z-index: 25;
+    left: 50%;
+    bottom: 4%;
+    width: min(720px, 82%);
+    transform: translateX(-50%);
+    padding: 15px 22px;
+    border: 1px solid rgba(135, 157, 146, 0.22);
+    background: linear-gradient(180deg, rgba(5, 9, 8, 0.82), rgba(1, 3, 3, 0.9));
+    backdrop-filter: blur(10px);
+    text-align: center;
+    color: #aab6b0;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.48);
+}
+
+.room-story p {
+    margin: 0;
+    font-size: clamp(0.82rem, 1.5vw, 1rem);
+    line-height: 1.7;
+}
+
+/* =========================================================
+   HOTSPOTLAR
+   ========================================================= */
+
+.hotspot {
+    position: absolute;
+    z-index: 30;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    outline: none;
+}
+
+.hotspot::after {
+    content: "";
+    position: absolute;
+    inset: 44%;
+    border-radius: 50%;
+    background: rgba(205, 228, 216, 0.18);
+    box-shadow: 0 0 18px rgba(178, 213, 194, 0.25);
+    opacity: 0;
+    transition: opacity 180ms ease, inset 180ms ease;
+}
+
+.hotspot:hover::after,
+.hotspot:focus-visible::after {
+    inset: 41%;
+    opacity: 1;
+}
+
+.hotspot__label {
+    position: absolute;
+    left: 50%;
+    bottom: 6%;
+    transform: translate(-50%, 8px);
+    min-width: max-content;
+    padding: 7px 10px;
+    border: 1px solid rgba(147, 174, 160, 0.3);
+    background: rgba(2, 5, 4, 0.86);
+    color: #c6d3cc;
+    font-size: 0.63rem;
+    letter-spacing: 0.13em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.hotspot:hover .hotspot__label,
+.hotspot:focus-visible .hotspot__label {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.hotspot-register { left: 0; bottom: 14%; width: 31%; height: 45%; }
+.hotspot-door { left: 43%; top: 24%; width: 15%; height: 45%; }
+.hotspot-symbol { right: 5%; top: 18%; width: 22%; height: 38%; }
+.hotspot-wheelchair { right: 13%; bottom: 15%; width: 20%; height: 36%; }
+
+/* =========================================================
+   ETKİLEŞİM VE FISILTI MESAJLARI
+   ========================================================= */
+
+.interaction-prompt {
+    position: fixed;
+    z-index: 1000;
+    transform: translate(14px, 14px);
+    padding: 7px 10px;
+    border: 1px solid rgba(150, 178, 164, 0.34);
+    background: rgba(2, 5, 4, 0.9);
+    color: #c9d5cf;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 120ms ease;
+}
+
+.interaction-prompt.interaction-prompt--visible { opacity: 1; }
+
+.whisper-message {
+    position: absolute;
+    z-index: 45;
+    top: 18%;
+    left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    color: rgba(205, 216, 210, 0.75);
+    font-family: serif;
+    font-size: clamp(1rem, 3vw, 2.2rem);
+    font-style: italic;
+    letter-spacing: 0.12em;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.14);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.whisper-message.whisper-message--visible { animation: whisper-appear 3.4s ease forwards; }
+
+@keyframes whisper-appear {
+    0% { opacity: 0; transform: translateX(-50%) translateY(12px); }
+    20%, 65% { opacity: 0.72; }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+}
+
+/* =========================================================
+   ENVANTER
+   ========================================================= */
+
+.inventory-panel {
+    position: relative;
+    z-index: 50;
+    min-height: 88px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 12px 22px;
+    border-top: 1px solid rgba(136, 158, 147, 0.18);
+    background: linear-gradient(180deg, rgba(4, 8, 7, 0.97), rgba(2, 5, 4, 0.99));
+    box-shadow: 0 -10px 34px rgba(0, 0, 0, 0.46);
+}
+
+.inventory-panel__content {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+}
+
+.inventory-panel ul {
+    min-height: 34px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    padding: 0;
+    margin: 6px 0 0;
+    list-style: none;
+}
+
+.inventory-panel li {
+    padding: 7px 10px;
+    border: 1px solid rgba(145, 168, 157, 0.24);
+    background: rgba(255, 255, 255, 0.025);
+    color: #bac8c1;
+    font-size: 0.76rem;
+}
+
+.inventory-panel li.inventory-empty { color: #66756e; }
+
+.objective-text {
+    margin: 0;
+    color: #75857d;
+    font-size: 0.78rem;
+    font-style: italic;
+}
+
+/* =========================================================
+   BÖLÜM GİRİŞİ
+   ========================================================= */
+
+.chapter-intro {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(circle at center, #080c0b, #010202 70%);
+    text-align: center;
+    transition: opacity 0.9s ease, visibility 0.9s ease;
+}
+
+.chapter-intro__content { animation: chapter-intro-rise 1.5s ease both; }
+.chapter-intro__number { margin: 0; color: #7c8b84; font-size: 0.78rem; letter-spacing: 0.45em; }
+.chapter-intro h1 { margin: 10px 0 12px; color: #e1e6e3; font-family: serif; font-size: clamp(2.2rem, 6vw, 5rem); font-weight: 500; }
+.chapter-intro span { color: #7e8d86; font-size: 0.95rem; }
+.chapter-intro__line { width: 100px; height: 1px; margin: 25px auto 0; background: linear-gradient(90deg, transparent, #77877f, transparent); }
+.chapter-intro.chapter-intro--hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+@keyframes chapter-intro-rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   DİYALOG
+   ========================================================= */
+
+.game-dialog {
+    width: min(620px, calc(100% - 32px));
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #d6ddd9;
+}
+
+.game-dialog::backdrop { background: rgba(0, 0, 0, 0.78); backdrop-filter: blur(7px); }
+
+.dialog-card {
+    position: relative;
+    padding: 28px;
+    border: 1px solid rgba(143, 166, 155, 0.3);
+    background: linear-gradient(180deg, rgba(12, 18, 16, 0.99), rgba(3, 7, 6, 0.99));
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.8);
+}
+
+.dialog-x-button {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(141, 163, 152, 0.22);
+    background: transparent;
+    color: #94a29b;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.dialog-kicker { margin: 0 0 8px; color: #9d453e; font-size: 0.68rem; letter-spacing: 0.24em; }
+.dialog-card h2 { margin: 0 45px 15px 0; font-family: serif; font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 500; }
+.dialog-card > p:not(.dialog-kicker) { color: #9eaba4; line-height: 1.7; }
+
+.clue-visual {
+    min-height: 170px;
+    display: grid;
+    place-items: center;
+    margin: 20px 0;
+    padding: 22px;
+    border: 1px solid rgba(135, 158, 147, 0.22);
+    background: radial-gradient(circle, rgba(148, 178, 162, 0.11), transparent 55%), rgba(0, 0, 0, 0.24);
+    color: #b8c6bf;
+    font-size: clamp(2.2rem, 8vw, 5rem);
+    text-align: center;
+}
+
+.clue-visual.note {
+    min-height: 220px;
+    color: #2b2116;
+    background: linear-gradient(rgba(116, 29, 27, 0.12), rgba(116, 29, 27, 0.12)), #ad9b74;
+    font-family: serif;
+    font-size: clamp(1.1rem, 3vw, 1.8rem);
+    line-height: 1.55;
+    transform: rotate(-0.7deg);
+}
+
+.clue-visual.symbol { color: rgba(176, 58, 49, 0.8); text-shadow: 0 0 28px rgba(138, 34, 29, 0.42); }
+.clue-visual.wheelchair-clue { font-size: 4rem; }
+
+.code-area { margin-top: 22px; }
+.code-area label { display: block; margin-bottom: 8px; color: #82918a; font-size: 0.7rem; letter-spacing: 0.18em; }
+
+.code-area input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid rgba(148, 175, 161, 0.28);
+    outline: none;
+    background: #030605;
+    color: #e3e9e6;
+    font-size: 1.5rem;
+    letter-spacing: 0.48em;
+    text-align: center;
+}
+
+.code-area input:focus { border-color: rgba(174, 207, 190, 0.66); box-shadow: 0 0 0 3px rgba(127, 163, 144, 0.08); }
+.code-area .primary-small { width: 100%; margin-top: 12px; }
+.code-feedback { min-height: 1.5em; margin: 12px 0 0; color: #bf7070; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
+
+.primary-small,
+.secondary-button {
+    padding: 11px 16px;
+    border: 1px solid rgba(143, 166, 155, 0.28);
+    cursor: pointer;
+    font-size: 0.72rem;
+    letter-spacing: 0.13em;
+}
+
+.primary-small { border-color: rgba(123, 55, 49, 0.78); background: linear-gradient(180deg, #8c3029, #571d19); color: #fff; }
+.secondary-button { background: rgba(255, 255, 255, 0.025); color: #aab7b0; }
+
+/* =========================================================
+   TAMAMLAMA VE EKRAN EFEKTLERİ
+   ========================================================= */
+
+.screen-flash {
+    position: fixed;
+    inset: 0;
+    z-index: 6000;
+    background: rgba(209, 225, 217, 0.72);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.screen-flash.screen-flash--active { animation: screen-flash-animation 0.7s ease; }
+
+@keyframes screen-flash-animation {
+    0% { opacity: 0; }
+    12% { opacity: 0.8; }
+    25% { opacity: 0.08; }
+    40% { opacity: 0.48; }
+    100% { opacity: 0; }
+}
+
+.chapter-complete {
+    position: fixed;
+    inset: 0;
+    z-index: 7000;
+    display: grid;
+    place-items: center;
+    background: rgba(1, 3, 3, 0.94);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.chapter-complete.chapter-complete--visible { opacity: 1; visibility: visible; }
+.chapter-complete__content { max-width: 620px; padding: 30px; text-align: center; }
+.chapter-complete__content p { color: #944239; font-size: 0.74rem; letter-spacing: 0.32em; }
+.chapter-complete__content h2 { margin: 14px 0; font-family: serif; font-size: clamp(2.3rem, 7vw, 5.6rem); font-weight: 500; }
+.chapter-complete__content span { color: #86958e; line-height: 1.8; }
+
+/* =========================================================
+   MOBİL
+   ========================================================= */
+
+@media (max-width: 760px) {
+    .hud {
+        grid-template-columns: 1fr 1fr auto;
+        gap: 12px;
+        padding: 10px 12px;
+    }
+
+    .hud__status { display: none; }
+    .hud-button { padding: 9px 11px; font-size: 0.64rem; }
+    .inventory-panel { padding: 10px 12px; }
+    .inventory-panel__content { display: block; }
+    .objective-text { display: none; }
+
+    .hotspot-register { left: 0; width: 35%; }
+    .hotspot-door { left: 40%; width: 20%; }
+    .hotspot-symbol { right: 2%; width: 25%; }
+    .hotspot-wheelchair { right: 5%; width: 27%; }
+
+    .room-story {
+        bottom: 3%;
+        width: 91%;
+        padding: 12px 14px;
+    }
+
+    .dialog-card { padding: 22px 18px; }
+
+    .room-one::after {
+        background: radial-gradient(
+            circle 210px at var(--flashlight-x) var(--flashlight-y),
+            transparent 0%,
+            rgba(0, 0, 0, 0.08) 40%,
+            rgba(0, 0, 0, 0.58) 67%,
+            rgba(0, 0, 0, 0.94) 100%
+        );
+    }
+
+    .flashlight {
+        width: 390px;
+        height: 390px;
+    }
+}
+
+rooms_clean.css
+/* =========================================================
+   WHISPERS OF ASHVALE
+   ROOM 1 — CLEAN VERSION
+   ========================================================= */
+
+.room-page {
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    background: #020303;
+    color: #d7ded9;
+}
+
+.room-page * {
+    box-sizing: border-box;
+}
+
+.room-shell {
+    min-height: 100vh;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+/* =========================================================
+   HUD
+   ========================================================= */
+
+.hud {
+    position: relative;
+    z-index: 50;
+    display: grid;
+    grid-template-columns: minmax(120px, 1fr) minmax(90px, 0.7fr) minmax(150px, 1fr) auto;
+    gap: 24px;
+    align-items: center;
+    padding: 13px 22px;
+    border-bottom: 1px solid rgba(142, 165, 153, 0.18);
+    background: linear-gradient(180deg, rgba(5, 9, 8, 0.99), rgba(3, 6, 6, 0.96));
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.58);
+}
+
+.hud p,
+.hud strong {
+    margin: 0;
+}
+
+.hud__group {
+    min-width: 0;
+}
+
+.hud-label {
+    margin: 0 0 4px;
+    color: #788981;
+    font-size: 0.66rem;
+    letter-spacing: 0.22em;
+}
+
+.hud strong {
+    color: #e1e7e3;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+}
+
+.hud__status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #75857d;
+    font-size: 0.76rem;
+}
+
+.hud__status-light {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #6eaa87;
+    box-shadow: 0 0 10px rgba(110, 170, 135, 0.7);
+}
+
+.hud-button,
+.hint-button {
+    min-height: 42px;
+    padding: 10px 18px;
+    border: 1px solid rgba(136, 157, 147, 0.28);
+    background: linear-gradient(180deg, rgba(21, 29, 26, 0.94), rgba(8, 13, 11, 0.96));
+    color: #cbd5d0;
+    font-size: 0.74rem;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.hud-button:hover,
+.hint-button:hover {
+    border-color: rgba(175, 202, 188, 0.6);
+    background: linear-gradient(180deg, rgba(35, 47, 42, 0.96), rgba(12, 19, 16, 0.98));
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* =========================================================
+   ANA ODA VE GERÇEK ARKA PLAN
+   ========================================================= */
+
+.room {
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.room-one {
+    --flashlight-x: 50%;
+    --flashlight-y: 50%;
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.38)),
+        url("../images/ui/rooms/room1.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* HTML içinde duran eski CSS çizimlerini devre dışı bırakır. */
+.corridor-wall,
+.corridor-ceiling,
+.corridor-floor,
+.ceiling-light,
+.corridor-door,
+.exit-door,
+.reception-desk,
+.wheelchair,
+.wall-symbol,
+.blood-mark,
+.room-fog,
+.room-flicker {
+    display: none;
+}
+
+/* =========================================================
+   SU DAMLALARI
+   ========================================================= */
+
+.dripping-water {
+    position: absolute;
+    z-index: 11;
+    top: -20px;
+    width: 2px;
+    height: 45px;
+    background: linear-gradient(transparent, rgba(194, 214, 204, 0.44));
+    animation: water-drop 4.6s infinite;
+}
+
+.dripping-water--one { left: 35%; }
+.dripping-water--two { right: 28%; animation-delay: -2.2s; }
+
+@keyframes water-drop {
+    0% { transform: translateY(-80px); opacity: 0; }
+    18% { opacity: 0.7; }
+    100% { transform: translateY(80vh); opacity: 0; }
+}
+
+/* =========================================================
+   UZAKTAKİ FİGÜR
+   ========================================================= */
+
+.hallway-figure {
+    position: absolute;
+    z-index: 12;
+    left: 50%;
+    top: 31%;
+    width: 34px;
+    height: 140px;
+    transform: translateX(-50%) scale(0.55);
+    opacity: 0;
+    filter: blur(1px) drop-shadow(0 0 20px rgba(210, 224, 217, 0.18));
+    pointer-events: none;
+}
+
+.hallway-figure__head {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 26px;
+    height: 30px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: rgba(205, 211, 207, 0.65);
+}
+
+.hallway-figure__body {
+    position: absolute;
+    left: 50%;
+    top: 24px;
+    width: 48px;
+    height: 118px;
+    transform: translateX(-50%);
+    clip-path: polygon(36% 0, 64% 0, 100% 100%, 0 100%);
+    background: linear-gradient(180deg, rgba(205, 211, 207, 0.66), rgba(156, 165, 160, 0.12));
+}
+
+.hallway-figure.hallway-figure--visible {
+    animation: figure-appearance 2.4s ease forwards;
+}
+
+@keyframes figure-appearance {
+    0% { opacity: 0; }
+    18% { opacity: 0.74; }
+    72% { opacity: 0.58; }
+    100% { opacity: 0; }
+}
+
+/* =========================================================
+   HAREKETLİ GÖLGE
+   ========================================================= */
+
+.corridor-shadow {
+    position: absolute;
+    z-index: 13;
+    top: 18%;
+    left: -35%;
+    width: 32%;
+    height: 62%;
+    transform: skewX(-15deg);
+    background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.72), transparent);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.corridor-shadow.corridor-shadow--move {
+    animation: shadow-pass 1.4s ease-in-out;
+}
+
+@keyframes shadow-pass {
+    0% { left: -35%; opacity: 0; }
+    25% { opacity: 0.85; }
+    100% { left: 105%; opacity: 0; }
+}
+
+/* =========================================================
+   YENİ HAREKETLİ SİS
+   ========================================================= */
+
+.fog-container {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.fog {
+    position: absolute;
+    left: -40%;
+    bottom: -6%;
+    width: 180%;
+    height: 35%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.035) 40%, transparent 75%);
+    filter: blur(45px);
+    opacity: 0.55;
+    will-change: transform;
+}
+
+.fog-1 { animation: fog-left 42s linear infinite; }
+.fog-2 { bottom: 2%; opacity: 0.38; filter: blur(70px); animation: fog-right 55s linear infinite; }
+.fog-3 { bottom: 7%; opacity: 0.22; filter: blur(90px); animation: fog-float 30s ease-in-out infinite; }
+
+@keyframes fog-left {
+    from { transform: translateX(0); }
+    to { transform: translateX(-12%); }
+}
+
+@keyframes fog-right {
+    from { transform: translateX(-12%); }
+    to { transform: translateX(10%); }
+}
+
+@keyframes fog-float {
+    0%, 100% { transform: translate(-2%, 0); }
+    50% { transform: translate(2%, -8px); }
+}
+
+/* =========================================================
+   TOZ PARÇACIKLARI
+   ========================================================= */
+
+.floating-dust {
+    position: absolute;
+    inset: 0;
+    z-index: 15;
+    pointer-events: none;
+    opacity: 0.24;
+    background-image:
+        radial-gradient(circle, rgba(255, 255, 255, 0.58) 0 1px, transparent 2px),
+        radial-gradient(circle, rgba(255, 255, 255, 0.3) 0 1px, transparent 2px);
+    background-size: 110px 110px, 170px 170px;
+    animation: dust-drift 18s linear infinite;
+}
+
+@keyframes dust-drift {
+    from { background-position: 0 0, 20px 40px; }
+    to { background-position: 100px 220px, -90px 160px; }
+}
+
+/* =========================================================
+   KARANLIK VE EL FENERİ
+   ========================================================= */
+
+.room-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 17;
+    pointer-events: none;
+    background: radial-gradient(circle at center, transparent 18%, rgba(0, 0, 0, 0.14) 48%, rgba(0, 0, 0, 0.8) 100%);
+}
+
+.room-one::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 19;
+    pointer-events: none;
+    background: radial-gradient(
+        circle 240px at var(--flashlight-x) var(--flashlight-y),
+        transparent 0%,
+        rgba(0, 0, 0, 0.08) 42%,
+        rgba(0, 0, 0, 0.52) 68%,
+        rgba(0, 0, 0, 0.93) 100%
+    );
+}
+
+.flashlight {
+    position: absolute;
+    z-index: 20;
+    width: 460px;
+    height: 460px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(218, 233, 224, 0.16) 0%, rgba(179, 207, 191, 0.08) 34%, transparent 72%);
+    filter: blur(3px);
+    mix-blend-mode: screen;
+    opacity: 0.9;
+    transition: opacity 200ms ease;
+}
+
+.room-one.flashlight-idle .flashlight { opacity: 0.42; }
+
+/* =========================================================
+   HİKÂYE METNİ
+   ========================================================= */
+
+.room-story {
+    position: absolute;
+    z-index: 25;
+    left: 50%;
+    bottom: 4%;
+    width: min(720px, 82%);
+    transform: translateX(-50%);
+    padding: 15px 22px;
+    border: 1px solid rgba(135, 157, 146, 0.22);
+    background: linear-gradient(180deg, rgba(5, 9, 8, 0.82), rgba(1, 3, 3, 0.9));
+    backdrop-filter: blur(10px);
+    text-align: center;
+    color: #aab6b0;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.48);
+}
+
+.room-story p {
+    margin: 0;
+    font-size: clamp(0.82rem, 1.5vw, 1rem);
+    line-height: 1.7;
+}
+
+/* =========================================================
+   HOTSPOTLAR
+   ========================================================= */
+
+.hotspot {
+    position: absolute;
+    z-index: 30;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    outline: none;
+}
+
+.hotspot::after {
+    content: "";
+    position: absolute;
+    inset: 44%;
+    border-radius: 50%;
+    background: rgba(205, 228, 216, 0.18);
+    box-shadow: 0 0 18px rgba(178, 213, 194, 0.25);
+    opacity: 0;
+    transition: opacity 180ms ease, inset 180ms ease;
+}
+
+.hotspot:hover::after,
+.hotspot:focus-visible::after {
+    inset: 41%;
+    opacity: 1;
+}
+
+.hotspot__label {
+    position: absolute;
+    left: 50%;
+    bottom: 6%;
+    transform: translate(-50%, 8px);
+    min-width: max-content;
+    padding: 7px 10px;
+    border: 1px solid rgba(147, 174, 160, 0.3);
+    background: rgba(2, 5, 4, 0.86);
+    color: #c6d3cc;
+    font-size: 0.63rem;
+    letter-spacing: 0.13em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.hotspot:hover .hotspot__label,
+.hotspot:focus-visible .hotspot__label {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.hotspot-register { left: 0; bottom: 14%; width: 31%; height: 45%; }
+.hotspot-door { left: 43%; top: 24%; width: 15%; height: 45%; }
+.hotspot-symbol { right: 5%; top: 18%; width: 22%; height: 38%; }
+.hotspot-wheelchair { right: 13%; bottom: 15%; width: 20%; height: 36%; }
+
+/* =========================================================
+   ETKİLEŞİM VE FISILTI MESAJLARI
+   ========================================================= */
+
+.interaction-prompt {
+    position: fixed;
+    z-index: 1000;
+    transform: translate(14px, 14px);
+    padding: 7px 10px;
+    border: 1px solid rgba(150, 178, 164, 0.34);
+    background: rgba(2, 5, 4, 0.9);
+    color: #c9d5cf;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 120ms ease;
+}
+
+.interaction-prompt.interaction-prompt--visible { opacity: 1; }
+
+.whisper-message {
+    position: absolute;
+    z-index: 45;
+    top: 18%;
+    left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    color: rgba(205, 216, 210, 0.75);
+    font-family: serif;
+    font-size: clamp(1rem, 3vw, 2.2rem);
+    font-style: italic;
+    letter-spacing: 0.12em;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.14);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.whisper-message.whisper-message--visible { animation: whisper-appear 3.4s ease forwards; }
+
+@keyframes whisper-appear {
+    0% { opacity: 0; transform: translateX(-50%) translateY(12px); }
+    20%, 65% { opacity: 0.72; }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+}
+
+/* =========================================================
+   ENVANTER
+   ========================================================= */
+
+.inventory-panel {
+    position: relative;
+    z-index: 50;
+    min-height: 88px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 12px 22px;
+    border-top: 1px solid rgba(136, 158, 147, 0.18);
+    background: linear-gradient(180deg, rgba(4, 8, 7, 0.97), rgba(2, 5, 4, 0.99));
+    box-shadow: 0 -10px 34px rgba(0, 0, 0, 0.46);
+}
+
+.inventory-panel__content {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+}
+
+.inventory-panel ul {
+    min-height: 34px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    padding: 0;
+    margin: 6px 0 0;
+    list-style: none;
+}
+
+.inventory-panel li {
+    padding: 7px 10px;
+    border: 1px solid rgba(145, 168, 157, 0.24);
+    background: rgba(255, 255, 255, 0.025);
+    color: #bac8c1;
+    font-size: 0.76rem;
+}
+
+.inventory-panel li.inventory-empty { color: #66756e; }
+
+.objective-text {
+    margin: 0;
+    color: #75857d;
+    font-size: 0.78rem;
+    font-style: italic;
+}
+
+/* =========================================================
+   BÖLÜM GİRİŞİ
+   ========================================================= */
+
+.chapter-intro {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(circle at center, #080c0b, #010202 70%);
+    text-align: center;
+    transition: opacity 0.9s ease, visibility 0.9s ease;
+}
+
+.chapter-intro__content { animation: chapter-intro-rise 1.5s ease both; }
+.chapter-intro__number { margin: 0; color: #7c8b84; font-size: 0.78rem; letter-spacing: 0.45em; }
+.chapter-intro h1 { margin: 10px 0 12px; color: #e1e6e3; font-family: serif; font-size: clamp(2.2rem, 6vw, 5rem); font-weight: 500; }
+.chapter-intro span { color: #7e8d86; font-size: 0.95rem; }
+.chapter-intro__line { width: 100px; height: 1px; margin: 25px auto 0; background: linear-gradient(90deg, transparent, #77877f, transparent); }
+.chapter-intro.chapter-intro--hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+@keyframes chapter-intro-rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   DİYALOG
+   ========================================================= */
+
+.game-dialog {
+    width: min(620px, calc(100% - 32px));
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #d6ddd9;
+}
+
+.game-dialog::backdrop { background: rgba(0, 0, 0, 0.78); backdrop-filter: blur(7px); }
+
+.dialog-card {
+    position: relative;
+    padding: 28px;
+    border: 1px solid rgba(143, 166, 155, 0.3);
+    background: linear-gradient(180deg, rgba(12, 18, 16, 0.99), rgba(3, 7, 6, 0.99));
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.8);
+}
+
+.dialog-x-button {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(141, 163, 152, 0.22);
+    background: transparent;
+    color: #94a29b;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.dialog-kicker { margin: 0 0 8px; color: #9d453e; font-size: 0.68rem; letter-spacing: 0.24em; }
+.dialog-card h2 { margin: 0 45px 15px 0; font-family: serif; font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 500; }
+.dialog-card > p:not(.dialog-kicker) { color: #9eaba4; line-height: 1.7; }
+
+.clue-visual {
+    min-height: 170px;
+    display: grid;
+    place-items: center;
+    margin: 20px 0;
+    padding: 22px;
+    border: 1px solid rgba(135, 158, 147, 0.22);
+    background: radial-gradient(circle, rgba(148, 178, 162, 0.11), transparent 55%), rgba(0, 0, 0, 0.24);
+    color: #b8c6bf;
+    font-size: clamp(2.2rem, 8vw, 5rem);
+    text-align: center;
+}
+
+.clue-visual.note {
+    min-height: 220px;
+    color: #2b2116;
+    background: linear-gradient(rgba(116, 29, 27, 0.12), rgba(116, 29, 27, 0.12)), #ad9b74;
+    font-family: serif;
+    font-size: clamp(1.1rem, 3vw, 1.8rem);
+    line-height: 1.55;
+    transform: rotate(-0.7deg);
+}
+
+.clue-visual.symbol { color: rgba(176, 58, 49, 0.8); text-shadow: 0 0 28px rgba(138, 34, 29, 0.42); }
+.clue-visual.wheelchair-clue { font-size: 4rem; }
+
+.code-area { margin-top: 22px; }
+.code-area label { display: block; margin-bottom: 8px; color: #82918a; font-size: 0.7rem; letter-spacing: 0.18em; }
+
+.code-area input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid rgba(148, 175, 161, 0.28);
+    outline: none;
+    background: #030605;
+    color: #e3e9e6;
+    font-size: 1.5rem;
+    letter-spacing: 0.48em;
+    text-align: center;
+}
+
+.code-area input:focus { border-color: rgba(174, 207, 190, 0.66); box-shadow: 0 0 0 3px rgba(127, 163, 144, 0.08); }
+.code-area .primary-small { width: 100%; margin-top: 12px; }
+.code-feedback { min-height: 1.5em; margin: 12px 0 0; color: #bf7070; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
+
+.primary-small,
+.secondary-button {
+    padding: 11px 16px;
+    border: 1px solid rgba(143, 166, 155, 0.28);
+    cursor: pointer;
+    font-size: 0.72rem;
+    letter-spacing: 0.13em;
+}
+
+.primary-small { border-color: rgba(123, 55, 49, 0.78); background: linear-gradient(180deg, #8c3029, #571d19); color: #fff; }
+.secondary-button { background: rgba(255, 255, 255, 0.025); color: #aab7b0; }
+
+/* =========================================================
+   TAMAMLAMA VE EKRAN EFEKTLERİ
+   ========================================================= */
+
+.screen-flash {
+    position: fixed;
+    inset: 0;
+    z-index: 6000;
+    background: rgba(209, 225, 217, 0.72);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.screen-flash.screen-flash--active { animation: screen-flash-animation 0.7s ease; }
+
+@keyframes screen-flash-animation {
+    0% { opacity: 0; }
+    12% { opacity: 0.8; }
+    25% { opacity: 0.08; }
+    40% { opacity: 0.48; }
+    100% { opacity: 0; }
+}
+
+.chapter-complete {
+    position: fixed;
+    inset: 0;
+    z-index: 7000;
+    display: grid;
+    place-items: center;
+    background: rgba(1, 3, 3, 0.94);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.chapter-complete.chapter-complete--visible { opacity: 1; visibility: visible; }
+.chapter-complete__content { max-width: 620px; padding: 30px; text-align: center; }
+.chapter-complete__content p { color: #944239; font-size: 0.74rem; letter-spacing: 0.32em; }
+.chapter-complete__content h2 { margin: 14px 0; font-family: serif; font-size: clamp(2.3rem, 7vw, 5.6rem); font-weight: 500; }
+.chapter-complete__content span { color: #86958e; line-height: 1.8; }
+
+/* =========================================================
+   MOBİL
+   ========================================================= */
+
+@media (max-width: 760px) {
+    .hud {
+        grid-template-columns: 1fr 1fr auto;
+        gap: 12px;
+        padding: 10px 12px;
+    }
+
+    .hud__status { display: none; }
+    .hud-button { padding: 9px 11px; font-size: 0.64rem; }
+    .inventory-panel { padding: 10px 12px; }
+    .inventory-panel__content { display: block; }
+    .objective-text { display: none; }
+
+    .hotspot-register { left: 0; width: 35%; }
+    .hotspot-door { left: 40%; width: 20%; }
+    .hotspot-symbol { right: 2%; width: 25%; }
+    .hotspot-wheelchair { right: 5%; width: 27%; }
+
+    .room-story {
+        bottom: 3%;
+        width: 91%;
+        padding: 12px 14px;
+    }
+
+    .dialog-card { padding: 22px 18px; }
+
+    .room-one::after {
+        background: radial-gradient(
+            circle 210px at var(--flashlight-x) var(--flashlight-y),
+            transparent 0%,
+            rgba(0, 0, 0, 0.08) 40%,
+            rgba(0, 0, 0, 0.58) 67%,
+            rgba(0, 0, 0, 0.94) 100%
+        );
+    }
+
+    .flashlight {
+        width: 390px;
+        height: 390px;
+    }
+}
+/* =========================================================
+   ROOM 1 — ROOM 2 İLE AYNI ARAYÜZ YERLEŞİMİ
+   ========================================================= */
+
+body.room-page {
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    background: #050606;
+    color: #d8dedb;
+    font-family: "Inter", Arial, sans-serif;
+}
+
+.room-shell {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 620px;
+    display: block;
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   ÜST HUD
+   ========================================================= */
+
+.hud {
+    position: fixed;
+    z-index: 100;
+    top: 20px;
+    left: 24px;
+    right: 24px;
+    height: 88px;
+
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+
+    padding: 13px 22px;
+
+    border: 1px solid rgba(135, 151, 143, 0.18);
+    border-radius: 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(7, 11, 10, 0.96),
+            rgba(3, 6, 5, 0.97)
+        );
+
+    box-shadow:
+        0 10px 38px rgba(0, 0, 0, 0.68);
+}
+
+.hud-left {
+    justify-self: start;
+}
+
+.hud-center {
+    justify-self: center;
+
+    display: flex;
+    align-items: center;
+    gap: 34px;
+}
+
+.hud-right {
+    justify-self: end;
+}
+
+.player-box {
+    min-width: 170px;
+    padding: 12px 18px;
+
+    border: 1px solid rgba(148, 163, 155, 0.25);
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(14, 19, 17, 0.94),
+            rgba(6, 9, 8, 0.94)
+        );
+}
+
+.player-box .label {
+    display: block;
+    margin-bottom: 5px;
+
+    color: #7e8a84;
+
+    font-size: 0.65rem;
+    letter-spacing: 0.27em;
+}
+
+#hud-player {
+    color: #e5e9e7;
+
+    font-size: 0.94rem;
+    font-weight: 600;
+}
+
+.chapter-box {
+    padding: 17px 27px;
+
+    border: 1px solid rgba(148, 163, 155, 0.25);
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(13, 18, 16, 0.95),
+            rgba(5, 8, 7, 0.95)
+        );
+
+    color: #e4e7e5;
+
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.23em;
+}
+
+.save-status {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    color: #76847d;
+    font-size: 0.73rem;
+}
+
+.save-status-light {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #72b38f;
+
+    box-shadow:
+        0 0 11px rgba(91, 196, 137, 0.82);
+}
+
+.menu-button {
+    min-width: 130px;
+    min-height: 55px;
+    padding: 13px 22px;
+
+    border: 1px solid rgba(180, 64, 59, 0.68);
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #9d211f,
+            #6e0f10
+        );
+
+    color: #ffffff;
+
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+
+    cursor: pointer;
+
+    box-shadow:
+        inset 0 1px rgba(255, 255, 255, 0.1),
+        0 8px 22px rgba(83, 0, 0, 0.28);
+
+    transition:
+        transform 180ms ease,
+        filter 180ms ease;
+}
+
+.menu-button:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.16);
+}
+
+
+/* =========================================================
+   ANA ODA
+   ========================================================= */
+
+.room {
+    position: fixed;
+    z-index: 1;
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.room-one {
+    padding-top: 0;
+
+    background:
+        linear-gradient(
+            rgba(0, 0, 0, 0.14),
+            rgba(0, 0, 0, 0.42)
+        ),
+        url("../images/ui/rooms/room1.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+/* Eski alt hikâye ve eski alt envanter düzenini kapatır. */
+
+.room-story,
+.inventory-panel {
+    display: none !important;
+}
+
+
+/* =========================================================
+   SOL ALT HİKÂYE PANELİ
+   ========================================================= */
+
+.story-panel {
+    position: fixed;
+    z-index: 80;
+
+    left: 24px;
+    bottom: 24px;
+
+    width: 350px;
+    max-height: calc(100vh - 150px);
+
+    padding: 22px;
+
+    border: 1px solid rgba(140, 153, 147, 0.24);
+    border-radius: 17px;
+
+    background:
+        linear-gradient(
+            160deg,
+            rgba(12, 15, 14, 0.94),
+            rgba(4, 6, 5, 0.97)
+        );
+
+    box-shadow:
+        0 12px 42px rgba(0, 0, 0, 0.72);
+
+    backdrop-filter: blur(10px);
+}
+
+.story-header h3 {
+    margin: 0 0 16px;
+
+    color: #ece9e4;
+
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 1.08rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+}
+
+.story-body p {
+    margin: 0;
+
+    color: #aaaead;
+
+    font-size: 0.82rem;
+    line-height: 1.65;
+}
+
+.panel-divider {
+    height: 1px;
+    margin: 17px 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(151, 160, 156, 0.2),
+            rgba(151, 160, 156, 0.1),
+            transparent
+        );
+}
+
+.objective-title {
+    display: block;
+    margin-bottom: 9px;
+
+    color: #c34842;
+
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+}
+
+.objective p {
+    margin: 0;
+
+    color: #e0e1df;
+
+    font-size: 0.82rem;
+    line-height: 1.55;
+}
+
+.objective-progress {
+    margin-top: 20px;
+}
+
+.progress-information {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 9px;
+
+    color: #878d8a;
+
+    font-size: 0.61rem;
+    letter-spacing: 0.2em;
+}
+
+.progress-track {
+    width: 100%;
+    height: 7px;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.075);
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            #6a211e,
+            #b73b34
+        );
+
+    box-shadow:
+        0 0 14px rgba(177, 53, 46, 0.34);
+
+    transition: width 400ms ease;
+}
+
+.hint-button {
+    min-height: 40px;
+    margin-top: 18px;
+    padding: 10px 15px;
+
+    border: 1px solid rgba(145, 158, 151, 0.27);
+    border-radius: 7px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(22, 27, 25, 0.96),
+            rgba(8, 11, 10, 0.97)
+        );
+
+    color: #cbd0cd;
+
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+
+    cursor: pointer;
+
+    transition:
+        border-color 180ms ease,
+        transform 180ms ease,
+        background 180ms ease;
+}
+
+.hint-button:hover {
+    transform: translateY(-1px);
+
+    border-color: rgba(188, 202, 194, 0.48);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(31, 38, 34, 0.98),
+            rgba(11, 16, 14, 0.98)
+        );
+}
+
+
+/* =========================================================
+   SAĞ ALT ENVANTER
+   ========================================================= */
+
+.inventory {
+    position: fixed;
+    z-index: 80;
+
+    right: 24px;
+    bottom: 24px;
+
+    width: 360px;
+    min-height: 130px;
+
+    padding: 20px 22px;
+
+    border: 1px solid rgba(140, 153, 147, 0.24);
+    border-radius: 17px;
+
+    background:
+        linear-gradient(
+            160deg,
+            rgba(12, 15, 14, 0.94),
+            rgba(4, 6, 5, 0.97)
+        );
+
+    box-shadow:
+        0 12px 42px rgba(0, 0, 0, 0.72);
+
+    backdrop-filter: blur(10px);
+}
+
+.inventory-title {
+    margin-bottom: 15px;
+
+    color: #ece9e4;
+
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+}
+
+.inventory ul,
+#inventory-list {
+    min-height: 54px;
+
+    display: grid;
+    grid-template-columns: repeat(6, minmax(42px, 1fr));
+    gap: 9px;
+
+    padding: 0;
+    margin: 0;
+
+    list-style: none;
+}
+
+#inventory-list li {
+    min-width: 0;
+    min-height: 52px;
+
+    display: grid;
+    place-items: center;
+
+    padding: 6px;
+
+    overflow: hidden;
+
+    border: 1px solid rgba(142, 155, 149, 0.23);
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(29, 33, 31, 0.78),
+            rgba(13, 16, 15, 0.82)
+        );
+
+    color: #c1c7c4;
+
+    font-size: 0.62rem;
+    line-height: 1.25;
+    text-align: center;
+
+    word-break: break-word;
+}
+
+#inventory-list li.inventory-empty {
+    color: #68716d;
+}
+
+#inventory-list:empty::before {
+    content: "";
+    grid-column: 1;
+
+    min-height: 52px;
+
+    border: 1px solid rgba(142, 155, 149, 0.23);
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(29, 33, 31, 0.65),
+            rgba(13, 16, 15, 0.75)
+        );
+
+    box-shadow:
+        55px 0 0 rgba(20, 23, 22, 0.72),
+        110px 0 0 rgba(20, 23, 22, 0.72),
+        165px 0 0 rgba(20, 23, 22, 0.72),
+        220px 0 0 rgba(20, 23, 22, 0.72),
+        275px 0 0 rgba(20, 23, 22, 0.72);
+}
+
+
+/* =========================================================
+   HOTSPOTLAR — SADECE YUVARLAK PARILTI
+   ========================================================= */
+
+.hotspot {
+    border: none !important;
+    border-radius: 0;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.hotspot:hover,
+.hotspot:focus-visible {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.hotspot::after {
+    content: "";
+
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    width: 12px;
+    height: 12px;
+
+    transform: translate(-50%, -50%);
+
+    border: 2px solid rgba(228, 235, 231, 0.92);
+    border-radius: 50%;
+
+    background: rgba(205, 220, 212, 0.18);
+
+    box-shadow:
+        0 0 0 5px rgba(219, 231, 225, 0.09),
+        0 0 19px rgba(209, 229, 218, 0.64);
+
+    opacity: 0.8;
+
+    transition:
+        opacity 180ms ease,
+        transform 180ms ease,
+        box-shadow 180ms ease;
+}
+
+.hotspot:hover::after,
+.hotspot:focus-visible::after {
+    inset: auto;
+
+    top: 50%;
+    left: 50%;
+
+    opacity: 1;
+
+    transform:
+        translate(-50%, -50%)
+        scale(1.16);
+
+    box-shadow:
+        0 0 0 7px rgba(219, 231, 225, 0.12),
+        0 0 25px rgba(209, 229, 218, 0.86);
+}
+
+.hotspot__label {
+    display: none;
+}
+
+
+/* =========================================================
+   ALT ORTA ETKİLEŞİM BİLDİRİMİ
+   ========================================================= */
+
+.interaction-prompt {
+    position: fixed;
+    z-index: 90;
+
+    left: 50%;
+    bottom: 27px;
+
+    min-width: 245px;
+
+    transform:
+        translateX(-50%)
+        translateY(8px);
+
+    padding: 12px 18px;
+
+    border: 1px solid rgba(143, 156, 150, 0.24);
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            160deg,
+            rgba(17, 21, 19, 0.95),
+            rgba(6, 9, 8, 0.97)
+        );
+
+    color: #cbd0cd;
+
+    text-align: center;
+
+    box-shadow:
+        0 10px 34px rgba(0, 0, 0, 0.62);
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition:
+        opacity 150ms ease,
+        transform 150ms ease;
+}
+
+.interaction-prompt.interaction-prompt--visible {
+    opacity: 1;
+
+    transform:
+        translateX(-50%)
+        translateY(0);
+}
+
+
+/* =========================================================
+   BÖLÜM GİRİŞİ
+   ========================================================= */
+
+.chapter-intro {
+    z-index: 5000;
+}
+
+
+/* =========================================================
+   KÜÇÜK EKRANLAR
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+    .hud {
+        top: 14px;
+        left: 14px;
+        right: 14px;
+    }
+
+    .save-status {
+        display: none;
+    }
+
+    .story-panel {
+        left: 15px;
+        bottom: 15px;
+        width: 310px;
+    }
+
+    .inventory {
+        right: 15px;
+        bottom: 15px;
+        width: 310px;
+    }
+
+    .inventory ul,
+    #inventory-list {
+        grid-template-columns:
+            repeat(6, minmax(35px, 1fr));
+        gap: 6px;
+    }
+
+    .interaction-prompt {
+        bottom: 18px;
+    }
+}
+
+@media (max-width: 760px) {
+
+    body.room-page {
+        overflow: auto;
+    }
+
+    .room-shell {
+        min-width: 900px;
+        min-height: 620px;
+    }
+
+    .room {
+        min-width: 900px;
+        min-height: 620px;
+    }
+
+    .hud,
+    .story-panel,
+    .inventory,
+    .interaction-prompt {
+        position: absolute;
+    }
+
+    .hud {
+        min-width: 850px;
+    }
+}
+
+/* =========================================================
+   WHISPERS OF ASHVALE
+   ROOM 1 — CLEAN VERSION
+   ========================================================= */
+
+.room-page {
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    background: #020303;
+    color: #d7ded9;
+}
+
+.room-page * {
+    box-sizing: border-box;
+}
+
+.room-shell {
+    min-height: 100vh;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+/* =========================================================
+   HUD
+   ========================================================= */
+
+.hud {
+    position: relative;
+    z-index: 50;
+    display: grid;
+    grid-template-columns: minmax(120px, 1fr) minmax(90px, 0.7fr) minmax(150px, 1fr) auto;
+    gap: 24px;
+    align-items: center;
+    padding: 13px 22px;
+    border-bottom: 1px solid rgba(142, 165, 153, 0.18);
+    background: linear-gradient(180deg, rgba(5, 9, 8, 0.99), rgba(3, 6, 6, 0.96));
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.58);
+}
+
+.hud p,
+.hud strong {
+    margin: 0;
+}
+
+.hud__group {
+    min-width: 0;
+}
+
+.hud-label {
+    margin: 0 0 4px;
+    color: #788981;
+    font-size: 0.66rem;
+    letter-spacing: 0.22em;
+}
+
+.hud strong {
+    color: #e1e7e3;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+}
+
+.hud__status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #75857d;
+    font-size: 0.76rem;
+}
+
+.hud__status-light {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #6eaa87;
+    box-shadow: 0 0 10px rgba(110, 170, 135, 0.7);
+}
+
+.hud-button,
+.hint-button {
+    min-height: 42px;
+    padding: 10px 18px;
+    border: 1px solid rgba(136, 157, 147, 0.28);
+    background: linear-gradient(180deg, rgba(21, 29, 26, 0.94), rgba(8, 13, 11, 0.96));
+    color: #cbd5d0;
+    font-size: 0.74rem;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.hud-button:hover,
+.hint-button:hover {
+    border-color: rgba(175, 202, 188, 0.6);
+    background: linear-gradient(180deg, rgba(35, 47, 42, 0.96), rgba(12, 19, 16, 0.98));
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* =========================================================
+   ANA ODA VE GERÇEK ARKA PLAN
+   ========================================================= */
+
+.room {
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.room-one {
+    --flashlight-x: 50%;
+    --flashlight-y: 50%;
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.38)),
+        url("../images/ui/rooms/room1.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* HTML içinde duran eski CSS çizimlerini devre dışı bırakır. */
+.corridor-wall,
+.corridor-ceiling,
+.corridor-floor,
+.ceiling-light,
+.corridor-door,
+.exit-door,
+.reception-desk,
+.wheelchair,
+.wall-symbol,
+.blood-mark,
+.room-fog,
+.room-flicker {
+    display: none;
+}
+
+/* =========================================================
+   SU DAMLALARI
+   ========================================================= */
+
+.dripping-water {
+    position: absolute;
+    z-index: 11;
+    top: -20px;
+    width: 2px;
+    height: 45px;
+    background: linear-gradient(transparent, rgba(194, 214, 204, 0.44));
+    animation: water-drop 4.6s infinite;
+}
+
+.dripping-water--one { left: 35%; }
+.dripping-water--two { right: 28%; animation-delay: -2.2s; }
+
+@keyframes water-drop {
+    0% { transform: translateY(-80px); opacity: 0; }
+    18% { opacity: 0.7; }
+    100% { transform: translateY(80vh); opacity: 0; }
+}
+
+/* =========================================================
+   UZAKTAKİ FİGÜR
+   ========================================================= */
+
+.hallway-figure {
+    position: absolute;
+    z-index: 12;
+    left: 50%;
+    top: 31%;
+    width: 34px;
+    height: 140px;
+    transform: translateX(-50%) scale(0.55);
+    opacity: 0;
+    filter: blur(1px) drop-shadow(0 0 20px rgba(210, 224, 217, 0.18));
+    pointer-events: none;
+}
+
+.hallway-figure__head {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 26px;
+    height: 30px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: rgba(205, 211, 207, 0.65);
+}
+
+.hallway-figure__body {
+    position: absolute;
+    left: 50%;
+    top: 24px;
+    width: 48px;
+    height: 118px;
+    transform: translateX(-50%);
+    clip-path: polygon(36% 0, 64% 0, 100% 100%, 0 100%);
+    background: linear-gradient(180deg, rgba(205, 211, 207, 0.66), rgba(156, 165, 160, 0.12));
+}
+
+.hallway-figure.hallway-figure--visible {
+    animation: figure-appearance 2.4s ease forwards;
+}
+
+@keyframes figure-appearance {
+    0% { opacity: 0; }
+    18% { opacity: 0.74; }
+    72% { opacity: 0.58; }
+    100% { opacity: 0; }
+}
+
+/* =========================================================
+   HAREKETLİ GÖLGE
+   ========================================================= */
+
+.corridor-shadow {
+    position: absolute;
+    z-index: 13;
+    top: 18%;
+    left: -35%;
+    width: 32%;
+    height: 62%;
+    transform: skewX(-15deg);
+    background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.72), transparent);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.corridor-shadow.corridor-shadow--move {
+    animation: shadow-pass 1.4s ease-in-out;
+}
+
+@keyframes shadow-pass {
+    0% { left: -35%; opacity: 0; }
+    25% { opacity: 0.85; }
+    100% { left: 105%; opacity: 0; }
+}
+
+/* =========================================================
+   YENİ HAREKETLİ SİS
+   ========================================================= */
+
+.fog-container {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.fog {
+    position: absolute;
+    left: -40%;
+    bottom: -6%;
+    width: 180%;
+    height: 35%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.035) 40%, transparent 75%);
+    filter: blur(45px);
+    opacity: 0.55;
+    will-change: transform;
+}
+
+.fog-1 { animation: fog-left 42s linear infinite; }
+.fog-2 { bottom: 2%; opacity: 0.38; filter: blur(70px); animation: fog-right 55s linear infinite; }
+.fog-3 { bottom: 7%; opacity: 0.22; filter: blur(90px); animation: fog-float 30s ease-in-out infinite; }
+
+@keyframes fog-left {
+    from { transform: translateX(0); }
+    to { transform: translateX(-12%); }
+}
+
+@keyframes fog-right {
+    from { transform: translateX(-12%); }
+    to { transform: translateX(10%); }
+}
+
+@keyframes fog-float {
+    0%, 100% { transform: translate(-2%, 0); }
+    50% { transform: translate(2%, -8px); }
+}
+
+/* =========================================================
+   TOZ PARÇACIKLARI
+   ========================================================= */
+
+.floating-dust {
+    position: absolute;
+    inset: 0;
+    z-index: 15;
+    pointer-events: none;
+    opacity: 0.24;
+    background-image:
+        radial-gradient(circle, rgba(255, 255, 255, 0.58) 0 1px, transparent 2px),
+        radial-gradient(circle, rgba(255, 255, 255, 0.3) 0 1px, transparent 2px);
+    background-size: 110px 110px, 170px 170px;
+    animation: dust-drift 18s linear infinite;
+}
+
+@keyframes dust-drift {
+    from { background-position: 0 0, 20px 40px; }
+    to { background-position: 100px 220px, -90px 160px; }
+}
+
+/* =========================================================
+   KARANLIK VE EL FENERİ
+   ========================================================= */
+
+.room-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 17;
+    pointer-events: none;
+    background: radial-gradient(circle at center, transparent 18%, rgba(0, 0, 0, 0.14) 48%, rgba(0, 0, 0, 0.8) 100%);
+}
+
+.room-one::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 19;
+    pointer-events: none;
+    background: radial-gradient(
+        circle 240px at var(--flashlight-x) var(--flashlight-y),
+        transparent 0%,
+        rgba(0, 0, 0, 0.08) 42%,
+        rgba(0, 0, 0, 0.52) 68%,
+        rgba(0, 0, 0, 0.93) 100%
+    );
+}
+
+.flashlight {
+    position: absolute;
+    z-index: 20;
+    width: 460px;
+    height: 460px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(218, 233, 224, 0.16) 0%, rgba(179, 207, 191, 0.08) 34%, transparent 72%);
+    filter: blur(3px);
+    mix-blend-mode: screen;
+    opacity: 0.9;
+    transition: opacity 200ms ease;
+}
+
+.room-one.flashlight-idle .flashlight { opacity: 0.42; }
+
+/* =========================================================
+   HİKÂYE METNİ
+   ========================================================= */
+
+.room-story {
+    position: absolute;
+    z-index: 25;
+    left: 50%;
+    bottom: 4%;
+    width: min(720px, 82%);
+    transform: translateX(-50%);
+    padding: 15px 22px;
+    border: 1px solid rgba(135, 157, 146, 0.22);
+    background: linear-gradient(180deg, rgba(5, 9, 8, 0.82), rgba(1, 3, 3, 0.9));
+    backdrop-filter: blur(10px);
+    text-align: center;
+    color: #aab6b0;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.48);
+}
+
+.room-story p {
+    margin: 0;
+    font-size: clamp(0.82rem, 1.5vw, 1rem);
+    line-height: 1.7;
+}
+
+/* =========================================================
+   HOTSPOTLAR
+   ========================================================= */
+
+.hotspot {
+    position: absolute;
+    z-index: 30;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    outline: none;
+}
+
+.hotspot::after {
+    content: "";
+    position: absolute;
+    inset: 44%;
+    border-radius: 50%;
+    background: rgba(205, 228, 216, 0.18);
+    box-shadow: 0 0 18px rgba(178, 213, 194, 0.25);
+    opacity: 0;
+    transition: opacity 180ms ease, inset 180ms ease;
+}
+
+.hotspot:hover::after,
+.hotspot:focus-visible::after {
+    inset: 41%;
+    opacity: 1;
+}
+
+.hotspot__label {
+    position: absolute;
+    left: 50%;
+    bottom: 6%;
+    transform: translate(-50%, 8px);
+    min-width: max-content;
+    padding: 7px 10px;
+    border: 1px solid rgba(147, 174, 160, 0.3);
+    background: rgba(2, 5, 4, 0.86);
+    color: #c6d3cc;
+    font-size: 0.63rem;
+    letter-spacing: 0.13em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.hotspot:hover .hotspot__label,
+.hotspot:focus-visible .hotspot__label {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.hotspot-register { left: 0; bottom: 14%; width: 31%; height: 45%; }
+.hotspot-door { left: 43%; top: 24%; width: 15%; height: 45%; }
+.hotspot-symbol { right: 5%; top: 18%; width: 22%; height: 38%; }
+.hotspot-wheelchair { right: 13%; bottom: 15%; width: 20%; height: 36%; }
+
+/* =========================================================
+   ETKİLEŞİM VE FISILTI MESAJLARI
+   ========================================================= */
+
+.interaction-prompt {
+    position: fixed;
+    z-index: 1000;
+    transform: translate(14px, 14px);
+    padding: 7px 10px;
+    border: 1px solid rgba(150, 178, 164, 0.34);
+    background: rgba(2, 5, 4, 0.9);
+    color: #c9d5cf;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 120ms ease;
+}
+
+.interaction-prompt.interaction-prompt--visible { opacity: 1; }
+
+.whisper-message {
+    position: absolute;
+    z-index: 45;
+    top: 18%;
+    left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    color: rgba(205, 216, 210, 0.75);
+    font-family: serif;
+    font-size: clamp(1rem, 3vw, 2.2rem);
+    font-style: italic;
+    letter-spacing: 0.12em;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.14);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.whisper-message.whisper-message--visible { animation: whisper-appear 3.4s ease forwards; }
+
+@keyframes whisper-appear {
+    0% { opacity: 0; transform: translateX(-50%) translateY(12px); }
+    20%, 65% { opacity: 0.72; }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+}
+
+/* =========================================================
+   ENVANTER
+   ========================================================= */
+
+.inventory-panel {
+    position: relative;
+    z-index: 50;
+    min-height: 88px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 12px 22px;
+    border-top: 1px solid rgba(136, 158, 147, 0.18);
+    background: linear-gradient(180deg, rgba(4, 8, 7, 0.97), rgba(2, 5, 4, 0.99));
+    box-shadow: 0 -10px 34px rgba(0, 0, 0, 0.46);
+}
+
+.inventory-panel__content {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+}
+
+.inventory-panel ul {
+    min-height: 34px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    padding: 0;
+    margin: 6px 0 0;
+    list-style: none;
+}
+
+.inventory-panel li {
+    padding: 7px 10px;
+    border: 1px solid rgba(145, 168, 157, 0.24);
+    background: rgba(255, 255, 255, 0.025);
+    color: #bac8c1;
+    font-size: 0.76rem;
+}
+
+.inventory-panel li.inventory-empty { color: #66756e; }
+
+.objective-text {
+    margin: 0;
+    color: #75857d;
+    font-size: 0.78rem;
+    font-style: italic;
+}
+
+/* =========================================================
+   BÖLÜM GİRİŞİ
+   ========================================================= */
+
+.chapter-intro {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(circle at center, #080c0b, #010202 70%);
+    text-align: center;
+    transition: opacity 0.9s ease, visibility 0.9s ease;
+}
+
+.chapter-intro__content { animation: chapter-intro-rise 1.5s ease both; }
+.chapter-intro__number { margin: 0; color: #7c8b84; font-size: 0.78rem; letter-spacing: 0.45em; }
+.chapter-intro h1 { margin: 10px 0 12px; color: #e1e6e3; font-family: serif; font-size: clamp(2.2rem, 6vw, 5rem); font-weight: 500; }
+.chapter-intro span { color: #7e8d86; font-size: 0.95rem; }
+.chapter-intro__line { width: 100px; height: 1px; margin: 25px auto 0; background: linear-gradient(90deg, transparent, #77877f, transparent); }
+.chapter-intro.chapter-intro--hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+@keyframes chapter-intro-rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   DİYALOG
+   ========================================================= */
+
+.game-dialog {
+    width: min(620px, calc(100% - 32px));
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #d6ddd9;
+}
+
+.game-dialog::backdrop { background: rgba(0, 0, 0, 0.78); backdrop-filter: blur(7px); }
+
+.dialog-card {
+    position: relative;
+    padding: 28px;
+    border: 1px solid rgba(143, 166, 155, 0.3);
+    background: linear-gradient(180deg, rgba(12, 18, 16, 0.99), rgba(3, 7, 6, 0.99));
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.8);
+}
+
+.dialog-x-button {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(141, 163, 152, 0.22);
+    background: transparent;
+    color: #94a29b;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.dialog-kicker { margin: 0 0 8px; color: #9d453e; font-size: 0.68rem; letter-spacing: 0.24em; }
+.dialog-card h2 { margin: 0 45px 15px 0; font-family: serif; font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 500; }
+.dialog-card > p:not(.dialog-kicker) { color: #9eaba4; line-height: 1.7; }
+
+.clue-visual {
+    min-height: 170px;
+    display: grid;
+    place-items: center;
+    margin: 20px 0;
+    padding: 22px;
+    border: 1px solid rgba(135, 158, 147, 0.22);
+    background: radial-gradient(circle, rgba(148, 178, 162, 0.11), transparent 55%), rgba(0, 0, 0, 0.24);
+    color: #b8c6bf;
+    font-size: clamp(2.2rem, 8vw, 5rem);
+    text-align: center;
+}
+
+.clue-visual.note {
+    min-height: 220px;
+    color: #2b2116;
+    background: linear-gradient(rgba(116, 29, 27, 0.12), rgba(116, 29, 27, 0.12)), #ad9b74;
+    font-family: serif;
+    font-size: clamp(1.1rem, 3vw, 1.8rem);
+    line-height: 1.55;
+    transform: rotate(-0.7deg);
+}
+
+.clue-visual.symbol { color: rgba(176, 58, 49, 0.8); text-shadow: 0 0 28px rgba(138, 34, 29, 0.42); }
+.clue-visual.wheelchair-clue { font-size: 4rem; }
+
+.code-area { margin-top: 22px; }
+.code-area label { display: block; margin-bottom: 8px; color: #82918a; font-size: 0.7rem; letter-spacing: 0.18em; }
+
+.code-area input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid rgba(148, 175, 161, 0.28);
+    outline: none;
+    background: #030605;
+    color: #e3e9e6;
+    font-size: 1.5rem;
+    letter-spacing: 0.48em;
+    text-align: center;
+}
+
+.code-area input:focus { border-color: rgba(174, 207, 190, 0.66); box-shadow: 0 0 0 3px rgba(127, 163, 144, 0.08); }
+.code-area .primary-small { width: 100%; margin-top: 12px; }
+.code-feedback { min-height: 1.5em; margin: 12px 0 0; color: #bf7070; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
+
+.primary-small,
+.secondary-button {
+    padding: 11px 16px;
+    border: 1px solid rgba(143, 166, 155, 0.28);
+    cursor: pointer;
+    font-size: 0.72rem;
+    letter-spacing: 0.13em;
+}
+
+.primary-small { border-color: rgba(123, 55, 49, 0.78); background: linear-gradient(180deg, #8c3029, #571d19); color: #fff; }
+.secondary-button { background: rgba(255, 255, 255, 0.025); color: #aab7b0; }
+
+/* =========================================================
+   TAMAMLAMA VE EKRAN EFEKTLERİ
+   ========================================================= */
+
+.screen-flash {
+    position: fixed;
+    inset: 0;
+    z-index: 6000;
+    background: rgba(209, 225, 217, 0.72);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.screen-flash.screen-flash--active { animation: screen-flash-animation 0.7s ease; }
+
+@keyframes screen-flash-animation {
+    0% { opacity: 0; }
+    12% { opacity: 0.8; }
+    25% { opacity: 0.08; }
+    40% { opacity: 0.48; }
+    100% { opacity: 0; }
+}
+
+.chapter-complete {
+    position: fixed;
+    inset: 0;
+    z-index: 7000;
+    display: grid;
+    place-items: center;
+    background: rgba(1, 3, 3, 0.94);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.chapter-complete.chapter-complete--visible { opacity: 1; visibility: visible; }
+.chapter-complete__content { max-width: 620px; padding: 30px; text-align: center; }
+.chapter-complete__content p { color: #944239; font-size: 0.74rem; letter-spacing: 0.32em; }
+.chapter-complete__content h2 { margin: 14px 0; font-family: serif; font-size: clamp(2.3rem, 7vw, 5.6rem); font-weight: 500; }
+.chapter-complete__content span { color: #86958e; line-height: 1.8; }
+
+/* =========================================================
+   MOBİL
+   ========================================================= */
+
+@media (max-width: 760px) {
+    .hud {
+        grid-template-columns: 1fr 1fr auto;
+        gap: 12px;
+        padding: 10px 12px;
+    }
+
+    .hud__status { display: none; }
+    .hud-button { padding: 9px 11px; font-size: 0.64rem; }
+    .inventory-panel { padding: 10px 12px; }
+    .inventory-panel__content { display: block; }
+    .objective-text { display: none; }
+
+    .hotspot-register { left: 0; width: 35%; }
+    .hotspot-door { left: 40%; width: 20%; }
+    .hotspot-symbol { right: 2%; width: 25%; }
+    .hotspot-wheelchair { right: 5%; width: 27%; }
+
+    .room-story {
+        bottom: 3%;
+        width: 91%;
+        padding: 12px 14px;
+    }
+
+    .dialog-card { padding: 22px 18px; }
+
+    .room-one::after {
+        background: radial-gradient(
+            circle 210px at var(--flashlight-x) var(--flashlight-y),
+            transparent 0%,
+            rgba(0, 0, 0, 0.08) 40%,
+            rgba(0, 0, 0, 0.58) 67%,
+            rgba(0, 0, 0, 0.94) 100%
+        );
+    }
+
+    .flashlight {
+        width: 390px;
+        height: 390px;
+    }
+}
+
+rooms_clean.css
+/* =========================================================
+   WHISPERS OF ASHVALE
+   ROOM 1 — CLEAN VERSION
+   ========================================================= */
+
+.room-page {
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    background: #020303;
+    color: #d7ded9;
+}
+
+.room-page * {
+    box-sizing: border-box;
+}
+
+.room-shell {
+    min-height: 100vh;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+/* =========================================================
+   HUD
+   ========================================================= */
+
+.hud {
+    position: relative;
+    z-index: 50;
+    display: grid;
+    grid-template-columns: minmax(120px, 1fr) minmax(90px, 0.7fr) minmax(150px, 1fr) auto;
+    gap: 24px;
+    align-items: center;
+    padding: 13px 22px;
+    border-bottom: 1px solid rgba(142, 165, 153, 0.18);
+    background: linear-gradient(180deg, rgba(5, 9, 8, 0.99), rgba(3, 6, 6, 0.96));
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.58);
+}
+
+.hud p,
+.hud strong {
+    margin: 0;
+}
+
+.hud__group {
+    min-width: 0;
+}
+
+.hud-label {
+    margin: 0 0 4px;
+    color: #788981;
+    font-size: 0.66rem;
+    letter-spacing: 0.22em;
+}
+
+.hud strong {
+    color: #e1e7e3;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+}
+
+.hud__status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #75857d;
+    font-size: 0.76rem;
+}
+
+.hud__status-light {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #6eaa87;
+    box-shadow: 0 0 10px rgba(110, 170, 135, 0.7);
+}
+
+.hud-button,
+.hint-button {
+    min-height: 42px;
+    padding: 10px 18px;
+    border: 1px solid rgba(136, 157, 147, 0.28);
+    background: linear-gradient(180deg, rgba(21, 29, 26, 0.94), rgba(8, 13, 11, 0.96));
+    color: #cbd5d0;
+    font-size: 0.74rem;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.hud-button:hover,
+.hint-button:hover {
+    border-color: rgba(175, 202, 188, 0.6);
+    background: linear-gradient(180deg, rgba(35, 47, 42, 0.96), rgba(12, 19, 16, 0.98));
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* =========================================================
+   ANA ODA VE GERÇEK ARKA PLAN
+   ========================================================= */
+
+.room {
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.room-one {
+    --flashlight-x: 50%;
+    --flashlight-y: 50%;
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.38)),
+        url("../images/ui/rooms/room1.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* HTML içinde duran eski CSS çizimlerini devre dışı bırakır. */
+.corridor-wall,
+.corridor-ceiling,
+.corridor-floor,
+.ceiling-light,
+.corridor-door,
+.exit-door,
+.reception-desk,
+.wheelchair,
+.wall-symbol,
+.blood-mark,
+.room-fog,
+.room-flicker {
+    display: none;
+}
+
+/* =========================================================
+   SU DAMLALARI
+   ========================================================= */
+
+.dripping-water {
+    position: absolute;
+    z-index: 11;
+    top: -20px;
+    width: 2px;
+    height: 45px;
+    background: linear-gradient(transparent, rgba(194, 214, 204, 0.44));
+    animation: water-drop 4.6s infinite;
+}
+
+.dripping-water--one { left: 35%; }
+.dripping-water--two { right: 28%; animation-delay: -2.2s; }
+
+@keyframes water-drop {
+    0% { transform: translateY(-80px); opacity: 0; }
+    18% { opacity: 0.7; }
+    100% { transform: translateY(80vh); opacity: 0; }
+}
+
+/* =========================================================
+   UZAKTAKİ FİGÜR
+   ========================================================= */
+
+.hallway-figure {
+    position: absolute;
+    z-index: 12;
+    left: 50%;
+    top: 31%;
+    width: 34px;
+    height: 140px;
+    transform: translateX(-50%) scale(0.55);
+    opacity: 0;
+    filter: blur(1px) drop-shadow(0 0 20px rgba(210, 224, 217, 0.18));
+    pointer-events: none;
+}
+
+.hallway-figure__head {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 26px;
+    height: 30px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: rgba(205, 211, 207, 0.65);
+}
+
+.hallway-figure__body {
+    position: absolute;
+    left: 50%;
+    top: 24px;
+    width: 48px;
+    height: 118px;
+    transform: translateX(-50%);
+    clip-path: polygon(36% 0, 64% 0, 100% 100%, 0 100%);
+    background: linear-gradient(180deg, rgba(205, 211, 207, 0.66), rgba(156, 165, 160, 0.12));
+}
+
+.hallway-figure.hallway-figure--visible {
+    animation: figure-appearance 2.4s ease forwards;
+}
+
+@keyframes figure-appearance {
+    0% { opacity: 0; }
+    18% { opacity: 0.74; }
+    72% { opacity: 0.58; }
+    100% { opacity: 0; }
+}
+
+/* =========================================================
+   HAREKETLİ GÖLGE
+   ========================================================= */
+
+.corridor-shadow {
+    position: absolute;
+    z-index: 13;
+    top: 18%;
+    left: -35%;
+    width: 32%;
+    height: 62%;
+    transform: skewX(-15deg);
+    background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.72), transparent);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.corridor-shadow.corridor-shadow--move {
+    animation: shadow-pass 1.4s ease-in-out;
+}
+
+@keyframes shadow-pass {
+    0% { left: -35%; opacity: 0; }
+    25% { opacity: 0.85; }
+    100% { left: 105%; opacity: 0; }
+}
+
+/* =========================================================
+   YENİ HAREKETLİ SİS
+   ========================================================= */
+
+.fog-container {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.fog {
+    position: absolute;
+    left: -40%;
+    bottom: -6%;
+    width: 180%;
+    height: 35%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.035) 40%, transparent 75%);
+    filter: blur(45px);
+    opacity: 0.55;
+    will-change: transform;
+}
+
+.fog-1 { animation: fog-left 42s linear infinite; }
+.fog-2 { bottom: 2%; opacity: 0.38; filter: blur(70px); animation: fog-right 55s linear infinite; }
+.fog-3 { bottom: 7%; opacity: 0.22; filter: blur(90px); animation: fog-float 30s ease-in-out infinite; }
+
+@keyframes fog-left {
+    from { transform: translateX(0); }
+    to { transform: translateX(-12%); }
+}
+
+@keyframes fog-right {
+    from { transform: translateX(-12%); }
+    to { transform: translateX(10%); }
+}
+
+@keyframes fog-float {
+    0%, 100% { transform: translate(-2%, 0); }
+    50% { transform: translate(2%, -8px); }
+}
+
+/* =========================================================
+   TOZ PARÇACIKLARI
+   ========================================================= */
+
+.floating-dust {
+    position: absolute;
+    inset: 0;
+    z-index: 15;
+    pointer-events: none;
+    opacity: 0.24;
+    background-image:
+        radial-gradient(circle, rgba(255, 255, 255, 0.58) 0 1px, transparent 2px),
+        radial-gradient(circle, rgba(255, 255, 255, 0.3) 0 1px, transparent 2px);
+    background-size: 110px 110px, 170px 170px;
+    animation: dust-drift 18s linear infinite;
+}
+
+@keyframes dust-drift {
+    from { background-position: 0 0, 20px 40px; }
+    to { background-position: 100px 220px, -90px 160px; }
+}
+
+/* =========================================================
+   KARANLIK VE EL FENERİ
+   ========================================================= */
+
+.room-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 17;
+    pointer-events: none;
+    background: radial-gradient(circle at center, transparent 18%, rgba(0, 0, 0, 0.14) 48%, rgba(0, 0, 0, 0.8) 100%);
+}
+
+.room-one::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 19;
+    pointer-events: none;
+    background: radial-gradient(
+        circle 240px at var(--flashlight-x) var(--flashlight-y),
+        transparent 0%,
+        rgba(0, 0, 0, 0.08) 42%,
+        rgba(0, 0, 0, 0.52) 68%,
+        rgba(0, 0, 0, 0.93) 100%
+    );
+}
+
+.flashlight {
+    position: absolute;
+    z-index: 20;
+    width: 460px;
+    height: 460px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(218, 233, 224, 0.16) 0%, rgba(179, 207, 191, 0.08) 34%, transparent 72%);
+    filter: blur(3px);
+    mix-blend-mode: screen;
+    opacity: 0.9;
+    transition: opacity 200ms ease;
+}
+
+.room-one.flashlight-idle .flashlight { opacity: 0.42; }
+
+/* =========================================================
+   HİKÂYE METNİ
+   ========================================================= */
+
+.room-story {
+    position: absolute;
+    z-index: 25;
+    left: 50%;
+    bottom: 4%;
+    width: min(720px, 82%);
+    transform: translateX(-50%);
+    padding: 15px 22px;
+    border: 1px solid rgba(135, 157, 146, 0.22);
+    background: linear-gradient(180deg, rgba(5, 9, 8, 0.82), rgba(1, 3, 3, 0.9));
+    backdrop-filter: blur(10px);
+    text-align: center;
+    color: #aab6b0;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.48);
+}
+
+.room-story p {
+    margin: 0;
+    font-size: clamp(0.82rem, 1.5vw, 1rem);
+    line-height: 1.7;
+}
+
+/* =========================================================
+   HOTSPOTLAR
+   ========================================================= */
+
+.hotspot {
+    position: absolute;
+    z-index: 30;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    outline: none;
+}
+
+.hotspot::after {
+    content: "";
+    position: absolute;
+    inset: 44%;
+    border-radius: 50%;
+    background: rgba(205, 228, 216, 0.18);
+    box-shadow: 0 0 18px rgba(178, 213, 194, 0.25);
+    opacity: 0;
+    transition: opacity 180ms ease, inset 180ms ease;
+}
+
+.hotspot:hover::after,
+.hotspot:focus-visible::after {
+    inset: 41%;
+    opacity: 1;
+}
+
+.hotspot__label {
+    position: absolute;
+    left: 50%;
+    bottom: 6%;
+    transform: translate(-50%, 8px);
+    min-width: max-content;
+    padding: 7px 10px;
+    border: 1px solid rgba(147, 174, 160, 0.3);
+    background: rgba(2, 5, 4, 0.86);
+    color: #c6d3cc;
+    font-size: 0.63rem;
+    letter-spacing: 0.13em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.hotspot:hover .hotspot__label,
+.hotspot:focus-visible .hotspot__label {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.hotspot-register { left: 0; bottom: 14%; width: 31%; height: 45%; }
+.hotspot-door { left: 43%; top: 24%; width: 15%; height: 45%; }
+.hotspot-symbol { right: 5%; top: 18%; width: 22%; height: 38%; }
+.hotspot-wheelchair { right: 13%; bottom: 15%; width: 20%; height: 36%; }
+
+/* =========================================================
+   ETKİLEŞİM VE FISILTI MESAJLARI
+   ========================================================= */
+
+.interaction-prompt {
+    position: fixed;
+    z-index: 1000;
+    transform: translate(14px, 14px);
+    padding: 7px 10px;
+    border: 1px solid rgba(150, 178, 164, 0.34);
+    background: rgba(2, 5, 4, 0.9);
+    color: #c9d5cf;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 120ms ease;
+}
+
+.interaction-prompt.interaction-prompt--visible { opacity: 1; }
+
+.whisper-message {
+    position: absolute;
+    z-index: 45;
+    top: 18%;
+    left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    color: rgba(205, 216, 210, 0.75);
+    font-family: serif;
+    font-size: clamp(1rem, 3vw, 2.2rem);
+    font-style: italic;
+    letter-spacing: 0.12em;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.14);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.whisper-message.whisper-message--visible { animation: whisper-appear 3.4s ease forwards; }
+
+@keyframes whisper-appear {
+    0% { opacity: 0; transform: translateX(-50%) translateY(12px); }
+    20%, 65% { opacity: 0.72; }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+}
+
+/* =========================================================
+   ENVANTER
+   ========================================================= */
+
+.inventory-panel {
+    position: relative;
+    z-index: 50;
+    min-height: 88px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 12px 22px;
+    border-top: 1px solid rgba(136, 158, 147, 0.18);
+    background: linear-gradient(180deg, rgba(4, 8, 7, 0.97), rgba(2, 5, 4, 0.99));
+    box-shadow: 0 -10px 34px rgba(0, 0, 0, 0.46);
+}
+
+.inventory-panel__content {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+}
+
+.inventory-panel ul {
+    min-height: 34px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    padding: 0;
+    margin: 6px 0 0;
+    list-style: none;
+}
+
+.inventory-panel li {
+    padding: 7px 10px;
+    border: 1px solid rgba(145, 168, 157, 0.24);
+    background: rgba(255, 255, 255, 0.025);
+    color: #bac8c1;
+    font-size: 0.76rem;
+}
+
+.inventory-panel li.inventory-empty { color: #66756e; }
+
+.objective-text {
+    margin: 0;
+    color: #75857d;
+    font-size: 0.78rem;
+    font-style: italic;
+}
+
+/* =========================================================
+   BÖLÜM GİRİŞİ
+   ========================================================= */
+
+.chapter-intro {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(circle at center, #080c0b, #010202 70%);
+    text-align: center;
+    transition: opacity 0.9s ease, visibility 0.9s ease;
+}
+
+.chapter-intro__content { animation: chapter-intro-rise 1.5s ease both; }
+.chapter-intro__number { margin: 0; color: #7c8b84; font-size: 0.78rem; letter-spacing: 0.45em; }
+.chapter-intro h1 { margin: 10px 0 12px; color: #e1e6e3; font-family: serif; font-size: clamp(2.2rem, 6vw, 5rem); font-weight: 500; }
+.chapter-intro span { color: #7e8d86; font-size: 0.95rem; }
+.chapter-intro__line { width: 100px; height: 1px; margin: 25px auto 0; background: linear-gradient(90deg, transparent, #77877f, transparent); }
+.chapter-intro.chapter-intro--hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+@keyframes chapter-intro-rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   DİYALOG
+   ========================================================= */
+
+.game-dialog {
+    width: min(620px, calc(100% - 32px));
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #d6ddd9;
+}
+
+.game-dialog::backdrop { background: rgba(0, 0, 0, 0.78); backdrop-filter: blur(7px); }
+
+.dialog-card {
+    position: relative;
+    padding: 28px;
+    border: 1px solid rgba(143, 166, 155, 0.3);
+    background: linear-gradient(180deg, rgba(12, 18, 16, 0.99), rgba(3, 7, 6, 0.99));
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.8);
+}
+
+.dialog-x-button {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(141, 163, 152, 0.22);
+    background: transparent;
+    color: #94a29b;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.dialog-kicker { margin: 0 0 8px; color: #9d453e; font-size: 0.68rem; letter-spacing: 0.24em; }
+.dialog-card h2 { margin: 0 45px 15px 0; font-family: serif; font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 500; }
+.dialog-card > p:not(.dialog-kicker) { color: #9eaba4; line-height: 1.7; }
+
+.clue-visual {
+    min-height: 170px;
+    display: grid;
+    place-items: center;
+    margin: 20px 0;
+    padding: 22px;
+    border: 1px solid rgba(135, 158, 147, 0.22);
+    background: radial-gradient(circle, rgba(148, 178, 162, 0.11), transparent 55%), rgba(0, 0, 0, 0.24);
+    color: #b8c6bf;
+    font-size: clamp(2.2rem, 8vw, 5rem);
+    text-align: center;
+}
+
+.clue-visual.note {
+    min-height: 220px;
+    color: #2b2116;
+    background: linear-gradient(rgba(116, 29, 27, 0.12), rgba(116, 29, 27, 0.12)), #ad9b74;
+    font-family: serif;
+    font-size: clamp(1.1rem, 3vw, 1.8rem);
+    line-height: 1.55;
+    transform: rotate(-0.7deg);
+}
+
+.clue-visual.symbol { color: rgba(176, 58, 49, 0.8); text-shadow: 0 0 28px rgba(138, 34, 29, 0.42); }
+.clue-visual.wheelchair-clue { font-size: 4rem; }
+
+.code-area { margin-top: 22px; }
+.code-area label { display: block; margin-bottom: 8px; color: #82918a; font-size: 0.7rem; letter-spacing: 0.18em; }
+
+.code-area input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid rgba(148, 175, 161, 0.28);
+    outline: none;
+    background: #030605;
+    color: #e3e9e6;
+    font-size: 1.5rem;
+    letter-spacing: 0.48em;
+    text-align: center;
+}
+
+.code-area input:focus { border-color: rgba(174, 207, 190, 0.66); box-shadow: 0 0 0 3px rgba(127, 163, 144, 0.08); }
+.code-area .primary-small { width: 100%; margin-top: 12px; }
+.code-feedback { min-height: 1.5em; margin: 12px 0 0; color: #bf7070; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
+
+.primary-small,
+.secondary-button {
+    padding: 11px 16px;
+    border: 1px solid rgba(143, 166, 155, 0.28);
+    cursor: pointer;
+    font-size: 0.72rem;
+    letter-spacing: 0.13em;
+}
+
+.primary-small { border-color: rgba(123, 55, 49, 0.78); background: linear-gradient(180deg, #8c3029, #571d19); color: #fff; }
+.secondary-button { background: rgba(255, 255, 255, 0.025); color: #aab7b0; }
+
+/* =========================================================
+   TAMAMLAMA VE EKRAN EFEKTLERİ
+   ========================================================= */
+
+.screen-flash {
+    position: fixed;
+    inset: 0;
+    z-index: 6000;
+    background: rgba(209, 225, 217, 0.72);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.screen-flash.screen-flash--active { animation: screen-flash-animation 0.7s ease; }
+
+@keyframes screen-flash-animation {
+    0% { opacity: 0; }
+    12% { opacity: 0.8; }
+    25% { opacity: 0.08; }
+    40% { opacity: 0.48; }
+    100% { opacity: 0; }
+}
+
+.chapter-complete {
+    position: fixed;
+    inset: 0;
+    z-index: 7000;
+    display: grid;
+    place-items: center;
+    background: rgba(1, 3, 3, 0.94);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.chapter-complete.chapter-complete--visible { opacity: 1; visibility: visible; }
+.chapter-complete__content { max-width: 620px; padding: 30px; text-align: center; }
+.chapter-complete__content p { color: #944239; font-size: 0.74rem; letter-spacing: 0.32em; }
+.chapter-complete__content h2 { margin: 14px 0; font-family: serif; font-size: clamp(2.3rem, 7vw, 5.6rem); font-weight: 500; }
+.chapter-complete__content span { color: #86958e; line-height: 1.8; }
+
+/* =========================================================
+   MOBİL
+   ========================================================= */
+
+@media (max-width: 760px) {
+    .hud {
+        grid-template-columns: 1fr 1fr auto;
+        gap: 12px;
+        padding: 10px 12px;
+    }
+
+    .hud__status { display: none; }
+    .hud-button { padding: 9px 11px; font-size: 0.64rem; }
+    .inventory-panel { padding: 10px 12px; }
+    .inventory-panel__content { display: block; }
+    .objective-text { display: none; }
+
+    .hotspot-register { left: 0; width: 35%; }
+    .hotspot-door { left: 40%; width: 20%; }
+    .hotspot-symbol { right: 2%; width: 25%; }
+    .hotspot-wheelchair { right: 5%; width: 27%; }
+
+    .room-story {
+        bottom: 3%;
+        width: 91%;
+        padding: 12px 14px;
+    }
+
+    .dialog-card { padding: 22px 18px; }
+
+    .room-one::after {
+        background: radial-gradient(
+            circle 210px at var(--flashlight-x) var(--flashlight-y),
+            transparent 0%,
+            rgba(0, 0, 0, 0.08) 40%,
+            rgba(0, 0, 0, 0.58) 67%,
+            rgba(0, 0, 0, 0.94) 100%
+        );
+    }
+
+    .flashlight {
+        width: 390px;
+        height: 390px;
+    }
+}
+/* =========================================================
+   ROOM 1 — ROOM 2 İLE AYNI SABİT ARAYÜZ YERLEŞİMİ
+   Bu bölüm yalnızca chapter-one sayfasını etkiler.
+   ========================================================= */
+
+body.chapter-one {
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    background: #050606;
+    color: #d8dedb;
+    font-family: "Inter", Arial, sans-serif;
+}
+
+body.chapter-one .room-shell {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 620px;
+    display: block;
+    overflow: hidden;
+}
+
+body.chapter-one .hud {
+    position: fixed;
+    z-index: 100;
+    top: 20px;
+    left: 24px;
+    right: 24px;
+    height: 88px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 20px;
+    padding: 13px 22px;
+    border: 1px solid rgba(135, 151, 143, 0.18);
+    border-radius: 0;
+    background: linear-gradient(180deg, rgba(7, 11, 10, 0.96), rgba(3, 6, 5, 0.97));
+    box-shadow: 0 10px 38px rgba(0, 0, 0, 0.68);
+}
+
+body.chapter-one .hud-left { justify-self: start; }
+body.chapter-one .hud-right { justify-self: end; }
+
+body.chapter-one .hud-center {
+    justify-self: center;
+    display: flex;
+    align-items: center;
+    gap: 34px;
+}
+
+body.chapter-one .player-box {
+    min-width: 170px;
+    padding: 12px 18px;
+    border: 1px solid rgba(148, 163, 155, 0.25);
+    border-radius: 13px;
+    background: linear-gradient(180deg, rgba(14, 19, 17, 0.94), rgba(6, 9, 8, 0.94));
+}
+
+body.chapter-one .player-box .label {
+    display: block;
+    margin-bottom: 5px;
+    color: #7e8a84;
+    font-size: 0.65rem;
+    letter-spacing: 0.27em;
+}
+
+body.chapter-one #hud-player {
+    color: #e5e9e7;
+    font-size: 0.94rem;
+    font-weight: 600;
+}
+
+body.chapter-one .chapter-box {
+    padding: 17px 27px;
+    border: 1px solid rgba(148, 163, 155, 0.25);
+    border-radius: 13px;
+    background: linear-gradient(180deg, rgba(13, 18, 16, 0.95), rgba(5, 8, 7, 0.95));
+    color: #e4e7e5;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.23em;
+    white-space: nowrap;
+}
+
+body.chapter-one .save-status {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #76847d;
+    font-size: 0.73rem;
+    white-space: nowrap;
+}
+
+body.chapter-one .save-status-light {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #72b38f;
+    box-shadow: 0 0 11px rgba(91, 196, 137, 0.82);
+}
+
+body.chapter-one .menu-button {
+    min-width: 130px;
+    min-height: 55px;
+    padding: 13px 22px;
+    border: 1px solid rgba(180, 64, 59, 0.68);
+    border-radius: 13px;
+    background: linear-gradient(180deg, #9d211f, #6e0f10);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    cursor: pointer;
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.1), 0 8px 22px rgba(83, 0, 0, 0.28);
+    transition: transform 180ms ease, filter 180ms ease;
+}
+
+body.chapter-one .menu-button:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.16);
+}
+
+body.chapter-one #room {
+    position: fixed;
+    z-index: 1;
+    inset: 0;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+body.chapter-one .room-story,
+body.chapter-one .inventory-panel {
+    display: none !important;
+}
+
+body.chapter-one .story-panel {
+    position: fixed;
+    z-index: 80;
+    left: 24px;
+    bottom: 24px;
+    width: 350px;
+    padding: 22px;
+    border: 1px solid rgba(140, 153, 147, 0.24);
+    border-radius: 17px;
+    background: linear-gradient(160deg, rgba(12, 15, 14, 0.94), rgba(4, 6, 5, 0.97));
+    box-shadow: 0 12px 42px rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(10px);
+}
+
+body.chapter-one .story-header h3 {
+    margin: 0 0 16px;
+    color: #ece9e4;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 1.08rem;
+    letter-spacing: 0.12em;
+}
+
+body.chapter-one .story-body p {
+    margin: 0;
+    color: #aaaead;
+    font-size: 0.82rem;
+    line-height: 1.65;
+}
+
+body.chapter-one .panel-divider {
+    height: 1px;
+    margin: 17px 0;
+    background: linear-gradient(90deg, rgba(151, 160, 156, 0.2), rgba(151, 160, 156, 0.1), transparent);
+}
+
+body.chapter-one .objective-title {
+    display: block;
+    margin-bottom: 9px;
+    color: #c34842;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+}
+
+body.chapter-one .objective p {
+    margin: 0;
+    color: #e0e1df;
+    font-size: 0.82rem;
+    line-height: 1.55;
+}
+
+body.chapter-one .objective-progress { margin-top: 20px; }
+
+body.chapter-one .progress-information {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 9px;
+    color: #878d8a;
+    font-size: 0.61rem;
+    letter-spacing: 0.2em;
+}
+
+body.chapter-one .progress-track {
+    width: 100%;
+    height: 7px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.075);
+}
+
+body.chapter-one .progress-bar {
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #6a211e, #b73b34);
+}
+
+body.chapter-one .hint-button {
+    min-height: 40px;
+    margin-top: 18px;
+    padding: 10px 15px;
+    border: 1px solid rgba(145, 158, 151, 0.27);
+    border-radius: 7px;
+    background: linear-gradient(180deg, rgba(22, 27, 25, 0.96), rgba(8, 11, 10, 0.97));
+    color: #cbd0cd;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    cursor: pointer;
+}
+
+body.chapter-one .inventory {
+    position: fixed;
+    z-index: 80;
+    right: 24px;
+    bottom: 24px;
+    width: 360px;
+    min-height: 130px;
+    padding: 20px 22px;
+    border: 1px solid rgba(140, 153, 147, 0.24);
+    border-radius: 17px;
+    background: linear-gradient(160deg, rgba(12, 15, 14, 0.94), rgba(4, 6, 5, 0.97));
+    box-shadow: 0 12px 42px rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(10px);
+}
+
+body.chapter-one .inventory-title {
+    margin-bottom: 15px;
+    color: #ece9e4;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 1rem;
+    letter-spacing: 0.13em;
+}
+
+body.chapter-one #inventory-list {
+    min-height: 54px;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(42px, 1fr));
+    gap: 9px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+body.chapter-one #inventory-list li {
+    min-width: 0;
+    min-height: 52px;
+    display: grid;
+    place-items: center;
+    padding: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(142, 155, 149, 0.23);
+    border-radius: 9px;
+    background: linear-gradient(180deg, rgba(29, 33, 31, 0.78), rgba(13, 16, 15, 0.82));
+    color: #c1c7c4;
+    font-size: 0.62rem;
+    line-height: 1.25;
+    text-align: center;
+    word-break: break-word;
+}
+
+body.chapter-one #inventory-list:empty::before {
+    content: "";
+    grid-column: 1 / -1;
+    min-height: 52px;
+    border-radius: 9px;
+    background: repeating-linear-gradient(90deg, rgba(22, 25, 24, 0.8) 0 44px, transparent 44px 53px);
+    border: 1px solid rgba(142, 155, 149, 0.18);
+}
+
+body.chapter-one .hotspot {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+body.chapter-one .hotspot::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    transform: translate(-50%, -50%);
+    border: 2px solid rgba(228, 235, 231, 0.92);
+    border-radius: 50%;
+    background: rgba(205, 220, 212, 0.18);
+    box-shadow: 0 0 0 5px rgba(219, 231, 225, 0.09), 0 0 19px rgba(209, 229, 218, 0.64);
+    opacity: 0.8;
+}
+
+body.chapter-one .hotspot__label { display: none; }
+
+body.chapter-one .interaction-prompt {
+    position: fixed;
+    z-index: 90;
+    left: 50%;
+    bottom: 27px;
+    min-width: 245px;
+    transform: translateX(-50%) translateY(8px);
+    padding: 12px 18px;
+    border: 1px solid rgba(143, 156, 150, 0.24);
+    border-radius: 13px;
+    background: linear-gradient(160deg, rgba(17, 21, 19, 0.95), rgba(6, 9, 8, 0.97));
+    color: #cbd0cd;
+    text-align: center;
+    box-shadow: 0 10px 34px rgba(0, 0, 0, 0.62);
+    opacity: 0;
+    pointer-events: none;
+}
+
+body.chapter-one .interaction-prompt.interaction-prompt--visible {
+    opacity: 1;
+    transform: translateX(-50%);
+}
+
+@media (max-width: 1050px) {
+    body.chapter-one .hud { top: 14px; left: 14px; right: 14px; }
+    body.chapter-one .save-status { display: none; }
+    body.chapter-one .story-panel { left: 15px; bottom: 15px; width: 310px; }
+    body.chapter-one .inventory { right: 15px; bottom: 15px; width: 310px; }
+    body.chapter-one #inventory-list { grid-template-columns: repeat(6, minmax(35px, 1fr)); gap: 6px; }
+}
+
+@media (max-width: 760px) {
+    body.chapter-one { overflow: auto; }
+    body.chapter-one .room-shell,
+    body.chapter-one #room { min-width: 900px; min-height: 620px; }
+    body.chapter-one .hud,
+    body.chapter-one .story-panel,
+    body.chapter-one .inventory,
+    body.chapter-one .interaction-prompt { position: absolute; }
+    body.chapter-one .hud { min-width: 850px; }
+}
+
+Kitaplık
+/
+rooms.css
+/* =========================================================
+   WHISPERS OF ASHVALE
+   ROOM 1 — CLEAN VERSION
+   ========================================================= */
+
+.room-page {
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    background: #020303;
+    color: #d7ded9;
+}
+
+.room-page * {
+    box-sizing: border-box;
+}
+
+.room-shell {
+    min-height: 100vh;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+/* =========================================================
+   HUD
+   ========================================================= */
+
+.hud {
+    position: relative;
+    z-index: 50;
+    display: grid;
+    grid-template-columns: minmax(120px, 1fr) minmax(90px, 0.7fr) minmax(150px, 1fr) auto;
+    gap: 24px;
+    align-items: center;
+    padding: 13px 22px;
+    border-bottom: 1px solid rgba(142, 165, 153, 0.18);
+    background: linear-gradient(180deg, rgba(5, 9, 8, 0.99), rgba(3, 6, 6, 0.96));
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.58);
+}
+
+.hud p,
+.hud strong {
+    margin: 0;
+}
+
+.hud__group {
+    min-width: 0;
+}
+
+.hud-label {
+    margin: 0 0 4px;
+    color: #788981;
+    font-size: 0.66rem;
+    letter-spacing: 0.22em;
+}
+
+.hud strong {
+    color: #e1e7e3;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+}
+
+.hud__status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #75857d;
+    font-size: 0.76rem;
+}
+
+.hud__status-light {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #6eaa87;
+    box-shadow: 0 0 10px rgba(110, 170, 135, 0.7);
+}
+
+.hud-button,
+.hint-button {
+    min-height: 42px;
+    padding: 10px 18px;
+    border: 1px solid rgba(136, 157, 147, 0.28);
+    background: linear-gradient(180deg, rgba(21, 29, 26, 0.94), rgba(8, 13, 11, 0.96));
+    color: #cbd5d0;
+    font-size: 0.74rem;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.hud-button:hover,
+.hint-button:hover {
+    border-color: rgba(175, 202, 188, 0.6);
+    background: linear-gradient(180deg, rgba(35, 47, 42, 0.96), rgba(12, 19, 16, 0.98));
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* =========================================================
+   ANA ODA VE GERÇEK ARKA PLAN
+   ========================================================= */
+
+.room {
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.room-one {
+    --flashlight-x: 50%;
+    --flashlight-y: 50%;
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.38)),
+        url("../images/ui/rooms/room1.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* HTML içinde duran eski CSS çizimlerini devre dışı bırakır. */
+.corridor-wall,
+.corridor-ceiling,
+.corridor-floor,
+.ceiling-light,
+.corridor-door,
+.exit-door,
+.reception-desk,
+.wheelchair,
+.wall-symbol,
+.blood-mark,
+.room-fog,
+.room-flicker {
+    display: none;
+}
+
+/* =========================================================
+   SU DAMLALARI
+   ========================================================= */
+
+.dripping-water {
+    position: absolute;
+    z-index: 11;
+    top: -20px;
+    width: 2px;
+    height: 45px;
+    background: linear-gradient(transparent, rgba(194, 214, 204, 0.44));
+    animation: water-drop 4.6s infinite;
+}
+
+.dripping-water--one { left: 35%; }
+.dripping-water--two { right: 28%; animation-delay: -2.2s; }
+
+@keyframes water-drop {
+    0% { transform: translateY(-80px); opacity: 0; }
+    18% { opacity: 0.7; }
+    100% { transform: translateY(80vh); opacity: 0; }
+}
+
+/* =========================================================
+   UZAKTAKİ FİGÜR
+   ========================================================= */
+
+.hallway-figure {
+    position: absolute;
+    z-index: 12;
+    left: 50%;
+    top: 31%;
+    width: 34px;
+    height: 140px;
+    transform: translateX(-50%) scale(0.55);
+    opacity: 0;
+    filter: blur(1px) drop-shadow(0 0 20px rgba(210, 224, 217, 0.18));
+    pointer-events: none;
+}
+
+.hallway-figure__head {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 26px;
+    height: 30px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: rgba(205, 211, 207, 0.65);
+}
+
+.hallway-figure__body {
+    position: absolute;
+    left: 50%;
+    top: 24px;
+    width: 48px;
+    height: 118px;
+    transform: translateX(-50%);
+    clip-path: polygon(36% 0, 64% 0, 100% 100%, 0 100%);
+    background: linear-gradient(180deg, rgba(205, 211, 207, 0.66), rgba(156, 165, 160, 0.12));
+}
+
+.hallway-figure.hallway-figure--visible {
+    animation: figure-appearance 2.4s ease forwards;
+}
+
+@keyframes figure-appearance {
+    0% { opacity: 0; }
+    18% { opacity: 0.74; }
+    72% { opacity: 0.58; }
+    100% { opacity: 0; }
+}
+
+/* =========================================================
+   HAREKETLİ GÖLGE
+   ========================================================= */
+
+.corridor-shadow {
+    position: absolute;
+    z-index: 13;
+    top: 18%;
+    left: -35%;
+    width: 32%;
+    height: 62%;
+    transform: skewX(-15deg);
+    background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.72), transparent);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.corridor-shadow.corridor-shadow--move {
+    animation: shadow-pass 1.4s ease-in-out;
+}
+
+@keyframes shadow-pass {
+    0% { left: -35%; opacity: 0; }
+    25% { opacity: 0.85; }
+    100% { left: 105%; opacity: 0; }
+}
+
+/* =========================================================
+   YENİ HAREKETLİ SİS
+   ========================================================= */
+
+.fog-container {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.fog {
+    position: absolute;
+    left: -40%;
+    bottom: -6%;
+    width: 180%;
+    height: 35%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.035) 40%, transparent 75%);
+    filter: blur(45px);
+    opacity: 0.55;
+    will-change: transform;
+}
+
+.fog-1 { animation: fog-left 42s linear infinite; }
+.fog-2 { bottom: 2%; opacity: 0.38; filter: blur(70px); animation: fog-right 55s linear infinite; }
+.fog-3 { bottom: 7%; opacity: 0.22; filter: blur(90px); animation: fog-float 30s ease-in-out infinite; }
+
+@keyframes fog-left {
+    from { transform: translateX(0); }
+    to { transform: translateX(-12%); }
+}
+
+@keyframes fog-right {
+    from { transform: translateX(-12%); }
+    to { transform: translateX(10%); }
+}
+
+@keyframes fog-float {
+    0%, 100% { transform: translate(-2%, 0); }
+    50% { transform: translate(2%, -8px); }
+}
+
+/* =========================================================
+   TOZ PARÇACIKLARI
+   ========================================================= */
+
+.floating-dust {
+    position: absolute;
+    inset: 0;
+    z-index: 15;
+    pointer-events: none;
+    opacity: 0.24;
+    background-image:
+        radial-gradient(circle, rgba(255, 255, 255, 0.58) 0 1px, transparent 2px),
+        radial-gradient(circle, rgba(255, 255, 255, 0.3) 0 1px, transparent 2px);
+    background-size: 110px 110px, 170px 170px;
+    animation: dust-drift 18s linear infinite;
+}
+
+@keyframes dust-drift {
+    from { background-position: 0 0, 20px 40px; }
+    to { background-position: 100px 220px, -90px 160px; }
+}
+
+/* =========================================================
+   KARANLIK VE EL FENERİ
+   ========================================================= */
+
+.room-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 17;
+    pointer-events: none;
+    background: radial-gradient(circle at center, transparent 18%, rgba(0, 0, 0, 0.14) 48%, rgba(0, 0, 0, 0.8) 100%);
+}
+
+.room-one::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 19;
+    pointer-events: none;
+    background: radial-gradient(
+        circle 240px at var(--flashlight-x) var(--flashlight-y),
+        transparent 0%,
+        rgba(0, 0, 0, 0.08) 42%,
+        rgba(0, 0, 0, 0.52) 68%,
+        rgba(0, 0, 0, 0.93) 100%
+    );
+}
+
+.flashlight {
+    position: absolute;
+    z-index: 20;
+    width: 460px;
+    height: 460px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(218, 233, 224, 0.16) 0%, rgba(179, 207, 191, 0.08) 34%, transparent 72%);
+    filter: blur(3px);
+    mix-blend-mode: screen;
+    opacity: 0.9;
+    transition: opacity 200ms ease;
+}
+
+.room-one.flashlight-idle .flashlight { opacity: 0.42; }
+
+/* =========================================================
+   HİKÂYE METNİ
+   ========================================================= */
+
+.room-story {
+    position: absolute;
+    z-index: 25;
+    left: 50%;
+    bottom: 4%;
+    width: min(720px, 82%);
+    transform: translateX(-50%);
+    padding: 15px 22px;
+    border: 1px solid rgba(135, 157, 146, 0.22);
+    background: linear-gradient(180deg, rgba(5, 9, 8, 0.82), rgba(1, 3, 3, 0.9));
+    backdrop-filter: blur(10px);
+    text-align: center;
+    color: #aab6b0;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.48);
+}
+
+.room-story p {
+    margin: 0;
+    font-size: clamp(0.82rem, 1.5vw, 1rem);
+    line-height: 1.7;
+}
+
+/* =========================================================
+   HOTSPOTLAR
+   ========================================================= */
+
+.hotspot {
+    position: absolute;
+    z-index: 30;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    outline: none;
+}
+
+.hotspot::after {
+    content: "";
+    position: absolute;
+    inset: 44%;
+    border-radius: 50%;
+    background: rgba(205, 228, 216, 0.18);
+    box-shadow: 0 0 18px rgba(178, 213, 194, 0.25);
+    opacity: 0;
+    transition: opacity 180ms ease, inset 180ms ease;
+}
+
+.hotspot:hover::after,
+.hotspot:focus-visible::after {
+    inset: 41%;
+    opacity: 1;
+}
+
+.hotspot__label {
+    position: absolute;
+    left: 50%;
+    bottom: 6%;
+    transform: translate(-50%, 8px);
+    min-width: max-content;
+    padding: 7px 10px;
+    border: 1px solid rgba(147, 174, 160, 0.3);
+    background: rgba(2, 5, 4, 0.86);
+    color: #c6d3cc;
+    font-size: 0.63rem;
+    letter-spacing: 0.13em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.hotspot:hover .hotspot__label,
+.hotspot:focus-visible .hotspot__label {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.hotspot-register { left: 0; bottom: 14%; width: 31%; height: 45%; }
+.hotspot-door { left: 43%; top: 24%; width: 15%; height: 45%; }
+.hotspot-symbol { right: 5%; top: 18%; width: 22%; height: 38%; }
+.hotspot-wheelchair { right: 13%; bottom: 15%; width: 20%; height: 36%; }
+
+/* =========================================================
+   ETKİLEŞİM VE FISILTI MESAJLARI
+   ========================================================= */
+
+.interaction-prompt {
+    position: fixed;
+    z-index: 1000;
+    transform: translate(14px, 14px);
+    padding: 7px 10px;
+    border: 1px solid rgba(150, 178, 164, 0.34);
+    background: rgba(2, 5, 4, 0.9);
+    color: #c9d5cf;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 120ms ease;
+}
+
+.interaction-prompt.interaction-prompt--visible { opacity: 1; }
+
+.whisper-message {
+    position: absolute;
+    z-index: 45;
+    top: 18%;
+    left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    color: rgba(205, 216, 210, 0.75);
+    font-family: serif;
+    font-size: clamp(1rem, 3vw, 2.2rem);
+    font-style: italic;
+    letter-spacing: 0.12em;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.14);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.whisper-message.whisper-message--visible { animation: whisper-appear 3.4s ease forwards; }
+
+@keyframes whisper-appear {
+    0% { opacity: 0; transform: translateX(-50%) translateY(12px); }
+    20%, 65% { opacity: 0.72; }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+}
+
+/* =========================================================
+   ENVANTER
+   ========================================================= */
+
+.inventory-panel {
+    position: relative;
+    z-index: 50;
+    min-height: 88px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 12px 22px;
+    border-top: 1px solid rgba(136, 158, 147, 0.18);
+    background: linear-gradient(180deg, rgba(4, 8, 7, 0.97), rgba(2, 5, 4, 0.99));
+    box-shadow: 0 -10px 34px rgba(0, 0, 0, 0.46);
+}
+
+.inventory-panel__content {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+}
+
+.inventory-panel ul {
+    min-height: 34px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    padding: 0;
+    margin: 6px 0 0;
+    list-style: none;
+}
+
+.inventory-panel li {
+    padding: 7px 10px;
+    border: 1px solid rgba(145, 168, 157, 0.24);
+    background: rgba(255, 255, 255, 0.025);
+    color: #bac8c1;
+    font-size: 0.76rem;
+}
+
+.inventory-panel li.inventory-empty { color: #66756e; }
+
+.objective-text {
+    margin: 0;
+    color: #75857d;
+    font-size: 0.78rem;
+    font-style: italic;
+}
+
+/* =========================================================
+   BÖLÜM GİRİŞİ
+   ========================================================= */
+
+.chapter-intro {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(circle at center, #080c0b, #010202 70%);
+    text-align: center;
+    transition: opacity 0.9s ease, visibility 0.9s ease;
+}
+
+.chapter-intro__content { animation: chapter-intro-rise 1.5s ease both; }
+.chapter-intro__number { margin: 0; color: #7c8b84; font-size: 0.78rem; letter-spacing: 0.45em; }
+.chapter-intro h1 { margin: 10px 0 12px; color: #e1e6e3; font-family: serif; font-size: clamp(2.2rem, 6vw, 5rem); font-weight: 500; }
+.chapter-intro span { color: #7e8d86; font-size: 0.95rem; }
+.chapter-intro__line { width: 100px; height: 1px; margin: 25px auto 0; background: linear-gradient(90deg, transparent, #77877f, transparent); }
+.chapter-intro.chapter-intro--hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+@keyframes chapter-intro-rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   DİYALOG
+   ========================================================= */
+
+.game-dialog {
+    width: min(620px, calc(100% - 32px));
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #d6ddd9;
+}
+
+.game-dialog::backdrop { background: rgba(0, 0, 0, 0.78); backdrop-filter: blur(7px); }
+
+.dialog-card {
+    position: relative;
+    padding: 28px;
+    border: 1px solid rgba(143, 166, 155, 0.3);
+    background: linear-gradient(180deg, rgba(12, 18, 16, 0.99), rgba(3, 7, 6, 0.99));
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.8);
+}
+
+.dialog-x-button {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(141, 163, 152, 0.22);
+    background: transparent;
+    color: #94a29b;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.dialog-kicker { margin: 0 0 8px; color: #9d453e; font-size: 0.68rem; letter-spacing: 0.24em; }
+.dialog-card h2 { margin: 0 45px 15px 0; font-family: serif; font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 500; }
+.dialog-card > p:not(.dialog-kicker) { color: #9eaba4; line-height: 1.7; }
+
+.clue-visual {
+    min-height: 170px;
+    display: grid;
+    place-items: center;
+    margin: 20px 0;
+    padding: 22px;
+    border: 1px solid rgba(135, 158, 147, 0.22);
+    background: radial-gradient(circle, rgba(148, 178, 162, 0.11), transparent 55%), rgba(0, 0, 0, 0.24);
+    color: #b8c6bf;
+    font-size: clamp(2.2rem, 8vw, 5rem);
+    text-align: center;
+}
+
+.clue-visual.note {
+    min-height: 220px;
+    color: #2b2116;
+    background: linear-gradient(rgba(116, 29, 27, 0.12), rgba(116, 29, 27, 0.12)), #ad9b74;
+    font-family: serif;
+    font-size: clamp(1.1rem, 3vw, 1.8rem);
+    line-height: 1.55;
+    transform: rotate(-0.7deg);
+}
+
+.clue-visual.symbol { color: rgba(176, 58, 49, 0.8); text-shadow: 0 0 28px rgba(138, 34, 29, 0.42); }
+.clue-visual.wheelchair-clue { font-size: 4rem; }
+
+.code-area { margin-top: 22px; }
+.code-area label { display: block; margin-bottom: 8px; color: #82918a; font-size: 0.7rem; letter-spacing: 0.18em; }
+
+.code-area input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid rgba(148, 175, 161, 0.28);
+    outline: none;
+    background: #030605;
+    color: #e3e9e6;
+    font-size: 1.5rem;
+    letter-spacing: 0.48em;
+    text-align: center;
+}
+
+.code-area input:focus { border-color: rgba(174, 207, 190, 0.66); box-shadow: 0 0 0 3px rgba(127, 163, 144, 0.08); }
+.code-area .primary-small { width: 100%; margin-top: 12px; }
+.code-feedback { min-height: 1.5em; margin: 12px 0 0; color: #bf7070; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
+
+.primary-small,
+.secondary-button {
+    padding: 11px 16px;
+    border: 1px solid rgba(143, 166, 155, 0.28);
+    cursor: pointer;
+    font-size: 0.72rem;
+    letter-spacing: 0.13em;
+}
+
+.primary-small { border-color: rgba(123, 55, 49, 0.78); background: linear-gradient(180deg, #8c3029, #571d19); color: #fff; }
+.secondary-button { background: rgba(255, 255, 255, 0.025); color: #aab7b0; }
+
+/* =========================================================
+   TAMAMLAMA VE EKRAN EFEKTLERİ
+   ========================================================= */
+
+.screen-flash {
+    position: fixed;
+    inset: 0;
+    z-index: 6000;
+    background: rgba(209, 225, 217, 0.72);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.screen-flash.screen-flash--active { animation: screen-flash-animation 0.7s ease; }
+
+@keyframes screen-flash-animation {
+    0% { opacity: 0; }
+    12% { opacity: 0.8; }
+    25% { opacity: 0.08; }
+    40% { opacity: 0.48; }
+    100% { opacity: 0; }
+}
+
+.chapter-complete {
+    position: fixed;
+    inset: 0;
+    z-index: 7000;
+    display: grid;
+    place-items: center;
+    background: rgba(1, 3, 3, 0.94);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.chapter-complete.chapter-complete--visible { opacity: 1; visibility: visible; }
+.chapter-complete__content { max-width: 620px; padding: 30px; text-align: center; }
+.chapter-complete__content p { color: #944239; font-size: 0.74rem; letter-spacing: 0.32em; }
+.chapter-complete__content h2 { margin: 14px 0; font-family: serif; font-size: clamp(2.3rem, 7vw, 5.6rem); font-weight: 500; }
+.chapter-complete__content span { color: #86958e; line-height: 1.8; }
+
+/* =========================================================
+   MOBİL
+   ========================================================= */
+
+@media (max-width: 760px) {
+    .hud {
+        grid-template-columns: 1fr 1fr auto;
+        gap: 12px;
+        padding: 10px 12px;
+    }
+
+    .hud__status { display: none; }
+    .hud-button { padding: 9px 11px; font-size: 0.64rem; }
+    .inventory-panel { padding: 10px 12px; }
+    .inventory-panel__content { display: block; }
+    .objective-text { display: none; }
+
+    .hotspot-register { left: 0; width: 35%; }
+    .hotspot-door { left: 40%; width: 20%; }
+    .hotspot-symbol { right: 2%; width: 25%; }
+    .hotspot-wheelchair { right: 5%; width: 27%; }
+
+    .room-story {
+        bottom: 3%;
+        width: 91%;
+        padding: 12px 14px;
+    }
+
+    .dialog-card { padding: 22px 18px; }
+
+    .room-one::after {
+        background: radial-gradient(
+            circle 210px at var(--flashlight-x) var(--flashlight-y),
+            transparent 0%,
+            rgba(0, 0, 0, 0.08) 40%,
+            rgba(0, 0, 0, 0.58) 67%,
+            rgba(0, 0, 0, 0.94) 100%
+        );
+    }
+
+    .flashlight {
+        width: 390px;
+        height: 390px;
+    }
+}
+
+rooms_clean.css
+/* =========================================================
+   WHISPERS OF ASHVALE
+   ROOM 1 — CLEAN VERSION
+   ========================================================= */
+
+.room-page {
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    background: #020303;
+    color: #d7ded9;
+}
+
+.room-page * {
+    box-sizing: border-box;
+}
+
+.room-shell {
+    min-height: 100vh;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+/* =========================================================
+   HUD
+   ========================================================= */
+
+.hud {
+    position: relative;
+    z-index: 50;
+    display: grid;
+    grid-template-columns: minmax(120px, 1fr) minmax(90px, 0.7fr) minmax(150px, 1fr) auto;
+    gap: 24px;
+    align-items: center;
+    padding: 13px 22px;
+    border-bottom: 1px solid rgba(142, 165, 153, 0.18);
+    background: linear-gradient(180deg, rgba(5, 9, 8, 0.99), rgba(3, 6, 6, 0.96));
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.58);
+}
+
+.hud p,
+.hud strong {
+    margin: 0;
+}
+
+.hud__group {
+    min-width: 0;
+}
+
+.hud-label {
+    margin: 0 0 4px;
+    color: #788981;
+    font-size: 0.66rem;
+    letter-spacing: 0.22em;
+}
+
+.hud strong {
+    color: #e1e7e3;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+}
+
+.hud__status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #75857d;
+    font-size: 0.76rem;
+}
+
+.hud__status-light {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #6eaa87;
+    box-shadow: 0 0 10px rgba(110, 170, 135, 0.7);
+}
+
+.hud-button,
+.hint-button {
+    min-height: 42px;
+    padding: 10px 18px;
+    border: 1px solid rgba(136, 157, 147, 0.28);
+    background: linear-gradient(180deg, rgba(21, 29, 26, 0.94), rgba(8, 13, 11, 0.96));
+    color: #cbd5d0;
+    font-size: 0.74rem;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.hud-button:hover,
+.hint-button:hover {
+    border-color: rgba(175, 202, 188, 0.6);
+    background: linear-gradient(180deg, rgba(35, 47, 42, 0.96), rgba(12, 19, 16, 0.98));
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* =========================================================
+   ANA ODA VE GERÇEK ARKA PLAN
+   ========================================================= */
+
+.room {
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.room-one {
+    --flashlight-x: 50%;
+    --flashlight-y: 50%;
+
+    padding-top: 0;
+
+    background:
+        linear-gradient(
+            rgba(0, 0, 0, 0.14),
+            rgba(0, 0, 0, 0.42)
+        ),
+        url("../images/ui/rooms/room1.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    image-rendering: auto;
+}
+
+/* HTML içinde duran eski CSS çizimlerini devre dışı bırakır. */
+.corridor-wall,
+.corridor-ceiling,
+.corridor-floor,
+.ceiling-light,
+.corridor-door,
+.exit-door,
+.reception-desk,
+.wheelchair,
+.wall-symbol,
+.blood-mark,
+.room-fog,
+.room-flicker {
+    display: none;
+}
+
+/* =========================================================
+   SU DAMLALARI
+   ========================================================= */
+
+.dripping-water {
+    position: absolute;
+    z-index: 11;
+    top: -20px;
+    width: 2px;
+    height: 45px;
+    background: linear-gradient(transparent, rgba(194, 214, 204, 0.44));
+    animation: water-drop 4.6s infinite;
+}
+
+.dripping-water--one { left: 35%; }
+.dripping-water--two { right: 28%; animation-delay: -2.2s; }
+
+@keyframes water-drop {
+    0% { transform: translateY(-80px); opacity: 0; }
+    18% { opacity: 0.7; }
+    100% { transform: translateY(80vh); opacity: 0; }
+}
+
+/* =========================================================
+   UZAKTAKİ FİGÜR
+   ========================================================= */
+
+.hallway-figure {
+    position: absolute;
+    z-index: 12;
+    left: 50%;
+    top: 31%;
+    width: 34px;
+    height: 140px;
+    transform: translateX(-50%) scale(0.55);
+    opacity: 0;
+    filter: blur(1px) drop-shadow(0 0 20px rgba(210, 224, 217, 0.18));
+    pointer-events: none;
+}
+
+.hallway-figure__head {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 26px;
+    height: 30px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: rgba(205, 211, 207, 0.65);
+}
+
+.hallway-figure__body {
+    position: absolute;
+    left: 50%;
+    top: 24px;
+    width: 48px;
+    height: 118px;
+    transform: translateX(-50%);
+    clip-path: polygon(36% 0, 64% 0, 100% 100%, 0 100%);
+    background: linear-gradient(180deg, rgba(205, 211, 207, 0.66), rgba(156, 165, 160, 0.12));
+}
+
+.hallway-figure.hallway-figure--visible {
+    animation: figure-appearance 2.4s ease forwards;
+}
+
+@keyframes figure-appearance {
+    0% { opacity: 0; }
+    18% { opacity: 0.74; }
+    72% { opacity: 0.58; }
+    100% { opacity: 0; }
+}
+
+/* =========================================================
+   HAREKETLİ GÖLGE
+   ========================================================= */
+
+.corridor-shadow {
+    position: absolute;
+    z-index: 13;
+    top: 18%;
+    left: -35%;
+    width: 32%;
+    height: 62%;
+    transform: skewX(-15deg);
+    background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.72), transparent);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.corridor-shadow.corridor-shadow--move {
+    animation: shadow-pass 1.4s ease-in-out;
+}
+
+@keyframes shadow-pass {
+    0% { left: -35%; opacity: 0; }
+    25% { opacity: 0.85; }
+    100% { left: 105%; opacity: 0; }
+}
+
+/* =========================================================
+   YENİ HAREKETLİ SİS
+   ========================================================= */
+
+.fog-container {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.fog {
+    position: absolute;
+    left: -40%;
+    bottom: -6%;
+    width: 180%;
+    height: 35%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.035) 40%, transparent 75%);
+    filter: blur(45px);
+    opacity: 0.55;
+    will-change: transform;
+}
+
+.fog-1 { animation: fog-left 42s linear infinite; }
+.fog-2 { bottom: 2%; opacity: 0.38; filter: blur(70px); animation: fog-right 55s linear infinite; }
+.fog-3 { bottom: 7%; opacity: 0.22; filter: blur(90px); animation: fog-float 30s ease-in-out infinite; }
+
+@keyframes fog-left {
+    from { transform: translateX(0); }
+    to { transform: translateX(-12%); }
+}
+
+@keyframes fog-right {
+    from { transform: translateX(-12%); }
+    to { transform: translateX(10%); }
+}
+
+@keyframes fog-float {
+    0%, 100% { transform: translate(-2%, 0); }
+    50% { transform: translate(2%, -8px); }
+}
+
+/* =========================================================
+   TOZ PARÇACIKLARI
+   ========================================================= */
+
+.floating-dust {
+    position: absolute;
+    inset: 0;
+    z-index: 15;
+    pointer-events: none;
+    opacity: 0.24;
+    background-image:
+        radial-gradient(circle, rgba(255, 255, 255, 0.58) 0 1px, transparent 2px),
+        radial-gradient(circle, rgba(255, 255, 255, 0.3) 0 1px, transparent 2px);
+    background-size: 110px 110px, 170px 170px;
+    animation: dust-drift 18s linear infinite;
+}
+
+@keyframes dust-drift {
+    from { background-position: 0 0, 20px 40px; }
+    to { background-position: 100px 220px, -90px 160px; }
+}
+
+/* =========================================================
+   KARANLIK VE EL FENERİ
+   ========================================================= */
+
+.room-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 17;
+    pointer-events: none;
+    background: radial-gradient(circle at center, transparent 18%, rgba(0, 0, 0, 0.14) 48%, rgba(0, 0, 0, 0.8) 100%);
+}
+
+.room-one::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 19;
+    pointer-events: none;
+    background: radial-gradient(
+        circle 240px at var(--flashlight-x) var(--flashlight-y),
+        transparent 0%,
+        rgba(0, 0, 0, 0.08) 42%,
+        rgba(0, 0, 0, 0.52) 68%,
+        rgba(0, 0, 0, 0.93) 100%
+    );
+}
+
+.flashlight {
+    position: absolute;
+    z-index: 20;
+    width: 460px;
+    height: 460px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(218, 233, 224, 0.16) 0%, rgba(179, 207, 191, 0.08) 34%, transparent 72%);
+    filter: blur(3px);
+    mix-blend-mode: screen;
+    opacity: 0.9;
+    transition: opacity 200ms ease;
+}
+
+.room-one.flashlight-idle .flashlight { opacity: 0.42; }
+
+/* =========================================================
+   HİKÂYE METNİ
+   ========================================================= */
+
+.room-story {
+    position: absolute;
+    z-index: 25;
+    left: 50%;
+    bottom: 4%;
+    width: min(720px, 82%);
+    transform: translateX(-50%);
+    padding: 15px 22px;
+    border: 1px solid rgba(135, 157, 146, 0.22);
+    background: linear-gradient(180deg, rgba(5, 9, 8, 0.82), rgba(1, 3, 3, 0.9));
+    backdrop-filter: blur(10px);
+    text-align: center;
+    color: #aab6b0;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.48);
+}
+
+.room-story p {
+    margin: 0;
+    font-size: clamp(0.82rem, 1.5vw, 1rem);
+    line-height: 1.7;
+}
+
+/* =========================================================
+   HOTSPOTLAR
+   ========================================================= */
+
+.hotspot {
+    position: absolute;
+    z-index: 30;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    outline: none;
+}
+
+.hotspot::after {
+    content: "";
+    position: absolute;
+    inset: 44%;
+    border-radius: 50%;
+    background: rgba(205, 228, 216, 0.18);
+    box-shadow: 0 0 18px rgba(178, 213, 194, 0.25);
+    opacity: 0;
+    transition: opacity 180ms ease, inset 180ms ease;
+}
+
+.hotspot:hover::after,
+.hotspot:focus-visible::after {
+    inset: 41%;
+    opacity: 1;
+}
+
+.hotspot__label {
+    position: absolute;
+    left: 50%;
+    bottom: 6%;
+    transform: translate(-50%, 8px);
+    min-width: max-content;
+    padding: 7px 10px;
+    border: 1px solid rgba(147, 174, 160, 0.3);
+    background: rgba(2, 5, 4, 0.86);
+    color: #c6d3cc;
+    font-size: 0.63rem;
+    letter-spacing: 0.13em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.hotspot:hover .hotspot__label,
+.hotspot:focus-visible .hotspot__label {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.hotspot-register { left: 0; bottom: 14%; width: 31%; height: 45%; }
+.hotspot-door { left: 43%; top: 24%; width: 15%; height: 45%; }
+.hotspot-symbol { right: 5%; top: 18%; width: 22%; height: 38%; }
+.hotspot-wheelchair { right: 13%; bottom: 15%; width: 20%; height: 36%; }
+
+/* =========================================================
+   ETKİLEŞİM VE FISILTI MESAJLARI
+   ========================================================= */
+
+.interaction-prompt {
+    position: fixed;
+    z-index: 1000;
+    transform: translate(14px, 14px);
+    padding: 7px 10px;
+    border: 1px solid rgba(150, 178, 164, 0.34);
+    background: rgba(2, 5, 4, 0.9);
+    color: #c9d5cf;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 120ms ease;
+}
+
+.interaction-prompt.interaction-prompt--visible { opacity: 1; }
+
+.whisper-message {
+    position: absolute;
+    z-index: 45;
+    top: 18%;
+    left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    color: rgba(205, 216, 210, 0.75);
+    font-family: serif;
+    font-size: clamp(1rem, 3vw, 2.2rem);
+    font-style: italic;
+    letter-spacing: 0.12em;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.14);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.whisper-message.whisper-message--visible { animation: whisper-appear 3.4s ease forwards; }
+
+@keyframes whisper-appear {
+    0% { opacity: 0; transform: translateX(-50%) translateY(12px); }
+    20%, 65% { opacity: 0.72; }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+}
+
+/* =========================================================
+   ENVANTER
+   ========================================================= */
+
+.inventory-panel {
+    position: relative;
+    z-index: 50;
+    min-height: 88px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 12px 22px;
+    border-top: 1px solid rgba(136, 158, 147, 0.18);
+    background: linear-gradient(180deg, rgba(4, 8, 7, 0.97), rgba(2, 5, 4, 0.99));
+    box-shadow: 0 -10px 34px rgba(0, 0, 0, 0.46);
+}
+
+.inventory-panel__content {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+}
+
+.inventory-panel ul {
+    min-height: 34px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    padding: 0;
+    margin: 6px 0 0;
+    list-style: none;
+}
+
+.inventory-panel li {
+    padding: 7px 10px;
+    border: 1px solid rgba(145, 168, 157, 0.24);
+    background: rgba(255, 255, 255, 0.025);
+    color: #bac8c1;
+    font-size: 0.76rem;
+}
+
+.inventory-panel li.inventory-empty { color: #66756e; }
+
+.objective-text {
+    margin: 0;
+    color: #75857d;
+    font-size: 0.78rem;
+    font-style: italic;
+}
+
+/* =========================================================
+   BÖLÜM GİRİŞİ
+   ========================================================= */
+
+.chapter-intro {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(circle at center, #080c0b, #010202 70%);
+    text-align: center;
+    transition: opacity 0.9s ease, visibility 0.9s ease;
+}
+
+.chapter-intro__content { animation: chapter-intro-rise 1.5s ease both; }
+.chapter-intro__number { margin: 0; color: #7c8b84; font-size: 0.78rem; letter-spacing: 0.45em; }
+.chapter-intro h1 { margin: 10px 0 12px; color: #e1e6e3; font-family: serif; font-size: clamp(2.2rem, 6vw, 5rem); font-weight: 500; }
+.chapter-intro span { color: #7e8d86; font-size: 0.95rem; }
+.chapter-intro__line { width: 100px; height: 1px; margin: 25px auto 0; background: linear-gradient(90deg, transparent, #77877f, transparent); }
+.chapter-intro.chapter-intro--hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+@keyframes chapter-intro-rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   DİYALOG
+   ========================================================= */
+
+.game-dialog {
+    width: min(620px, calc(100% - 32px));
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #d6ddd9;
+}
+
+.game-dialog::backdrop { background: rgba(0, 0, 0, 0.78); backdrop-filter: blur(7px); }
+
+.dialog-card {
+    position: relative;
+    padding: 28px;
+    border: 1px solid rgba(143, 166, 155, 0.3);
+    background: linear-gradient(180deg, rgba(12, 18, 16, 0.99), rgba(3, 7, 6, 0.99));
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.8);
+}
+
+.dialog-x-button {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(141, 163, 152, 0.22);
+    background: transparent;
+    color: #94a29b;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.dialog-kicker { margin: 0 0 8px; color: #9d453e; font-size: 0.68rem; letter-spacing: 0.24em; }
+.dialog-card h2 { margin: 0 45px 15px 0; font-family: serif; font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 500; }
+.dialog-card > p:not(.dialog-kicker) { color: #9eaba4; line-height: 1.7; }
+
+.clue-visual {
+    min-height: 170px;
+    display: grid;
+    place-items: center;
+    margin: 20px 0;
+    padding: 22px;
+    border: 1px solid rgba(135, 158, 147, 0.22);
+    background: radial-gradient(circle, rgba(148, 178, 162, 0.11), transparent 55%), rgba(0, 0, 0, 0.24);
+    color: #b8c6bf;
+    font-size: clamp(2.2rem, 8vw, 5rem);
+    text-align: center;
+}
+
+.clue-visual.note {
+    min-height: 220px;
+    color: #2b2116;
+    background: linear-gradient(rgba(116, 29, 27, 0.12), rgba(116, 29, 27, 0.12)), #ad9b74;
+    font-family: serif;
+    font-size: clamp(1.1rem, 3vw, 1.8rem);
+    line-height: 1.55;
+    transform: rotate(-0.7deg);
+}
+
+.clue-visual.symbol { color: rgba(176, 58, 49, 0.8); text-shadow: 0 0 28px rgba(138, 34, 29, 0.42); }
+.clue-visual.wheelchair-clue { font-size: 4rem; }
+
+.code-area { margin-top: 22px; }
+.code-area label { display: block; margin-bottom: 8px; color: #82918a; font-size: 0.7rem; letter-spacing: 0.18em; }
+
+.code-area input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid rgba(148, 175, 161, 0.28);
+    outline: none;
+    background: #030605;
+    color: #e3e9e6;
+    font-size: 1.5rem;
+    letter-spacing: 0.48em;
+    text-align: center;
+}
+
+.code-area input:focus { border-color: rgba(174, 207, 190, 0.66); box-shadow: 0 0 0 3px rgba(127, 163, 144, 0.08); }
+.code-area .primary-small { width: 100%; margin-top: 12px; }
+.code-feedback { min-height: 1.5em; margin: 12px 0 0; color: #bf7070; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
+
+.primary-small,
+.secondary-button {
+    padding: 11px 16px;
+    border: 1px solid rgba(143, 166, 155, 0.28);
+    cursor: pointer;
+    font-size: 0.72rem;
+    letter-spacing: 0.13em;
+}
+
+.primary-small { border-color: rgba(123, 55, 49, 0.78); background: linear-gradient(180deg, #8c3029, #571d19); color: #fff; }
+.secondary-button { background: rgba(255, 255, 255, 0.025); color: #aab7b0; }
+
+/* =========================================================
+   TAMAMLAMA VE EKRAN EFEKTLERİ
+   ========================================================= */
+
+.screen-flash {
+    position: fixed;
+    inset: 0;
+    z-index: 6000;
+    background: rgba(209, 225, 217, 0.72);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.screen-flash.screen-flash--active { animation: screen-flash-animation 0.7s ease; }
+
+@keyframes screen-flash-animation {
+    0% { opacity: 0; }
+    12% { opacity: 0.8; }
+    25% { opacity: 0.08; }
+    40% { opacity: 0.48; }
+    100% { opacity: 0; }
+}
+
+.chapter-complete {
+    position: fixed;
+    inset: 0;
+    z-index: 7000;
+    display: grid;
+    place-items: center;
+    background: rgba(1, 3, 3, 0.94);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.chapter-complete.chapter-complete--visible { opacity: 1; visibility: visible; }
+.chapter-complete__content { max-width: 620px; padding: 30px; text-align: center; }
+.chapter-complete__content p { color: #944239; font-size: 0.74rem; letter-spacing: 0.32em; }
+.chapter-complete__content h2 { margin: 14px 0; font-family: serif; font-size: clamp(2.3rem, 7vw, 5.6rem); font-weight: 500; }
+.chapter-complete__content span { color: #86958e; line-height: 1.8; }
+
+/* =========================================================
+   MOBİL
+   ========================================================= */
+
+@media (max-width: 760px) {
+    .hud {
+        grid-template-columns: 1fr 1fr auto;
+        gap: 12px;
+        padding: 10px 12px;
+    }
+
+    .hud__status { display: none; }
+    .hud-button { padding: 9px 11px; font-size: 0.64rem; }
+    .inventory-panel { padding: 10px 12px; }
+    .inventory-panel__content { display: block; }
+    .objective-text { display: none; }
+
+    .hotspot-register { left: 0; width: 35%; }
+    .hotspot-door { left: 40%; width: 20%; }
+    .hotspot-symbol { right: 2%; width: 25%; }
+    .hotspot-wheelchair { right: 5%; width: 27%; }
+
+    .room-story {
+        bottom: 3%;
+        width: 91%;
+        padding: 12px 14px;
+    }
+
+    .dialog-card { padding: 22px 18px; }
+
+    .room-one::after {
+        background: radial-gradient(
+            circle 210px at var(--flashlight-x) var(--flashlight-y),
+            transparent 0%,
+            rgba(0, 0, 0, 0.08) 40%,
+            rgba(0, 0, 0, 0.58) 67%,
+            rgba(0, 0, 0, 0.94) 100%
+        );
+    }
+
+    .flashlight {
+        width: 390px;
+        height: 390px;
+    }
+}
+/* =========================================================
+   ROOM 1 — ROOM 2 İLE AYNI SABİT ARAYÜZ YERLEŞİMİ
+   Bu bölüm yalnızca chapter-one sayfasını etkiler.
+   ========================================================= */
+
+body.chapter-one {
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    background: #050606;
+    color: #d8dedb;
+    font-family: "Inter", Arial, sans-serif;
+}
+
+body.chapter-one .room-shell {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 620px;
+    display: block;
+    overflow: hidden;
+}
+
+body.chapter-one .hud {
+    position: fixed;
+    z-index: 100;
+    top: 20px;
+    left: 24px;
+    right: 24px;
+    height: 88px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 20px;
+    padding: 13px 22px;
+    border: 1px solid rgba(135, 151, 143, 0.18);
+    border-radius: 0;
+    background: linear-gradient(180deg, rgba(7, 11, 10, 0.96), rgba(3, 6, 5, 0.97));
+    box-shadow: 0 10px 38px rgba(0, 0, 0, 0.68);
+}
+
+body.chapter-one .hud-left { justify-self: start; }
+body.chapter-one .hud-right { justify-self: end; }
+
+body.chapter-one .hud-center {
+    justify-self: center;
+    display: flex;
+    align-items: center;
+    gap: 34px;
+}
+
+body.chapter-one .player-box {
+    min-width: 170px;
+    padding: 12px 18px;
+    border: 1px solid rgba(148, 163, 155, 0.25);
+    border-radius: 13px;
+    background: linear-gradient(180deg, rgba(14, 19, 17, 0.94), rgba(6, 9, 8, 0.94));
+}
+
+body.chapter-one .player-box .label {
+    display: block;
+    margin-bottom: 5px;
+    color: #7e8a84;
+    font-size: 0.65rem;
+    letter-spacing: 0.27em;
+}
+
+body.chapter-one #hud-player {
+    color: #e5e9e7;
+    font-size: 0.94rem;
+    font-weight: 600;
+}
+
+body.chapter-one .chapter-box {
+    padding: 17px 27px;
+    border: 1px solid rgba(148, 163, 155, 0.25);
+    border-radius: 13px;
+    background: linear-gradient(180deg, rgba(13, 18, 16, 0.95), rgba(5, 8, 7, 0.95));
+    color: #e4e7e5;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.23em;
+    white-space: nowrap;
+}
+
+body.chapter-one .save-status {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #76847d;
+    font-size: 0.73rem;
+    white-space: nowrap;
+}
+
+body.chapter-one .save-status-light {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #72b38f;
+    box-shadow: 0 0 11px rgba(91, 196, 137, 0.82);
+}
+
+body.chapter-one .menu-button {
+    min-width: 130px;
+    min-height: 55px;
+    padding: 13px 22px;
+    border: 1px solid rgba(180, 64, 59, 0.68);
+    border-radius: 13px;
+    background: linear-gradient(180deg, #9d211f, #6e0f10);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    cursor: pointer;
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.1), 0 8px 22px rgba(83, 0, 0, 0.28);
+    transition: transform 180ms ease, filter 180ms ease;
+}
+
+body.chapter-one .menu-button:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.16);
+}
+
+body.chapter-one #room {
+    position: fixed;
+    z-index: 1;
+    inset: 0;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+body.chapter-one .room-story,
+body.chapter-one .inventory-panel {
+    display: none !important;
+}
+
+body.chapter-one .story-panel {
+    position: fixed;
+    z-index: 80;
+    left: 24px;
+    bottom: 24px;
+    width: 350px;
+    padding: 22px;
+    border: 1px solid rgba(140, 153, 147, 0.24);
+    border-radius: 17px;
+    background: linear-gradient(160deg, rgba(12, 15, 14, 0.94), rgba(4, 6, 5, 0.97));
+    box-shadow: 0 12px 42px rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(10px);
+}
+
+body.chapter-one .story-header h3 {
+    margin: 0 0 16px;
+    color: #ece9e4;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 1.08rem;
+    letter-spacing: 0.12em;
+}
+
+body.chapter-one .story-body p {
+    margin: 0;
+    color: #aaaead;
+    font-size: 0.82rem;
+    line-height: 1.65;
+}
+
+body.chapter-one .panel-divider {
+    height: 1px;
+    margin: 17px 0;
+    background: linear-gradient(90deg, rgba(151, 160, 156, 0.2), rgba(151, 160, 156, 0.1), transparent);
+}
+
+body.chapter-one .objective-title {
+    display: block;
+    margin-bottom: 9px;
+    color: #c34842;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+}
+
+body.chapter-one .objective p {
+    margin: 0;
+    color: #e0e1df;
+    font-size: 0.82rem;
+    line-height: 1.55;
+}
+
+body.chapter-one .objective-progress { margin-top: 20px; }
+
+body.chapter-one .progress-information {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 9px;
+    color: #878d8a;
+    font-size: 0.61rem;
+    letter-spacing: 0.2em;
+}
+
+body.chapter-one .progress-track {
+    width: 100%;
+    height: 7px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.075);
+}
+
+body.chapter-one .progress-bar {
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #6a211e, #b73b34);
+}
+
+body.chapter-one .hint-button {
+    min-height: 40px;
+    margin-top: 18px;
+    padding: 10px 15px;
+    border: 1px solid rgba(145, 158, 151, 0.27);
+    border-radius: 7px;
+    background: linear-gradient(180deg, rgba(22, 27, 25, 0.96), rgba(8, 11, 10, 0.97));
+    color: #cbd0cd;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    cursor: pointer;
+}
+
+body.chapter-one .inventory {
+    position: fixed;
+    z-index: 80;
+    right: 24px;
+    bottom: 24px;
+    width: 360px;
+    min-height: 130px;
+    padding: 20px 22px;
+    border: 1px solid rgba(140, 153, 147, 0.24);
+    border-radius: 17px;
+    background: linear-gradient(160deg, rgba(12, 15, 14, 0.94), rgba(4, 6, 5, 0.97));
+    box-shadow: 0 12px 42px rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(10px);
+}
+
+body.chapter-one .inventory-title {
+    margin-bottom: 15px;
+    color: #ece9e4;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 1rem;
+    letter-spacing: 0.13em;
+}
+
+body.chapter-one #inventory-list {
+    min-height: 54px;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(42px, 1fr));
+    gap: 9px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+body.chapter-one #inventory-list li {
+    min-width: 0;
+    min-height: 52px;
+    display: grid;
+    place-items: center;
+    padding: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(142, 155, 149, 0.23);
+    border-radius: 9px;
+    background: linear-gradient(180deg, rgba(29, 33, 31, 0.78), rgba(13, 16, 15, 0.82));
+    color: #c1c7c4;
+    font-size: 0.62rem;
+    line-height: 1.25;
+    text-align: center;
+    word-break: break-word;
+}
+
+body.chapter-one #inventory-list:empty::before {
+    content: "";
+    grid-column: 1 / -1;
+    min-height: 52px;
+    border-radius: 9px;
+    background: repeating-linear-gradient(90deg, rgba(22, 25, 24, 0.8) 0 44px, transparent 44px 53px);
+    border: 1px solid rgba(142, 155, 149, 0.18);
+}
+
+body.chapter-one .hotspot {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+body.chapter-one .hotspot::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    transform: translate(-50%, -50%);
+    border: 2px solid rgba(228, 235, 231, 0.92);
+    border-radius: 50%;
+    background: rgba(205, 220, 212, 0.18);
+    box-shadow: 0 0 0 5px rgba(219, 231, 225, 0.09), 0 0 19px rgba(209, 229, 218, 0.64);
+    opacity: 0.8;
+}
+
+body.chapter-one .hotspot__label { display: none; }
+
+body.chapter-one .interaction-prompt {
+    position: fixed;
+    z-index: 90;
+    left: 50%;
+    bottom: 27px;
+    min-width: 245px;
+    transform: translateX(-50%) translateY(8px);
+    padding: 12px 18px;
+    border: 1px solid rgba(143, 156, 150, 0.24);
+    border-radius: 13px;
+    background: linear-gradient(160deg, rgba(17, 21, 19, 0.95), rgba(6, 9, 8, 0.97));
+    color: #cbd0cd;
+    text-align: center;
+    box-shadow: 0 10px 34px rgba(0, 0, 0, 0.62);
+    opacity: 0;
+    pointer-events: none;
+}
+
+body.chapter-one .interaction-prompt.interaction-prompt--visible {
+    opacity: 1;
+    transform: translateX(-50%);
+}
+
+@media (max-width: 1050px) {
+    body.chapter-one .hud { top: 14px; left: 14px; right: 14px; }
+    body.chapter-one .save-status { display: none; }
+    body.chapter-one .story-panel { left: 15px; bottom: 15px; width: 310px; }
+    body.chapter-one .inventory { right: 15px; bottom: 15px; width: 310px; }
+    body.chapter-one #inventory-list { grid-template-columns: repeat(6, minmax(35px, 1fr)); gap: 6px; }
+}
+
+@media (max-width: 760px) {
+    body.chapter-one { overflow: auto; }
+    body.chapter-one .room-shell,
+    body.chapter-one #room { min-width: 900px; min-height: 620px; }
+    body.chapter-one .hud,
+    body.chapter-one .story-panel,
+    body.chapter-one .inventory,
+    body.chapter-one .interaction-prompt { position: absolute; }
+    body.chapter-one .hud { min-width: 850px; }
+}
+/* =========================================================
+   ROOM 1 — ROOM 2 UYUMLU HOTSPOT VE ALT ORTA PROMPT
+   Bu blok rooms.css dosyasının en altında kalmalıdır.
+========================================================= */
+
+
+/* =========================================================
+   HOTSPOTLAR
+========================================================= */
+
+.chapter-one .hotspot {
+    position: absolute;
+
+    padding: 0;
+    margin: 0;
+
+    border: none !important;
+    outline: none !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    color: transparent;
+    font-size: 0;
+
+    cursor: zoom-in;
+
+    overflow: visible;
+
+    z-index: 30;
+
+    --sparkle-color: rgba(222, 235, 228, 0.82);
+    --sparkle-glow: rgba(164, 205, 185, 0.48);
+}
+
+
+.chapter-one .hotspot:hover,
+.chapter-one .hotspot:focus,
+.chapter-one .hotspot:focus-visible,
+.chapter-one .hotspot:active {
+    border: none !important;
+    outline: none !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+
+/* Büyük dikdörtgen veya kare hover görünümünü kapatır. */
+
+.chapter-one .hotspot::after {
+    content: none !important;
+}
+
+
+/* HTML içindeki hotspot yazıları görünmez. */
+
+.chapter-one .hotspot__label {
+    display: none !important;
+}
+
+
+/* Room 2 tarzındaki küçük parıltılar. */
+
+.chapter-one .hotspot::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 4px;
+    height: 4px;
+
+    border-radius: 50%;
+
+    background: var(--sparkle-color);
+
+    opacity: 0.34;
+
+    pointer-events: none;
+
+    transform:
+        translate(-50%, -50%)
+        scale(0.72);
+
+    box-shadow:
+        20px -15px 0 -1px var(--sparkle-color),
+        -23px 13px 0 -1px var(--sparkle-color),
+        10px 24px 0 -1px var(--sparkle-color),
+        -11px -24px 0 -1px var(--sparkle-color),
+        0 0 8px 2px var(--sparkle-glow);
+
+    animation:
+        room1SparkleIdle 2.4s ease-in-out infinite;
+
+    transition:
+        opacity 180ms ease,
+        transform 180ms ease,
+        box-shadow 180ms ease;
+}
+
+
+.chapter-one .hotspot:hover::before,
+.chapter-one .hotspot:focus-visible::before {
+    opacity: 1;
+
+    transform:
+        translate(-50%, -50%)
+        scale(1.1);
+
+    box-shadow:
+        20px -15px 0 -1px rgba(255, 255, 255, 0.95),
+        -23px 13px 0 -1px rgba(255, 255, 255, 0.95),
+        10px 24px 0 -1px rgba(255, 255, 255, 0.95),
+        -11px -24px 0 -1px rgba(255, 255, 255, 0.95),
+        0 0 12px 4px rgba(184, 225, 205, 0.72);
+}
+
+
+/* =========================================================
+   ALT ORTA ETKİLEŞİM BİLDİRİMİ
+========================================================= */
+
+.chapter-one .interaction-prompt {
+    position: fixed !important;
+
+    left: 50% !important;
+    right: auto !important;
+
+    top: auto !important;
+    bottom: 32px !important;
+
+    width: max-content !important;
+    min-width: 190px !important;
+    max-width: min(420px, calc(100vw - 40px)) !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    padding: 12px 22px !important;
+    margin: 0 !important;
+
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid
+        rgba(151, 178, 164, 0.32) !important;
+
+    border-radius: 6px !important;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(17, 24, 21, 0.97),
+            rgba(5, 9, 8, 0.98)
+        ) !important;
+
+    color:
+        rgba(229, 237, 233, 0.96) !important;
+
+    font-family:
+        "Inter",
+        sans-serif;
+
+    font-size: 12px !important;
+    font-weight: 500;
+
+    line-height: 1.4;
+
+    letter-spacing: 0.14em;
+
+    text-align: center;
+    text-transform: uppercase;
+
+    white-space: normal;
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.72),
+        inset 0 1px rgba(255, 255, 255, 0.025),
+        0 0 18px rgba(100, 145, 124, 0.08) !important;
+
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transform:
+        translate(-50%, 12px) !important;
+
+    transition:
+        opacity 180ms ease,
+        visibility 180ms ease,
+        transform 180ms ease;
+
+    z-index: 9999 !important;
+}
+
+
+.chapter-one .interaction-prompt--visible {
+    opacity: 1;
+    visibility: visible;
+
+    transform:
+        translate(-50%, 0) !important;
+}
+
+
+/* Room 1 JavaScript herhangi bir left/top değeri yazsa bile
+   promptun alt ortadan ayrılmasını engeller. */
+
+.chapter-one #interactionPrompt[style] {
+    left: 50% !important;
+    top: auto !important;
+    bottom: 32px !important;
+}
+
+
+/* =========================================================
+   ANİMASYON
+========================================================= */
+
+@keyframes room1SparkleIdle {
+    0%,
+    100% {
+        opacity: 0.28;
+
+        transform:
+            translate(-50%, -50%)
+    }
+
+    50% {
+        opacity: 0.68;
+
+        transform:
+            translate(-50%, -50%)
+            scale(0.92);
+    }
+}
+
+
+/* =========================================================
+   KÜÇÜK EKRANLAR
+========================================================= */
+
+@media (max-width: 760px) {
+    .chapter-one .interaction-prompt {
+        bottom: 18px !important;
+
+        min-width: 160px !important;
+
+        padding:
+            10px
+            16px !important;
+
+        font-size: 10px !important;
+    }
+
+    .chapter-one #interactionPrompt[style] {
+        bottom: 18px !important;
+    }
+}
+/* =========================================================
+   ROOM 1 — HASTA DOSYASI KONUMU VE SICAK EL FENERİ
+   Bu blok rooms.css dosyasının en altında kalmalıdır.
+========================================================= */
+
+
+/* ---------------------------------------------------------
+   HASTA DOSYASI ETKİLEŞİM NOKTASI
+
+   Eski alan:
+   left: 0;
+   bottom: 14%;
+   width: 31%;
+   height: 45%;
+
+   Yeni konum, tıklama alanını Hikâye panelinden yukarı taşır.
+--------------------------------------------------------- */
+
+.chapter-one .hotspot-register {
+    left: 3% !important;
+    right: auto !important;
+
+    top: 24% !important;
+    bottom: auto !important;
+
+    width: 27% !important;
+    height: 22% !important;
+}
+
+
+
+
+/* Fare oda üzerinde beklemiyorken de sarı ton korunur,
+   yalnızca ışık biraz zayıflar. */
+
+.chapter-one .room-one.flashlight-idle .flashlight {
+    opacity: 0.52;
+}
+
+
+/* Fenerin merkezinde ayrıntıların daha net görünmesi için
+   karanlık maskenin aydınlık alan geçişini biraz genişletir.
+   Dış bölgeler yine karanlık kalır. */
+
+.chapter-one .room-one::after {
+    background:
+        radial-gradient(
+            circle 270px
+            at var(--flashlight-x) var(--flashlight-y),
+
+            rgba(0, 0, 0, 0) 0%,
+            rgba(0, 0, 0, 0.01) 34%,
+            rgba(0, 0, 0, 0.10) 48%,
+            rgba(0, 0, 0, 0.62) 69%,
+            rgba(0, 0, 0, 0.96) 100%
+        );
+}
+
+
+/* ---------------------------------------------------------
+   MOBİL EKRAN
+--------------------------------------------------------- */
+
+@media (max-width: 760px) {
+    .chapter-one .hotspot-register {
+        left: 2% !important;
+        top: 25% !important;
+
+        width: 34% !important;
+        height: 33% !important;
+    }
+
+  .chapter-one .flashlight {
+    width: 500px;
+    height: 500px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.22) 0%,
+            rgba(255, 255, 255, 0.14) 30%,
+            rgba(255, 255, 255, 0.06) 52%,
+            transparent 72%
+        );
+
+    filter: none !important;
+    mix-blend-mode: screen;
+    opacity: 1;
+}
+
+
+    .chapter-one .room-one::after {
+    background:
+        radial-gradient(
+            circle 255px
+            at var(--flashlight-x) var(--flashlight-y),
+
+            rgba(0, 0, 0, 0) 0%,
+            rgba(0, 0, 0, 0) 48%,
+            rgba(0, 0, 0, 0.20) 62%,
+            rgba(0, 0, 0, 0.76) 78%,
+            rgba(0, 0, 0, 0.98) 100%
+        );
+}
+}
+/* =========================================================
+   ROOM 1 — YENİ PNG İÇİN KAPI HOTSPOT KONUMU
+========================================================= */
+
+body.chapter-one .hotspot-door {
+    left: 49% !important;
+    top: 27% !important;
+
+    width: 11% !important;
+    height: 24% !important;
+
+    right: auto !important;
+    bottom: auto !important;
+}
+
+/* =========================================================
+   ROOM 1 — DUVARDAKİ SEMBOL VE TEKERLEKLİ SANDALYE
+   (gerçek görsele göre hizalandı; birbirleriyle ve
+   envanter panosuyla çakışmayacak şekilde kısaltıldı)
+========================================================= */
+
+body.chapter-one .hotspot-symbol {
+    right: 1% !important;
+    left: auto !important;
+
+    top: 20% !important;
+    bottom: auto !important;
+
+    width: 15% !important;
+    height: 26% !important;
+}
+
+body.chapter-one .hotspot-wheelchair {
+    right: 12% !important;
+    left: auto !important;
+
+    top: 49% !important;
+    bottom: auto !important;
+
+    width: 18% !important;
+    height: 27% !important;
+}
+
+/* =========================================================
+   ROOM 1 — TIKLANABİLİR ENVANTER ÖĞELERİ
+========================================================= */
+
+body.chapter-one #inventory-list li:not(.inventory-empty) {
+    cursor: pointer;
+
+    transition:
+        transform 160ms ease,
+        border-color 160ms ease,
+        background 160ms ease,
+        box-shadow 160ms ease;
+}
+
+body.chapter-one #inventory-list li:not(.inventory-empty):hover,
+body.chapter-one #inventory-list li:not(.inventory-empty):focus-visible {
+    transform: translateY(-2px);
+
+    border-color:
+        rgba(190, 211, 200, 0.52);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(42, 50, 46, 0.92),
+            rgba(17, 22, 20, 0.94)
+        );
+
+    box-shadow:
+        0 7px 18px rgba(0, 0, 0, 0.42),
+        0 0 13px rgba(148, 184, 165, 0.11);
+
+    outline: none;
+}
+/* =====================================================
+   ORTAK ENVANTER EMOJİ VE ITEM PENCERESİ
+===================================================== */
+
+.inventory-slot {
+    overflow: visible;
+}
+
+.inventory-item-emoji {
+    display: grid;
+    place-items: center;
+
+    width: 100%;
+    height: 100%;
+
+    font-size: 26px;
+    line-height: 1;
+
+    filter:
+        drop-shadow(
+            0 3px 5px
+            rgba(0, 0, 0, 0.65)
+        );
+
+    pointer-events: none;
+
+    transition:
+        transform 180ms ease,
+        filter 180ms ease;
+}
+
+.inventory-slot:hover
+.inventory-item-emoji,
+.inventory-slot:focus-visible
+.inventory-item-emoji {
+    transform: scale(1.12);
+
+    filter:
+        drop-shadow(
+            0 0 7px
+            rgba(210, 225, 217, 0.34)
+        );
+}
+
+.inventory-slot.selected {
+    border-color:
+        rgba(184, 76, 69, 0.72);
+
+    box-shadow:
+        0 0 0 1px
+        rgba(151, 49, 43, 0.28),
+        0 0 15px
+        rgba(121, 30, 26, 0.26);
+}
+
+.inventory-item-tooltip {
+    position: absolute;
+
+    left: 50%;
+    bottom: calc(100% + 10px);
+
+    z-index: 30;
+
+    width: max-content;
+    max-width: 170px;
+
+    padding: 7px 10px;
+
+    border:
+        1px solid
+        rgba(149, 164, 156, 0.3);
+
+    border-radius: 7px;
+
+    background:
+        rgba(4, 8, 7, 0.98);
+
+    color: #e0e5e2;
+
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1.35;
+    text-align: center;
+
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transform:
+        translateX(-50%)
+        translateY(5px);
+
+    transition:
+        opacity 150ms ease,
+        visibility 150ms ease,
+        transform 150ms ease;
+
+    box-shadow:
+        0 8px 25px
+        rgba(0, 0, 0, 0.65);
+}
+
+.inventory-slot:hover
+.inventory-item-tooltip,
+.inventory-slot:focus-visible
+.inventory-item-tooltip {
+    opacity: 1;
+    visibility: visible;
+
+    transform:
+        translateX(-50%)
+        translateY(0);
+}
+
+
+/* ITEM BİLGİ PENCERESİ */
+
+.inventory-item-viewer {
+    position: fixed;
+    inset: 0;
+
+    z-index: 9500;
+
+    display: grid;
+    place-items: center;
+
+    padding: 24px;
+
+    background:
+        rgba(0, 0, 0, 0.82);
+
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.inventory-item-viewer.hidden {
+    display: none !important;
+}
+
+.inventory-item-card {
+    position: relative;
+
+    width:
+        min(
+            540px,
+            calc(100vw - 38px)
+        );
+
+    padding:
+        38px 35px 31px;
+
+    border:
+        1px solid
+        rgba(140, 161, 151, 0.32);
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            165deg,
+            rgba(12, 18, 16, 0.99),
+            rgba(3, 7, 6, 0.99)
+        );
+
+    color: #dce3df;
+
+    text-align: center;
+
+    box-shadow:
+        0 30px 90px
+        rgba(0, 0, 0, 0.82);
+
+    animation:
+        inventoryItemReveal
+        230ms ease both;
+}
+
+.inventory-item-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+
+    width: 37px;
+    height: 37px;
+
+    display: grid;
+    place-items: center;
+
+    border:
+        1px solid
+        rgba(151, 169, 160, 0.24);
+
+    border-radius: 8px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    color: #9ba9a2;
+
+    cursor: pointer;
+}
+
+.inventory-item-close:hover {
+    border-color:
+        rgba(190, 77, 70, 0.58);
+
+    background:
+        rgba(120, 23, 22, 0.37);
+
+    color: #ffffff;
+}
+
+.inventory-item-large-emoji {
+    margin-bottom: 16px;
+
+    font-size: 67px;
+    line-height: 1;
+
+    filter:
+        drop-shadow(
+            0 8px 12px
+            rgba(0, 0, 0, 0.68)
+        );
+}
+
+.inventory-item-label {
+    display: block;
+
+    margin-bottom: 12px;
+
+    color: #b54d46;
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+}
+
+.inventory-item-card h2 {
+    margin:
+        0 35px 16px;
+
+    color: #ecefeb;
+
+    font-family:
+        "Cinzel",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            25px,
+            5vw,
+            37px
+        );
+
+    font-weight: 500;
+}
+
+.inventory-item-card p {
+    margin:
+        0 auto 27px;
+
+    max-width: 420px;
+
+    color: #aeb8b3;
+
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.inventory-item-continue {
+    min-width: 125px;
+
+    padding: 12px 18px;
+
+    border:
+        1px solid
+        rgba(139, 59, 53, 0.77);
+
+    border-radius: 8px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #96342e,
+            #641f1b
+        );
+
+    color: #ffffff;
+
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.17em;
+
+    cursor: pointer;
+}
+
+.inventory-item-continue:hover {
+    filter: brightness(1.16);
+}
+
+@keyframes inventoryItemReveal {
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(8px)
+            scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}

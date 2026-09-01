@@ -1,0 +1,486 @@
+/* ==========================================================
+   ROOM 11 — PEDİATRİ KOĞUŞU (KAPATILMIŞ ÇOCUK SERVİSİ)
+   Room8-10.css'teki atmosfer/panel yapısı temel alınmıştır.
+   Bu bölümde el feneri/UV mekaniği yok. Bulmaca: büyüme
+   çizelgesindeki 5 isimden hangisinin dosyasının eksik
+   olduğunu bulmak (oyuncak etiketi yok VE dosya dolabında
+   kapanış kartı yok = ASLI M.), sonra onun hasta numarasını
+   (4271) kapı kilidine girmek.
+   ========================================================== */
+
+body.chapter-eleven .room-background {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 42%;
+
+    filter:
+        brightness(1.02)
+        contrast(1.04)
+        saturate(0.82)
+        sepia(0.1);
+}
+
+body.chapter-eleven .dark-overlay {
+    background:
+        radial-gradient(
+            circle at 50% 38%,
+            rgba(0, 0, 0, 0.06),
+            rgba(0, 0, 0, 0.46) 84%
+        );
+}
+
+body.chapter-eleven .fog-one {
+    opacity: 0.06;
+}
+
+body.chapter-eleven .fog-two {
+    opacity: 0.04;
+}
+
+/* ==========================================================
+   ROOM 11 — HOTSPOT KONUMLARI
+   Gerçek room11.png üzerinden grid overlay + zoom crop
+   ölçümüyle hizalanmıştır.
+*/
+
+#growthChart {
+    top: 20%;
+    left: 22%;
+    width: 8%;
+    height: 27%;
+}
+
+#toyShelf {
+    top: 34%;
+    left: 79%;
+    width: 13%;
+    height: 18%;
+}
+
+#recordCabinet {
+    top: 32%;
+    left: 66%;
+    width: 13%;
+    height: 20%;
+}
+
+#bed {
+    top: 52%;
+    left: 40%;
+    width: 16%;
+    height: 18%;
+}
+
+body.chapter-eleven #exitDoor {
+    top: 23%;
+    left: 53%;
+    width: 12%;
+    height: 27%;
+}
+
+body.chapter-eleven #exitDoor.unlocked {
+    animation: room11DoorGlow 2.5s infinite;
+}
+
+@keyframes room11DoorGlow {
+    0% { box-shadow: 0 0 0 rgba(180, 150, 110, 0); }
+    50% { box-shadow: 0 0 20px rgba(180, 150, 110, 0.32); }
+    100% { box-shadow: 0 0 0 rgba(180, 150, 110, 0); }
+}
+
+body.chapter-eleven #growthChart.inspected,
+body.chapter-eleven #toyShelf.inspected,
+body.chapter-eleven #recordCabinet.inspected {
+    outline: 1px solid rgba(170, 150, 110, 0.2);
+}
+
+/* ==========================================================
+   ROOM 11 — HOTSPOT TIKLAMA ÖNCELİĞİ
+   ========================================================== */
+
+body.chapter-eleven #growthChart,
+body.chapter-eleven #toyShelf,
+body.chapter-eleven #recordCabinet,
+body.chapter-eleven #bed,
+body.chapter-eleven #exitDoor {
+    z-index: 145;
+    pointer-events: auto;
+}
+
+/* ==========================================================
+   ROOM 11 — MODAL SİSTEMİ
+   ========================================================== */
+
+body.chapter-eleven .dialog {
+    z-index: 2300;
+}
+
+.record-document-footer button,
+#nextChapter {
+    min-width: 170px;
+    min-height: 44px;
+    padding: 12px 19px;
+    border: 1px solid rgba(122, 100, 70, 0.75);
+    border-radius: 9px;
+    background: linear-gradient(180deg, #6b4f2a, #432f16);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    cursor: pointer;
+    box-shadow:
+        inset 0 1px rgba(255, 255, 255, 0.08),
+        0 10px 25px rgba(15, 10, 5, 0.32);
+    transition:
+        transform 170ms ease,
+        filter 170ms ease,
+        border-color 170ms ease;
+}
+
+.record-document-footer button:hover,
+#nextChapter:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.15);
+    border-color: rgba(175, 145, 95, 0.9);
+}
+
+/* ---- record-viewer / record-document ---- */
+
+.record-viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 2100;
+    display: grid;
+    place-items: center;
+    padding: 25px;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+}
+
+.record-viewer[aria-hidden="true"] {
+    display: none;
+}
+
+.record-document {
+    position: relative;
+    width: min(830px, 94vw);
+    max-height: min(860px, 92vh);
+    overflow: auto;
+    border: 1px solid rgba(92, 76, 52, 0.55);
+    border-radius: 8px;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(66, 52, 32, 0.035) 1px, transparent 1px),
+        linear-gradient(155deg, #d3c6a8, #b6a683 75%, #988970);
+    background-size: 24px 24px, 24px 24px, auto;
+    color: #26200f;
+    box-shadow:
+        0 40px 100px rgba(0, 0, 0, 0.82),
+        inset 0 0 70px rgba(53, 40, 20, 0.18);
+}
+
+.record-document > * {
+    position: relative;
+    z-index: 2;
+}
+
+.record-document-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 25px 28px 20px;
+    border-bottom: 2px solid rgba(54, 43, 25, 0.34);
+}
+
+.record-hospital-name {
+    display: block;
+    margin-bottom: 7px;
+    color: #4a3a1e;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.27em;
+}
+
+.record-document h2 {
+    margin: 0;
+    color: #211c0f;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: clamp(1.4rem, 3vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: 0.035em;
+}
+
+.record-document .record-close-button {
+    flex: 0 0 auto;
+    border-color: rgba(46, 37, 21, 0.38);
+    color: #392f1a;
+}
+
+.record-document .record-close-button:hover {
+    border-color: rgba(107, 79, 42, 0.65);
+    background: rgba(107, 79, 42, 0.15);
+    color: #3f2f14;
+}
+
+.record-document-body {
+    position: relative;
+    padding: 28px;
+}
+
+.record-stamp {
+    position: absolute;
+    top: 23px;
+    right: 31px;
+    padding: 8px 13px;
+    border: 3px double rgba(94, 63, 27, 0.55);
+    color: rgba(94, 63, 27, 0.62);
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    transform: rotate(-8deg);
+}
+
+.record-classification {
+    max-width: calc(100% - 140px);
+    margin: 0 0 24px;
+    color: #4a3c22;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+}
+
+.record-content {
+    padding: 22px;
+    border: 1px solid rgba(58, 46, 28, 0.28);
+    background: rgba(227, 213, 179, 0.3);
+}
+
+.record-note {
+    margin: 0 0 19px;
+    padding-left: 14px;
+    border-left: 3px solid rgba(107, 79, 42, 0.58);
+    color: #443a26;
+    font-size: 0.79rem;
+    font-style: italic;
+    line-height: 1.65;
+}
+
+.record-document-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+    padding: 20px 28px 25px;
+    border-top: 1px solid rgba(58, 46, 28, 0.28);
+}
+
+.record-document-footer span {
+    color: #443a26;
+    font-size: 0.76rem;
+    line-height: 1.55;
+}
+
+.record-document-footer button {
+    flex: 0 0 auto;
+}
+
+/* ---- çizelge / etiket / kayıt satırları (paylaşılan görünüm) ---- */
+
+.chart-entries-11 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.chart-entry-11 {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px 15px;
+    border: 1px solid rgba(58, 46, 28, 0.3);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.chart-entry-11-name {
+    color: #2c2413;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.chart-entry-11-detail {
+    color: #4a3c22;
+    font-size: 0.76rem;
+    text-align: right;
+}
+
+.chart-entry-11-detail--blank {
+    color: #8a3d2c;
+    font-style: italic;
+}
+
+/* ---- code-panel (kapı kombinasyonu) ---- */
+
+.code-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 2200;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.84);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+}
+
+.code-panel[aria-hidden="true"] {
+    display: none;
+}
+
+.code-panel-window {
+    width: min(470px, 94vw);
+    overflow: hidden;
+    border: 1px solid rgba(148, 121, 82, 0.34);
+    border-radius: 16px;
+    background:
+        linear-gradient(155deg, rgba(20, 15, 9, 0.995), rgba(7, 5, 3, 0.995));
+    box-shadow:
+        0 35px 100px rgba(0, 0, 0, 0.88),
+        inset 0 1px rgba(255, 255, 255, 0.035);
+    animation: roomCommonWindowReveal 0.26s ease both;
+}
+
+.code-panel-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 20px 22px;
+    border-bottom: 1px solid rgba(168, 145, 110, 0.14);
+}
+
+.code-panel-label {
+    display: block;
+    margin-bottom: 6px;
+    color: #d3ab74;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+}
+
+.code-panel-header h2 {
+    margin: 0;
+    color: #ece7dc;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 1.55rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+}
+
+.code-panel-body {
+    padding: 24px;
+}
+
+.code-panel-description {
+    margin: 0 0 20px;
+    color: #a39685;
+    font-size: 0.82rem;
+    line-height: 1.65;
+}
+
+.code-display {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.code-display.four-digit {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.code-display span {
+    display: grid;
+    place-items: center;
+    height: 54px;
+    border: 1px solid rgba(153, 134, 105, 0.29);
+    border-radius: 8px;
+    background:
+        linear-gradient(180deg, rgba(35, 28, 20, 0.95), rgba(12, 9, 6, 0.98));
+    color: #e7ddce;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 1.15rem;
+    box-shadow:
+        inset 0 0 18px rgba(0, 0, 0, 0.4),
+        0 0 14px rgba(142, 111, 93, 0.06);
+}
+
+.code-message {
+    min-height: 23px;
+    margin: 18px 0 0;
+    color: #bfb0a4;
+    font-size: 0.79rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.code-message.success,
+.code-message.is-success {
+    color: #c5a98b;
+}
+
+.code-message.error,
+.code-message.is-error {
+    color: #d3806c;
+}
+
+.tray-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+
+    margin: 18px 0;
+}
+
+.tray-buttons button {
+    padding: 14px 8px;
+
+    border: 1px solid rgba(190, 150, 95, 0.3);
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.03);
+    color: #d8cdb8;
+
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.tray-buttons button:hover {
+    background: rgba(190, 150, 95, 0.18);
+    border-color: rgba(210, 170, 110, 0.6);
+}
+
+.keypad-buttons {
+    grid-template-columns: repeat(5, 1fr);
+}
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 600px) {
+    .tray-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

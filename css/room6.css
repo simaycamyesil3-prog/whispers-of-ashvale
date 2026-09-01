@@ -1,0 +1,395 @@
+/* ==========================================================
+   ROOM 6 — ECZANE / İLAÇ DEPOSU
+   Room5.css'teki atmosfer/panel yapısı temel alınmıştır.
+   Bu bölümde el feneri mekaniği yok (elektrik zaten geri geldi),
+   UV mekaniği de yok - room5'ten farklı bir bulmaca (doz/oran
+   hesaplama + parti karşılaştırma) kullanılıyor.
+   ========================================================== */
+
+body.chapter-six .room-background {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 45%;
+
+    filter:
+        brightness(1.05)
+        contrast(1.08)
+        saturate(0.88);
+}
+
+body.chapter-six .dark-overlay {
+    background:
+        radial-gradient(
+            circle at 50% 40%,
+            rgba(0, 0, 0, 0.08),
+            rgba(0, 0, 0, 0.46) 82%
+        );
+}
+
+body.chapter-six .fog-one {
+    opacity: 0.08;
+}
+
+body.chapter-six .fog-two {
+    opacity: 0.06;
+}
+
+/* ==========================================================
+   ROOM 6 — HOTSPOT KONUMLARI
+   Gerçek room6.png görseline göre (ışıklı raflar, terazi,
+   defter, güvenlik monitörü, kilitli kafes) hizalandı.
+*/
+
+#storageLog {
+    /* Tezgahın üzerindeki açık, eski ciltli defter. */
+    top: 73%;
+    left: 33%;
+    width: 17%;
+    height: 11%;
+}
+
+#batchRecords {
+    /* "LOT / BATCH" yazılı ahşap sandık yığını. */
+    top: 44%;
+    left: 40%;
+    width: 20%;
+    height: 21%;
+}
+
+#mixingBench {
+    /* Pirinç terazi (sağ kefe ve zincirler - hikaye panelinin
+       kapladığı sol-alt bölgeden kaçınmak için). */
+    top: 52%;
+    left: 27%;
+    width: 9%;
+    height: 31%;
+}
+
+#securityMonitor {
+    /* Arka duvara asılı güvenlik monitörü. */
+    top: 21%;
+    left: 48%;
+    width: 9%;
+    height: 10%;
+}
+
+body.chapter-six #exitDoor {
+    /* Asma kilitli tel örgü kafes kapı ve EXIT tabelası. */
+    top: 17%;
+    left: 72%;
+    width: 25%;
+    height: 42%;
+}
+
+body.chapter-six #exitDoor.unlocked {
+    animation: room6DoorGlow 2.5s infinite;
+}
+
+@keyframes room6DoorGlow {
+    0% { box-shadow: 0 0 0 rgba(180, 200, 160, 0); }
+    50% { box-shadow: 0 0 20px rgba(180, 200, 160, 0.32); }
+    100% { box-shadow: 0 0 0 rgba(180, 200, 160, 0); }
+}
+
+body.chapter-six #storageLog.inspected,
+body.chapter-six #batchRecords.solved {
+    outline: 1px solid rgba(180, 160, 120, 0.2);
+}
+
+/* ==========================================================
+   ROOM 6 — HOTSPOT TIKLAMA ÖNCELİĞİ
+   ========================================================== */
+
+body.chapter-six #storageLog,
+body.chapter-six #batchRecords,
+body.chapter-six #mixingBench,
+body.chapter-six #securityMonitor,
+body.chapter-six #exitDoor {
+    z-index: 145;
+    pointer-events: auto;
+}
+
+/* ==========================================================
+   ROOM 6 — MODAL SİSTEMİ
+   room-common.css yalnızca .dialog ve .chapter-complete için
+   temel konumlandırma sağlıyor. .record-viewer / .code-panel
+   her bölümün kendi CSS dosyasında tanımlanıyor (bkz. room5.css)
+   — bu blok aynı deseni room6 için sağlar. Bu bölümde eşya
+   toplama olmadığı için .item-popup'a ihtiyaç yok.
+   ========================================================== */
+
+.record-document-footer button,
+#nextChapter {
+    min-width: 170px;
+    min-height: 44px;
+    padding: 12px 19px;
+    border: 1px solid rgba(90, 122, 84, 0.75);
+    border-radius: 9px;
+    background: linear-gradient(180deg, #3e6b3a, #204321);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    cursor: pointer;
+    box-shadow:
+        inset 0 1px rgba(255, 255, 255, 0.08),
+        0 10px 25px rgba(5, 15, 5, 0.32);
+    transition:
+        transform 170ms ease,
+        filter 170ms ease,
+        border-color 170ms ease;
+}
+
+.record-document-footer button:hover,
+#nextChapter:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.15);
+    border-color: rgba(130, 175, 120, 0.9);
+}
+
+/* ---- record-viewer / record-document ---- */
+
+.record-viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 2100;
+    display: grid;
+    place-items: center;
+    padding: 25px;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+}
+
+.record-viewer[aria-hidden="true"] {
+    display: none;
+}
+
+.record-document {
+    position: relative;
+    width: min(790px, 94vw);
+    max-height: min(830px, 92vh);
+    overflow: auto;
+    border: 1px solid rgba(78, 99, 62, 0.55);
+    border-radius: 8px;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(52, 66, 39, 0.035) 1px, transparent 1px),
+        linear-gradient(155deg, #cdd3b6, #aeb694 75%, #8f9877);
+    background-size: 24px 24px, 24px 24px, auto;
+    color: #23261c;
+    box-shadow:
+        0 40px 100px rgba(0, 0, 0, 0.82),
+        inset 0 0 70px rgba(38, 53, 26, 0.18);
+}
+
+.record-document > * {
+    position: relative;
+    z-index: 2;
+}
+
+.record-document-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 25px 28px 20px;
+    border-bottom: 2px solid rgba(43, 54, 33, 0.34);
+}
+
+.record-hospital-name {
+    display: block;
+    margin-bottom: 7px;
+    color: #37502a;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.27em;
+}
+
+.record-document h2 {
+    margin: 0;
+    color: #21241a;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: clamp(1.4rem, 3vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: 0.035em;
+}
+
+.record-document .record-close-button {
+    flex: 0 0 auto;
+    border-color: rgba(37, 47, 24, 0.38);
+    color: #33402a;
+}
+
+.record-document .record-close-button:hover {
+    border-color: rgba(37, 82, 25, 0.65);
+    background: rgba(43, 87, 25, 0.15);
+    color: #2b5017;
+}
+
+.record-document-body {
+    position: relative;
+    padding: 28px;
+}
+
+.record-stamp {
+    position: absolute;
+    top: 23px;
+    right: 31px;
+    padding: 8px 13px;
+    border: 3px double rgba(45, 74, 27, 0.55);
+    color: rgba(45, 74, 27, 0.62);
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    transform: rotate(-8deg);
+}
+
+.record-classification {
+    max-width: calc(100% - 140px);
+    margin: 0 0 24px;
+    color: #33461f;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+}
+
+.record-content {
+    padding: 22px;
+    border: 1px solid rgba(45, 57, 29, 0.28);
+    background: rgba(219, 227, 191, 0.26);
+}
+
+.record-note {
+    margin: 19px 0 0;
+    padding-left: 14px;
+    border-left: 3px solid rgba(53, 82, 30, 0.58);
+    color: #3c4231;
+    font-size: 0.79rem;
+    font-style: italic;
+    line-height: 1.65;
+}
+
+.record-document-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+    padding: 20px 28px 25px;
+    border-top: 1px solid rgba(45, 57, 29, 0.28);
+}
+
+.record-document-footer span {
+    color: #3b4130;
+    font-size: 0.76rem;
+    line-height: 1.55;
+}
+
+.record-document-footer button {
+    flex: 0 0 auto;
+}
+
+/* ---- parti tablosu (batch table) ---- */
+
+.treatment-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #23271b;
+    font-size: 0.86rem;
+}
+
+.treatment-table th,
+.treatment-table td {
+    padding: 12px 14px;
+    border: 1px solid rgba(45, 57, 29, 0.32);
+    text-align: left;
+}
+
+.treatment-table th {
+    background: rgba(43, 61, 30, 0.16);
+    color: #29401b;
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+}
+
+.treatment-table tbody tr:nth-child(even) {
+    background: rgba(43, 61, 30, 0.065);
+}
+
+/* Parti satırları tıklanabilir - hangi partinin standart dışı
+   olduğunu seçmek için kullanılır. */
+.batch-row {
+    cursor: pointer;
+    transition: background 150ms ease;
+}
+
+.batch-row:hover,
+.batch-row:focus-visible {
+    background: rgba(80, 43, 34, 0.14) !important;
+    outline: none;
+}
+
+.batch-row.wrong-flash {
+    animation: room6BatchWrong 0.5s ease;
+}
+
+@keyframes room6BatchWrong {
+    0%, 100% { background: rgba(80, 43, 34, 0.14); }
+    50% { background: rgba(150, 51, 46, 0.32); }
+}
+
+.batch-row.correct {
+    background: rgba(60, 107, 58, 0.32) !important;
+}
+
+.batch-hint {
+    margin: 16px 0 0;
+    color: #4a5138;
+    font-size: 0.78rem;
+    line-height: 1.6;
+}
+
+.batch-message {
+    min-height: 23px;
+    margin: 16px 0 0;
+    color: #4a4638;
+    font-size: 0.79rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.batch-message.success,
+.batch-message.is-success {
+    color: #2f6a35;
+}
+
+.batch-message.error,
+.batch-message.is-error {
+    color: #a13b34;
+}
+
+.ratio-display {
+    margin: 6px 0 0;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.14em;
+    text-align: center;
+    color: #33461f;
+}
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 640px) {
+    .treatment-table {
+        font-size: 0.74rem;
+    }
+
+    .treatment-table th,
+    .treatment-table td {
+        padding: 8px 8px;
+    }
+}

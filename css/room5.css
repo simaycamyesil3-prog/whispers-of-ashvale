@@ -1,0 +1,909 @@
+/* ==========================================================
+   ROOM 5 — AMELİYATHANE
+   Room4.css'teki fener/atmosfer yapısı temel alınmıştır.
+   ========================================================== */
+
+body.chapter-five .room-background {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 45%;
+
+    /*
+        El feneri mekaniği kaldırıldığında oda çok karanlık kaldı -
+        önceden bu karartma, hareket eden fener ışığının parlaklığıyla
+        dengeleniyordu. Fener gidince değerler yeniden ayarlandı.
+    */
+    filter:
+        brightness(1.08)
+        contrast(1.05)
+        saturate(0.92);
+}
+
+body.chapter-five .dark-overlay {
+    background:
+        radial-gradient(
+            circle at 50% 40%,
+            rgba(0, 0, 0, 0.05),
+            rgba(0, 0, 0, 0.42) 82%
+        );
+}
+
+body.chapter-five .fog-one {
+    opacity: 0.07;
+}
+
+body.chapter-five .fog-two {
+    opacity: 0.05;
+}
+
+/* ==========================================================
+   ROOM 5 — HOTSPOT KONUMLARI
+   Gerçek görsel eklendiğinde bu yüzdeler ayarlanabilir.
+   ========================================================== */
+
+/*
+   NOT: .story-panel (sol alt) ve .inventory (sağ alt) ekranda
+   sabit (fixed) köşe panelleridir ve hotspot'ların üzerinde kalır.
+   Bu yüzden hotspot'lar ekranın üst yarısında ve alt-orta bölgesinde
+   tutulur, alt sol/sağ köşelere girmez.
+*/
+
+/*
+   NOT (güncelleme): Aşağıdaki konumlar, üretilen gerçek room5.png
+   görseline göre yeniden hizalandı (görseldeki nesnelerin fiili
+   yerleşimiyle eşleşsin diye). Alt köşe kuralı hâlâ geçerli:
+   coveredGurney, panellerin başladığı ~%69 satırının üzerinde
+   kalacak şekilde kısaltıldı.
+*/
+
+#instrumentCabinet {
+    /* Cam kapılı ilaç/alet dolabı - yeni arka plan görselinde
+       sol duvarda uzun boylu duruyor. */
+    top: 20%;
+    left: 4%;
+    width: 18%;
+    height: 47%;
+}
+
+#operatingTable {
+    top: 49%;
+    left: 22%;
+    width: 38%;
+    height: 38%;
+}
+
+#securityMonitor {
+    /* Yeni görselde monitör daha büyük ve daha aşağıda. */
+    top: 20%;
+    left: 78%;
+    width: 11%;
+    height: 26%;
+}
+
+#coveredGurney {
+    top: 53%;
+    left: 69%;
+    width: 27%;
+    height: 24%;
+}
+
+#xrayPanel {
+    /* Duvara asılı, üstü lambalı cam kapılı küçük panel - kullanıcının
+       gönderdiği yeni arka plan görselindeki fiili konumuna göre
+       hizalandı (alet dolabının hemen sağında). */
+    top: 31%;
+    left: 23%;
+    width: 10%;
+    height: 14%;
+}
+
+body.chapter-five #exitDoor {
+    /* Kapalı kapı, üzerinde tel örgülü küçük gözetleme penceresi -
+       yeni arka plan görseline göre yeniden hizalandı. */
+    top: 19%;
+    left: 58%;
+    width: 13%;
+    height: 33%;
+}
+
+body.chapter-five #exitDoor.unlocked {
+    animation: room5DoorGlow 2.5s infinite;
+}
+
+@keyframes room5DoorGlow {
+    0% { box-shadow: 0 0 0 rgba(210, 180, 120, 0); }
+    50% { box-shadow: 0 0 20px rgba(210, 180, 120, 0.35); }
+    100% { box-shadow: 0 0 0 rgba(210, 180, 120, 0); }
+}
+
+body.chapter-five #instrumentCabinet.unlocked,
+body.chapter-five #coveredGurney.searched,
+body.chapter-five #securityMonitor.inspected {
+    outline: 1px solid rgba(180, 160, 120, 0.2);
+}
+
+/* ==========================================================
+   ROOM 5 — HOTSPOT TIKLAMA ÖNCELİĞİ
+   ========================================================== */
+
+body.chapter-five #operatingTable,
+body.chapter-five #coveredGurney,
+body.chapter-five #instrumentCabinet,
+body.chapter-five #xrayPanel,
+body.chapter-five #securityMonitor,
+body.chapter-five #exitDoor {
+    z-index: 145;
+    pointer-events: auto;
+}
+
+/* ==========================================================
+   ROOM 5 — MODAL SİSTEMİ
+   room-common.css yalnızca .dialog ve .chapter-complete için
+   temel konumlandırma sağlıyor. .item-popup / .record-viewer /
+   .code-panel her bölümün kendi CSS dosyasında tanımlanıyor
+   (bkz. room3.css) — bu blok aynı deseni room5 için sağlar.
+   ========================================================== */
+
+.item-popup {
+    position: fixed;
+    inset: 0;
+    z-index: 2300;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 34px;
+    background:
+        radial-gradient(circle at center, rgba(66, 45, 45, 0.18), rgba(0, 0, 0, 0.91) 56%);
+    text-align: center;
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+}
+
+.item-popup[aria-hidden="true"] {
+    display: none;
+}
+
+.item-popup::before {
+    content: "";
+    position: absolute;
+    width: min(560px, 88vw);
+    height: min(520px, 80vh);
+    border: 1px solid rgba(153, 128, 108, 0.28);
+    border-radius: 20px;
+    background:
+        linear-gradient(155deg, rgba(21, 14, 14, 0.985), rgba(7, 3, 3, 0.995));
+    box-shadow:
+        0 36px 110px rgba(0, 0, 0, 0.86),
+        inset 0 1px rgba(255, 255, 255, 0.03);
+}
+
+.item-popup > * {
+    position: relative;
+    z-index: 2;
+}
+
+.item-popup-glow {
+    position: absolute;
+    z-index: 1;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: rgba(157, 118, 96, 0.18);
+    filter: blur(48px);
+}
+
+.item-popup img {
+    width: min(170px, 40vw);
+    height: 160px;
+    margin-bottom: 18px;
+    object-fit: contain;
+    filter:
+        drop-shadow(0 18px 25px rgba(0, 0, 0, 0.65))
+        drop-shadow(0 0 13px rgba(191, 162, 143, 0.18));
+}
+
+/* Eşya ikonu için görsel dosyası yerine sembol (emoji) gösterilir -
+   bkz. room4.css .cable-popup-icon, aynı desen. */
+.item-popup-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: min(170px, 40vw);
+    height: 160px;
+    margin: 0 auto 18px;
+    font-size: 76px;
+    line-height: 1;
+    border: 1px solid rgba(191, 162, 143, 0.24);
+    border-radius: 18px;
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.06),
+            rgba(255, 255, 255, 0.01) 68%
+        );
+    filter:
+        drop-shadow(0 18px 25px rgba(0, 0, 0, 0.65))
+        drop-shadow(0 0 13px rgba(191, 162, 143, 0.18));
+}
+
+.item-popup-label {
+    margin-bottom: 9px;
+    color: #d3a98c;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.34em;
+}
+
+.item-popup h2 {
+    margin: 0 0 12px;
+    color: #edf0ee;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: clamp(1.55rem, 4vw, 2.5rem);
+    font-weight: 500;
+}
+
+.item-popup p {
+    max-width: 430px;
+    margin: 0 0 24px;
+    color: #a49f9a;
+    font-size: 0.88rem;
+    line-height: 1.7;
+}
+
+.item-popup button,
+.record-document-footer button,
+#nextChapter {
+    min-width: 170px;
+    min-height: 44px;
+    padding: 12px 19px;
+    border: 1px solid rgba(164, 67, 61, 0.75);
+    border-radius: 9px;
+    background: linear-gradient(180deg, #96332e, #5c1917);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    cursor: pointer;
+    box-shadow:
+        inset 0 1px rgba(255, 255, 255, 0.08),
+        0 10px 25px rgba(58, 5, 5, 0.32);
+    transition:
+        transform 170ms ease,
+        filter 170ms ease,
+        border-color 170ms ease;
+}
+
+.item-popup button:hover,
+.record-document-footer button:hover,
+#nextChapter:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.15);
+    border-color: rgba(215, 100, 92, 0.9);
+}
+
+/* ---- record-viewer / record-document ---- */
+
+.record-viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 2100;
+    display: grid;
+    place-items: center;
+    padding: 25px;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+}
+
+.record-viewer[aria-hidden="true"] {
+    display: none;
+}
+
+.record-document {
+    position: relative;
+    width: min(790px, 94vw);
+    max-height: min(830px, 92vh);
+    overflow: auto;
+    border: 1px solid rgba(119, 91, 56, 0.62);
+    border-radius: 8px;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(86, 61, 35, 0.035) 1px, transparent 1px),
+        linear-gradient(155deg, #d9cca9, #bbaa84 75%, #9d8d6d);
+    background-size: 24px 24px, 24px 24px, auto;
+    color: #2c271d;
+    box-shadow:
+        0 40px 100px rgba(0, 0, 0, 0.82),
+        inset 0 0 70px rgba(74, 53, 26, 0.18);
+}
+
+.record-document > * {
+    position: relative;
+    z-index: 2;
+}
+
+.record-document-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 25px 28px 20px;
+    border-bottom: 2px solid rgba(61, 47, 28, 0.34);
+}
+
+.record-hospital-name {
+    display: block;
+    margin-bottom: 7px;
+    color: #6e291f;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.27em;
+}
+
+.record-document h2 {
+    margin: 0;
+    color: #292319;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: clamp(1.4rem, 3vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: 0.035em;
+}
+
+.record-document .record-close-button {
+    flex: 0 0 auto;
+    border-color: rgba(57, 42, 23, 0.38);
+    color: #4b3d2b;
+}
+
+.record-document .record-close-button:hover {
+    border-color: rgba(98, 25, 20, 0.65);
+    background: rgba(112, 28, 22, 0.15);
+    color: #6e1713;
+}
+
+.record-document-body {
+    position: relative;
+    padding: 28px;
+}
+
+.record-stamp {
+    position: absolute;
+    top: 23px;
+    right: 31px;
+    padding: 8px 13px;
+    border: 3px double rgba(112, 32, 27, 0.55);
+    color: rgba(112, 32, 27, 0.62);
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    transform: rotate(-8deg);
+}
+
+.record-classification {
+    max-width: calc(100% - 140px);
+    margin: 0 0 24px;
+    color: #5e261f;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+}
+
+.record-content {
+    padding: 22px;
+    border: 1px solid rgba(67, 50, 29, 0.28);
+    background: rgba(240, 230, 199, 0.26);
+}
+
+.treatment-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #30291e;
+    font-size: 0.88rem;
+}
+
+.treatment-table th,
+.treatment-table td {
+    padding: 12px 14px;
+    border: 1px solid rgba(67, 50, 29, 0.32);
+    text-align: left;
+}
+
+.treatment-table th {
+    background: rgba(75, 58, 35, 0.16);
+    color: #4f211b;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+}
+
+.treatment-table tbody tr:nth-child(even) {
+    background: rgba(79, 59, 35, 0.065);
+}
+
+.treatment-table tbody tr:hover {
+    background: rgba(119, 43, 34, 0.09);
+}
+
+.record-note {
+    margin: 19px 0 0;
+    padding-left: 14px;
+    border-left: 3px solid rgba(104, 35, 29, 0.58);
+    color: #4d4334;
+    font-size: 0.79rem;
+    font-style: italic;
+    line-height: 1.65;
+}
+
+.record-document-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+    padding: 20px 28px 25px;
+    border-top: 1px solid rgba(65, 48, 27, 0.28);
+}
+
+.record-document-footer span {
+    color: #4e4334;
+    font-size: 0.76rem;
+    line-height: 1.55;
+}
+
+.record-document-footer button {
+    flex: 0 0 auto;
+}
+
+/* ---- code-panel (alet tepsisi) ---- */
+
+.code-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 2200;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.84);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+}
+
+.code-panel[aria-hidden="true"] {
+    display: none;
+}
+
+.code-panel-window {
+    width: min(470px, 94vw);
+    overflow: hidden;
+    border: 1px solid rgba(148, 121, 108, 0.34);
+    border-radius: 16px;
+    background:
+        linear-gradient(155deg, rgba(21, 14, 14, 0.995), rgba(7, 3, 3, 0.995));
+    box-shadow:
+        0 35px 100px rgba(0, 0, 0, 0.88),
+        inset 0 1px rgba(255, 255, 255, 0.035);
+    animation: roomCommonWindowReveal 0.26s ease both;
+}
+
+.code-panel-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 20px 22px;
+    border-bottom: 1px solid rgba(160, 137, 125, 0.14);
+}
+
+.code-panel-label {
+    display: block;
+    margin-bottom: 6px;
+    color: #d3a98c;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+}
+
+.code-panel-header h2 {
+    margin: 0;
+    color: #e7ece9;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 1.55rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+}
+
+.code-panel-body {
+    padding: 24px;
+}
+
+.code-panel-description {
+    margin: 0 0 20px;
+    color: #a3968f;
+    font-size: 0.82rem;
+    line-height: 1.65;
+}
+
+.code-display {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.code-display span {
+    display: grid;
+    place-items: center;
+    height: 58px;
+    border: 1px solid rgba(153, 129, 116, 0.29);
+    border-radius: 8px;
+    background:
+        linear-gradient(180deg, rgba(38, 28, 28, 0.95), rgba(13, 8, 8, 0.98));
+    color: #e7dcd6;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 1.3rem;
+    box-shadow:
+        inset 0 0 18px rgba(0, 0, 0, 0.4),
+        0 0 14px rgba(142, 93, 93, 0.05);
+}
+
+.code-message {
+    min-height: 23px;
+    margin: 18px 0 0;
+    color: #bfb4af;
+    font-size: 0.79rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.code-message.success,
+.code-message.is-success {
+    color: #8bc59e;
+}
+
+.code-message.error,
+.code-message.is-error {
+    color: #d36c67;
+}
+
+/* ==========================================================
+   ROOM 5 — GÜVENLİK MONİTÖRÜ (BOZUK GÖRÜNTÜ)
+   ========================================================== */
+
+.monitor-document .record-document-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.monitor-static {
+    position: relative;
+
+    height: 200px;
+    border-radius: 6px;
+    overflow: hidden;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            rgba(255, 255, 255, 0.04) 0px,
+            rgba(255, 255, 255, 0.04) 1px,
+            transparent 1px,
+            transparent 3px
+        ),
+        #050505;
+
+    border: 2px solid #2a2a2a;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    color: #555;
+    text-align: center;
+}
+
+.monitor-static-label {
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+.monitor-static-footage {
+    display: none;
+    color: #b7c9b0;
+    font-family: "Cinzel", serif;
+    letter-spacing: 1px;
+    line-height: 1.6;
+}
+
+.monitor-static--cleared .monitor-static-label {
+    display: none;
+}
+
+.monitor-static--cleared .monitor-static-footage {
+    display: block;
+}
+
+.monitor-static--cleared {
+    animation: room5MonitorFlicker 0.4s steps(2, end) 2;
+    background: #0a0e0a;
+}
+
+@keyframes room5MonitorFlicker {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.6); }
+}
+
+/* ==========================================================
+   ROOM 5 — ALET TEPSİSİ
+   ========================================================== */
+
+.tray-panel-window {
+    width: min(560px, 92vw);
+}
+
+.tray-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+
+    margin: 18px 0;
+}
+
+.tray-buttons button {
+    padding: 14px 8px;
+
+    border: 1px solid rgba(190, 160, 105, 0.3);
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.03);
+    color: #d8cdb8;
+
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.tray-buttons button:hover {
+    background: rgba(190, 160, 105, 0.18);
+    border-color: rgba(210, 180, 120, 0.6);
+}
+
+.code-display.four-digit span {
+    display: inline-block;
+    min-width: 52px;
+}
+
+/* ==========================================================
+   ROOM 5 — BÖLÜM GİRİŞİ ORTALAMA
+   ========================================================== */
+
+body.chapter-five .chapter-intro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transition:
+        opacity 900ms ease,
+        visibility 900ms ease;
+}
+
+body.chapter-five .chapter-intro.chapter-intro--hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+body.chapter-five .chapter-intro-content {
+    width: min(1100px, 90vw);
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+body.chapter-five .chapter-intro p {
+    max-width: 850px;
+}
+
+/* ==========================================================
+   ROOM 5 — EL FENERİ (room4.css ile aynı mekanik)
+   ========================================================== */
+
+body.chapter-five #flashlight {
+    position: absolute;
+
+    left: var(--flashlight-x, 50%);
+    top: var(--flashlight-y, 50%);
+
+    width: 620px;
+    height: 620px;
+
+    z-index: 111;
+    pointer-events: none;
+
+    border-radius: 50%;
+
+    transform:
+        translate(-50%, -50%)
+        scale(var(--flashlight-radius-scale, 1));
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 248, 220, 0.32) 0%,
+            rgba(255, 246, 218, 0.20) 28%,
+            rgba(245, 238, 210, 0.09) 52%,
+            rgba(235, 230, 210, 0.025) 70%,
+            transparent 84%
+        );
+
+    mix-blend-mode: screen;
+
+    opacity:
+        calc(
+            var(--flashlight-intensity, 1) *
+            var(--flashlight-active-state, 0.9)
+        );
+
+    will-change: left, top, transform;
+}
+
+body.chapter-five .room-five::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    z-index: 110;
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at
+            var(--flashlight-x, 50%)
+            var(--flashlight-y, 50%),
+
+            rgba(0, 0, 0, 0) 0,
+            rgba(0, 0, 0, 0) 145px,
+            rgba(0, 0, 0, 0.08) 210px,
+            rgba(0, 0, 0, 0.32) 290px,
+            rgba(0, 0, 0, 0.68) 390px,
+            rgba(0, 0, 0, 0.93) 540px,
+            rgba(0, 0, 0, 0.97) 100%
+        );
+
+    will-change: background;
+}
+
+body.chapter-five .room-five.flashlight-idle #flashlight {
+    opacity: 0.5;
+}
+
+body.chapter-five .room-five.flashlight-empty #flashlight {
+    opacity: 0;
+}
+
+body.chapter-five .room-five.flashlight-empty::after {
+    background: rgba(0, 0, 0, 0.97);
+}
+
+/* Hastanenin elektriği Bölüm 4'ün sonunda geri geldiği için Bölüm 5'te
+   el feneri/karanlık mekaniği kullanılmıyor - oda normal şekilde
+   aydınlık başlıyor. Yukarıdaki kurallar başka bir yerden tekrar
+   tetiklenirse diye önlem olarak duruyor, bu kural onları geçersiz kılar. */
+body.chapter-five .room-five::after,
+body.chapter-five #flashlight {
+    display: none !important;
+}
+
+/* ==========================================================
+   ROOM 5 — MOR IŞIK (UV) MEKANİĞİ
+   NOT: #uvMarkA-D konumları yeni oda görseline (kapı kapalı hâli)
+   göre üst duvar şeridine hizalandı - dört işaret de mobilyalarla
+   çakışmayan, normal ışıkta boş görünen duvar alanlarında.
+   ========================================================== */
+
+body.chapter-five .uv-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    background: rgba(90, 20, 170, 0.22);
+    mix-blend-mode: screen;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+body.chapter-five.uv-active .room-background {
+    filter:
+        brightness(0.5)
+        contrast(1.1)
+        saturate(0.35)
+        hue-rotate(230deg);
+}
+
+body.chapter-five.uv-active .uv-overlay {
+    opacity: 1;
+}
+
+/* NOT: Üst HUD çubuğu ekranın ilk ~%15'ini kapladığı için işaretler
+   HUD'un altında, mobilyalar arasındaki boş duvar aralıklarına
+   yerleştirildi (yeni arka plan görseline göre ölçüldü). */
+#uvMarkA { top: 22%; left: 35%; width: 7%; height: 13%; }
+#uvMarkB { top: 24%; left: 72%; width: 6%; height: 14%; }
+#uvMarkC { top: 26%; left: 90%; width: 7%; height: 16%; }
+#uvMarkD { top: 37%; left: 35%; width: 7%; height: 10%; }
+
+body.chapter-five .uv-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 1.6rem;
+    color: transparent;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    z-index: 150;
+}
+
+body.chapter-five.uv-active .uv-mark {
+    color: #c9a8ff;
+    text-shadow:
+        0 0 8px #a259ff,
+        0 0 18px rgba(162, 89, 255, 0.7);
+    opacity: 1;
+    pointer-events: auto;
+    animation: room5UvMarkPulse 2.4s ease-in-out infinite;
+}
+
+body.chapter-five.uv-active .uv-mark.found {
+    color: #e8dcff;
+    animation: none;
+    text-shadow:
+        0 0 10px #d9b8ff,
+        0 0 22px rgba(217, 184, 255, 0.85);
+}
+
+@keyframes room5UvMarkPulse {
+    0%, 100% { opacity: 0.65; }
+    50% { opacity: 1; }
+}
+
+/* ---- kapı tuş takımı ---- */
+
+.keypad-buttons {
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.symbol-sequence {
+    margin-top: 6px;
+    font-size: 1.4rem;
+    letter-spacing: 0.3em;
+    text-align: center;
+    color: #b7c9b0;
+}
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 600px) {
+    .tray-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

@@ -1,0 +1,545 @@
+/* ==========================================================
+   ROOM 7 — ARŞİV & MORG
+   Room5/Room6.css'teki atmosfer/panel yapısı temel alınmıştır.
+   Bu bölümde el feneri/UV mekaniği yok. Bulmaca: nöbetçinin
+   parçalanmış ses kaydından (5 parça, 1'i parazit/decoy) 4
+   haneli kapı kodunu çıkarmak - room5'teki kod tuş takımı
+   yeniden kullanılıyor, ama kod bu sefer tek bir yerde yazılı
+   değil, birden fazla kayıttan derleniyor.
+   ========================================================== */
+
+body.chapter-seven .room-background {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 45%;
+
+    filter:
+        brightness(0.98)
+        contrast(1.1)
+        saturate(0.82);
+}
+
+body.chapter-seven .dark-overlay {
+    background:
+        radial-gradient(
+            circle at 50% 40%,
+            rgba(0, 0, 0, 0.1),
+            rgba(0, 0, 0, 0.5) 82%
+        );
+}
+
+body.chapter-seven .fog-one {
+    opacity: 0.1;
+}
+
+body.chapter-seven .fog-two {
+    opacity: 0.07;
+}
+
+/* ==========================================================
+   ROOM 7 — HOTSPOT KONUMLARI
+   Görsel henüz teslim edilmedi - bunlar GEÇİCİ konumlar.
+   Gerçek room7.png gelince, room6'da yapıldığı gibi (grid
+   overlay + zoom crop ölçümü) yeniden hizalanacak.
+*/
+
+#coldStorage {
+    /* Açık duran soğuk hava çekmecesi (örtülü beden görünüyor). */
+    top: 35%;
+    left: 53%;
+    width: 24%;
+    height: 27%;
+}
+
+#registryLog {
+    /* Ahşap masanın üzerindeki kağıt/defter yığını. */
+    top: 40%;
+    left: 26%;
+    width: 10%;
+    height: 9%;
+}
+
+#tapeRecorder {
+    /* Duvar kenarındaki eski, kadranlı cihaz. */
+    top: 35%;
+    left: 20%;
+    width: 6%;
+    height: 8%;
+}
+
+#guardDesk {
+    /* Duvara asılı, panoya iğnelenmiş notlar. */
+    top: 28%;
+    left: 33%;
+    width: 6%;
+    height: 12%;
+}
+
+body.chapter-seven #exitDoor {
+    /* Ağır, paslı menteşeli çelik kapı. */
+    top: 23%;
+    left: 7%;
+    width: 12%;
+    height: 31%;
+}
+
+body.chapter-seven #exitDoor.unlocked {
+    animation: room7DoorGlow 2.5s infinite;
+}
+
+@keyframes room7DoorGlow {
+    0% { box-shadow: 0 0 0 rgba(150, 170, 190, 0); }
+    50% { box-shadow: 0 0 20px rgba(150, 170, 190, 0.32); }
+    100% { box-shadow: 0 0 0 rgba(150, 170, 190, 0); }
+}
+
+body.chapter-seven #registryLog.inspected,
+body.chapter-seven #tapeRecorder.fully-listened {
+    outline: 1px solid rgba(150, 160, 170, 0.2);
+}
+
+/* ==========================================================
+   ROOM 7 — HOTSPOT TIKLAMA ÖNCELİĞİ
+   ========================================================== */
+
+body.chapter-seven #registryLog,
+body.chapter-seven #coldStorage,
+body.chapter-seven #tapeRecorder,
+body.chapter-seven #guardDesk,
+body.chapter-seven #exitDoor {
+    z-index: 145;
+    pointer-events: auto;
+}
+
+/* ==========================================================
+   ROOM 7 — MODAL SİSTEMİ
+   room-common.css yalnızca .dialog ve .chapter-complete için
+   temel konumlandırma sağlıyor. .record-viewer ve .code-panel
+   her bölümün kendi CSS dosyasında tanımlanıyor (bkz. room5.css,
+   room6.css) - bu blok aynı deseni room7 için sağlar. Bu
+   bölümde eşya toplama olmadığı için .item-popup'a ihtiyaç yok.
+   ========================================================== */
+
+.record-document-footer button,
+#nextChapter {
+    min-width: 170px;
+    min-height: 44px;
+    padding: 12px 19px;
+    border: 1px solid rgba(96, 108, 122, 0.75);
+    border-radius: 9px;
+    background: linear-gradient(180deg, #3a4c6b, #202d43);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    cursor: pointer;
+    box-shadow:
+        inset 0 1px rgba(255, 255, 255, 0.08),
+        0 10px 25px rgba(5, 10, 15, 0.32);
+    transition:
+        transform 170ms ease,
+        filter 170ms ease,
+        border-color 170ms ease;
+}
+
+.record-document-footer button:hover,
+#nextChapter:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.15);
+    border-color: rgba(120, 145, 175, 0.9);
+}
+
+/* ---- record-viewer / record-document ---- */
+
+.record-viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 2100;
+    display: grid;
+    place-items: center;
+    padding: 25px;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+}
+
+.record-viewer[aria-hidden="true"] {
+    display: none;
+}
+
+.record-document {
+    position: relative;
+    width: min(790px, 94vw);
+    max-height: min(830px, 92vh);
+    overflow: auto;
+    border: 1px solid rgba(70, 80, 92, 0.55);
+    border-radius: 8px;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(40, 46, 56, 0.035) 1px, transparent 1px),
+        linear-gradient(155deg, #c3c9d3, #a4aab8 75%, #868c98);
+    background-size: 24px 24px, 24px 24px, auto;
+    color: #202329;
+    box-shadow:
+        0 40px 100px rgba(0, 0, 0, 0.82),
+        inset 0 0 70px rgba(26, 32, 44, 0.18);
+}
+
+.record-document > * {
+    position: relative;
+    z-index: 2;
+}
+
+.record-document-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 25px 28px 20px;
+    border-bottom: 2px solid rgba(38, 45, 54, 0.34);
+}
+
+.record-hospital-name {
+    display: block;
+    margin-bottom: 7px;
+    color: #2e3c50;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.27em;
+}
+
+.record-document h2 {
+    margin: 0;
+    color: #1c1f26;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: clamp(1.4rem, 3vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: 0.035em;
+}
+
+.record-document .record-close-button {
+    flex: 0 0 auto;
+    border-color: rgba(32, 38, 47, 0.38);
+    color: #2a3138;
+}
+
+.record-document .record-close-button:hover {
+    border-color: rgba(37, 63, 82, 0.65);
+    background: rgba(43, 70, 87, 0.15);
+    color: #22394a;
+}
+
+.record-document-body {
+    position: relative;
+    padding: 28px;
+}
+
+.record-stamp {
+    position: absolute;
+    top: 23px;
+    right: 31px;
+    padding: 8px 13px;
+    border: 3px double rgba(38, 55, 74, 0.55);
+    color: rgba(38, 55, 74, 0.62);
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    transform: rotate(-8deg);
+}
+
+.record-classification {
+    max-width: calc(100% - 140px);
+    margin: 0 0 24px;
+    color: #2a3547;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+}
+
+.record-content {
+    padding: 22px;
+    border: 1px solid rgba(38, 46, 57, 0.28);
+    background: rgba(191, 199, 212, 0.26);
+}
+
+.record-note {
+    margin: 19px 0 0;
+    padding-left: 14px;
+    border-left: 3px solid rgba(43, 62, 82, 0.58);
+    color: #333a45;
+    font-size: 0.79rem;
+    font-style: italic;
+    line-height: 1.65;
+}
+
+.record-note:first-child {
+    margin-top: 0;
+}
+
+.record-document-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+    padding: 20px 28px 25px;
+    border-top: 1px solid rgba(38, 46, 57, 0.28);
+}
+
+.record-document-footer span {
+    color: #333a45;
+    font-size: 0.76rem;
+    line-height: 1.55;
+}
+
+.record-document-footer button {
+    flex: 0 0 auto;
+}
+
+/* ---- ses kaydı parçaları (tape segments) ---- */
+
+.tape-segments {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin: 20px 0 0;
+}
+
+.tape-segment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 6px;
+    border: 1px solid rgba(38, 46, 57, 0.32);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    color: #23272f;
+    font-family: "Inter", sans-serif;
+    cursor: pointer;
+    transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
+}
+
+.tape-segment:hover,
+.tape-segment:focus-visible {
+    background: rgba(58, 76, 107, 0.16);
+    border-color: rgba(58, 76, 107, 0.55);
+    outline: none;
+    transform: translateY(-1px);
+}
+
+.tape-segment-label {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+}
+
+.tape-segment-time {
+    font-size: 0.66rem;
+    color: #545b66;
+}
+
+.tape-segment.listened {
+    background: rgba(58, 107, 66, 0.18);
+    border-color: rgba(58, 107, 66, 0.55);
+}
+
+.tape-segment.listened .tape-segment-label::after {
+    content: " ✓";
+}
+
+.tape-segment.decoy-revealed {
+    background: rgba(107, 58, 58, 0.16);
+    border-color: rgba(107, 58, 58, 0.5);
+}
+
+.tape-hint {
+    margin: 18px 0 0;
+    color: #454c58;
+    font-size: 0.78rem;
+    line-height: 1.6;
+}
+
+/* ---- code-panel (arka bölme kapısı) ---- */
+
+.code-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 2200;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.84);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+}
+
+.code-panel[aria-hidden="true"] {
+    display: none;
+}
+
+.code-panel-window {
+    width: min(470px, 94vw);
+    overflow: hidden;
+    border: 1px solid rgba(108, 121, 148, 0.34);
+    border-radius: 16px;
+    background:
+        linear-gradient(155deg, rgba(14, 16, 21, 0.995), rgba(3, 4, 7, 0.995));
+    box-shadow:
+        0 35px 100px rgba(0, 0, 0, 0.88),
+        inset 0 1px rgba(255, 255, 255, 0.035);
+    animation: roomCommonWindowReveal 0.26s ease both;
+}
+
+.tray-panel-window {
+    width: min(560px, 92vw);
+}
+
+.code-panel-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 20px 22px;
+    border-bottom: 1px solid rgba(137, 148, 168, 0.14);
+}
+
+.code-panel-label {
+    display: block;
+    margin-bottom: 6px;
+    color: #8ca3d3;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+}
+
+.code-panel-header h2 {
+    margin: 0;
+    color: #e7ebec;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 1.55rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+}
+
+.code-panel-body {
+    padding: 24px;
+}
+
+.code-panel-description {
+    margin: 0 0 20px;
+    color: #939caa;
+    font-size: 0.82rem;
+    line-height: 1.65;
+}
+
+.code-display {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.code-display span {
+    display: grid;
+    place-items: center;
+    height: 58px;
+    border: 1px solid rgba(129, 138, 153, 0.29);
+    border-radius: 8px;
+    background:
+        linear-gradient(180deg, rgba(28, 32, 38, 0.95), rgba(8, 10, 13, 0.98));
+    color: #dfe3e7;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 1.3rem;
+    box-shadow:
+        inset 0 0 18px rgba(0, 0, 0, 0.4),
+        0 0 14px rgba(93, 112, 142, 0.06);
+}
+
+.code-display.four-digit span {
+    display: inline-block;
+    min-width: 52px;
+}
+
+.code-message {
+    min-height: 23px;
+    margin: 18px 0 0;
+    color: #aab0ba;
+    font-size: 0.79rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.code-message.success,
+.code-message.is-success {
+    color: #8bb9c5;
+}
+
+.code-message.error,
+.code-message.is-error {
+    color: #d3806c;
+}
+
+.tray-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+
+    margin: 18px 0;
+}
+
+.tray-buttons button {
+    padding: 14px 8px;
+
+    border: 1px solid rgba(105, 130, 190, 0.3);
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.03);
+    color: #d0d6e0;
+
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.tray-buttons button:hover {
+    background: rgba(105, 130, 190, 0.18);
+    border-color: rgba(130, 160, 220, 0.6);
+}
+
+.keypad-buttons {
+    grid-template-columns: repeat(5, 1fr);
+}
+
+/* ==========================================================
+   ROOM 7 — DİYALOG KATMANLAMASI
+   Ses kaydı parçaları, teyp görüntüleyicisi (record-viewer,
+   z-index 2100) AÇIKKEN diyalog kutusunu tetikliyor (oyuncu
+   panele dönmeden art arda birkaç parça dinleyebilsin diye).
+   room-common.css'teki ortak .dialog z-index'i (1200) bunun
+   altında kaldığı için, bu bölümde diyalog kutusunu
+   record-viewer / code-panel'in üzerine çıkarıyoruz.
+   ========================================================== */
+
+body.chapter-seven .dialog {
+    z-index: 2300;
+}
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 640px) {
+    .tape-segments {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .tray-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

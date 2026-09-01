@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Whispers of Ashvale - Bölüm 12 Personel Sığınağı">
+    <title>Whispers of Ashvale - Personel Sığınağı</title>
+
+    <link rel="stylesheet" href="css/style.css?v=20260901085329">
+    <link rel="stylesheet" href="css/animations.css?v=20260901085329">
+    <link rel="stylesheet" href="css/effects.css?v=20260901085329">
+    <link rel="stylesheet" href="css/room-common.css?v=20260901085329">
+    <link rel="stylesheet" href="css/room12.css?v=20260901085329">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body class="room-page chapter-twelve">
+
+    <section id="chapter-intro" class="chapter-intro" aria-label="Bölüm girişi">
+        <div class="chapter-intro-content">
+            <span class="chapter-number">BÖLÜM 12</span>
+            <h1>PERSONEL SIĞINAĞI</h1>
+            <p>Duvarda yırtık notlar, masada açık bir günlük. Üçüncü yöntem artık bir formül değil.</p>
+            <div class="chapter-intro__line" aria-hidden="true"></div>
+        </div>
+    </section>
+
+    <div class="room-shell">
+
+        <header class="hud">
+            <div class="hud-left">
+                <div class="player-box">
+                    <span class="label">OYUNCU</span>
+                    <span id="playerName">Oyuncu</span>
+                </div>
+            </div>
+
+            <div class="hud-center">
+                <div class="chapter-box">BÖLÜM 12 / 15</div>
+
+                <div class="save-status">
+                    <span class="save-status-light" aria-hidden="true"></span>
+                    <span>Yerel kayıt etkin</span>
+                </div>
+            </div>
+
+            <div class="hud-right">
+                <button id="menuButton" class="menu-button" type="button" aria-label="Ana menüye dön">
+                    ANA MENÜ
+                </button>
+            </div>
+        </header>
+
+        <main id="room" class="room room-twelve" aria-label="Ashvale Hastanesi Personel Sığınağı">
+
+            <div id="flashlight" class="flashlight" aria-hidden="true"></div>
+
+            <section class="background-layer" aria-hidden="true">
+                <img
+                    src="images/ui/rooms/room12.png"
+                    class="room-background"
+                    alt=""
+                >
+
+                <div class="dark-overlay"></div>
+                <div class="fog fog-one"></div>
+                <div class="fog fog-two"></div>
+                <div id="roomFlicker" class="room-flicker"></div>
+                <div id="movingShadow" class="moving-shadow"></div>
+                <div id="hallwayFigure" class="hallway-figure"></div>
+            </section>
+
+            <section id="hotspotLayer" class="hotspot-layer" aria-label="Etkileşim alanları">
+
+                <button
+                    id="wallNotes"
+                    class="hotspot"
+                    type="button"
+                    data-text="Duvardaki Notları İncele"
+                    aria-label="Duvardaki yırtık notları incele"
+                ></button>
+
+                <button
+                    id="deskJournal"
+                    class="hotspot"
+                    type="button"
+                    data-text="Günlüğü İncele"
+                    aria-label="Masadaki günlüğü incele"
+                ></button>
+
+                <button
+                    id="cabinet"
+                    class="hotspot"
+                    type="button"
+                    data-text="Dolabı İncele"
+                    aria-label="Dolabı incele"
+                ></button>
+
+                <button
+                    id="bed"
+                    class="hotspot"
+                    type="button"
+                    data-text="Yatağı İncele"
+                    aria-label="Yatağı incele"
+                ></button>
+
+                <button
+                    id="exitDoor"
+                    class="hotspot"
+                    type="button"
+                    data-text="Çıkış Kapısını İncele"
+                    aria-label="Çıkış kapısını incele"
+                ></button>
+
+            </section>
+
+            <section id="interactionPrompt" class="interaction-prompt hidden" aria-hidden="true">
+                <div class="prompt-icon" aria-hidden="true">👁</div>
+
+                <div class="prompt-content">
+                    <span class="prompt-action">İNCELE</span>
+                    <span id="promptText">...</span>
+                </div>
+
+                <div class="prompt-key">E</div>
+            </section>
+
+            <section id="storyPanel" class="story-panel">
+                <div class="story-header">
+                    <h3>HİKÂYE</h3>
+                </div>
+
+                <div class="story-body">
+                    <p id="story-text">
+                        Her şeyin dağıldığı geceden kalma bir sığınak. Duvarda yırtık notlar, masada açık bir günlük, köşede eski bir dolap var.
+                    </p>
+                </div>
+
+                <div class="objective">
+                    <span class="objective-title">GÖREV</span>
+
+                    <p id="objectiveText">
+                        Duvardaki yırtık notları incele.
+                    </p>
+                </div>
+
+                <div id="objectiveProgress" class="objective-progress">
+                    <div class="progress-information">
+                        <span>İLERLEME</span>
+                        <span id="recordProgress">0 / 2</span>
+                    </div>
+
+                    <div class="progress-track">
+                        <div id="recordProgressBar" class="progress-bar"></div>
+                    </div>
+                </div>
+
+                <button id="hintButton" class="hint-button" type="button">
+                    💡 İPUCU
+                </button>
+            </section>
+
+            <section id="inventory" class="inventory" aria-label="Envanter">
+                <div class="inventory-title">ENVANTER</div>
+                <div id="inventorySlots" class="inventory-slots"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <section
+        id="notesViewer"
+        class="record-viewer hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="notesViewerTitle"
+    >
+        <article class="record-document">
+            <header class="record-document-header">
+                <div>
+                    <span class="record-hospital-name">ASHVALE HOSPITAL — SIĞINAK</span>
+                    <h2 id="notesViewerTitle">Yırtık Notlar</h2>
+                </div>
+
+                <button
+                    id="closeNotesViewer"
+                    class="record-close-button"
+                    type="button"
+                    aria-label="Notları kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="record-document-body">
+                <div class="record-stamp">DAĞINIK KAYIT</div>
+
+                <p class="record-classification">
+                    5 KAĞIT PARÇASI — TARİH SIRASINA GÖRE ASILMAMIŞ
+                </p>
+
+                <div class="record-content">
+                    <p class="record-note">
+                        Duvara rastgele iğnelenmiş kağıt parçaları. Hiçbirinde sayfa numarası yok - ama her birinde ne zaman yazıldığını ele veren bir ifade var.
+                    </p>
+
+                    <div id="fragmentEntries" class="fragment-entries-12">
+
+                        <div class="fragment-entry-12">
+                            <p class="fragment-entry-12-text">
+                                Üç yıl sonra anladım ki durduran şey hiçbir zaman ilaç değildi. Kişi, içten içe “hayır” diyordu - kimse ona bunu öğretmedi, kendi kararıydı.
+                            </p>
+                            <span class="fragment-entry-12-mark">kenar not: 2</span>
+                        </div>
+
+                        <div class="fragment-entry-12">
+                            <p class="fragment-entry-12-text">
+                                Başlangıçta üçüncü bir yöntem diye bir şey yoktu. Yalnızca birinci ve ikinci yöntem başarısız olunca aranmaya başladı.
+                            </p>
+                            <span class="fragment-entry-12-mark">kenar not: 3</span>
+                        </div>
+
+                        <div class="fragment-entry-12">
+                            <p class="fragment-entry-12-text">
+                                Bu benim son notum. Üçüncü yöntem bir tedavi değil - bir seçim. Bunu daha önce yazmaya cesaret edemedim.
+                            </p>
+                            <span class="fragment-entry-12-mark">kenar not: 4</span>
+                        </div>
+
+                        <div class="fragment-entry-12">
+                            <p class="fragment-entry-12-text">
+                                İlk aylarda hâlâ bunun kimyasal bir tedavi olduğuna inanıyordum. Doku büyümesi hiçbir ilaçla durmuyordu.
+                            </p>
+                            <span class="fragment-entry-12-mark">kenar not: 7</span>
+                        </div>
+
+                        <div class="fragment-entry-12">
+                            <p class="fragment-entry-12-text">
+                                İkinci yılın sonunda ilk kez tanık oldum: doku durmuştu - ama ilaçla değil, hastanın kendi kararıyla.
+                            </p>
+                            <span class="fragment-entry-12-mark">kenar not: 9</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <footer class="record-document-footer">
+                <span>Notları, yazıldıkları sıraya göre oku - her birinin kenarında bir rakam var.</span>
+
+                <button id="closeNotesFooter" type="button">
+                    KAPAT
+                </button>
+            </footer>
+        </article>
+    </section>
+
+    <section
+        id="journalViewer"
+        class="record-viewer hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="journalViewerTitle"
+    >
+        <article class="record-document">
+            <header class="record-document-header">
+                <div>
+                    <span class="record-hospital-name">ASHVALE HOSPITAL — BAŞ HEKİM</span>
+                    <h2 id="journalViewerTitle">Günlük - Son Sayfalar</h2>
+                </div>
+
+                <button
+                    id="closeJournalViewer"
+                    class="record-close-button"
+                    type="button"
+                    aria-label="Günlüğü kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="record-document-body">
+                <div class="record-stamp">DEVAM KAYDI</div>
+
+                <p class="record-classification">
+                    AYNI EL YAZISI - BÖLÜM 8'DEKİ GÜNLÜĞÜN DEVAMI
+                </p>
+
+                <div class="record-content">
+                    <p class="record-note">
+                        Bu günlüğün son sayfaları burada, sığınakta bulunuyor. El yazısı, kasadaki günlükle aynı - baş hekimin kendisi.
+                    </p>
+
+                    <p class="fragment-entry-12-text">
+                        Sayfalar tarih sırasına göre değil, nasıl bulunduysa öyle duvara asılmış; bazıları yırtık, bazıları sonradan eklenmiş gibi duruyor. Her notun içinde, ne zaman yazıldığını ele veren bir ifade var. Doğru sırayla okunursa, üçüncü yöntemin ne olduğu ortaya çıkıyor.
+                    </p>
+                </div>
+            </div>
+
+            <footer class="record-document-footer">
+                <span>Notları zaman sırasına göre oku, kenarındaki rakamları aynı sırayla kapıya gir.</span>
+
+                <button id="closeJournalFooter" type="button">
+                    KAPAT
+                </button>
+            </footer>
+        </article>
+    </section>
+
+    <section
+        id="doorPanel"
+        class="code-panel hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="doorPanelTitle"
+    >
+        <div class="code-panel-window">
+            <header class="code-panel-header">
+                <div>
+                    <span class="code-panel-label">PERSONEL SIĞINAĞI</span>
+                    <h2 id="doorPanelTitle">KOMBİNASYON KİLİDİ</h2>
+                </div>
+
+                <button
+                    id="closeDoorPanel"
+                    class="window-close-button"
+                    type="button"
+                    aria-label="Paneli kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="code-panel-body">
+                <p class="code-panel-description">
+                    Asma kilidin üzerinde 5 haneli bir kombinasyon çarkı var.
+                </p>
+
+                <div
+                    id="doorCodeSlots"
+                    class="code-display"
+                    aria-label="Girilen kombinasyon"
+                >
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                    <span>_</span>
+                </div>
+
+                <div id="doorCodeButtons" class="tray-buttons keypad-buttons" aria-label="Tuş takımı">
+                    <button type="button" data-digit="1">1</button>
+                    <button type="button" data-digit="2">2</button>
+                    <button type="button" data-digit="3">3</button>
+                    <button type="button" data-digit="4">4</button>
+                    <button type="button" data-digit="5">5</button>
+                    <button type="button" data-digit="6">6</button>
+                    <button type="button" data-digit="7">7</button>
+                    <button type="button" data-digit="8">8</button>
+                    <button type="button" data-digit="9">9</button>
+                    <button type="button" data-digit="0">0</button>
+                </div>
+
+                <p id="doorCodeMessage" class="code-message" aria-live="polite"></p>
+            </div>
+        </div>
+    </section>
+
+    <section
+        id="dialog"
+        class="dialog"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dialogTitle"
+    >
+        <div class="dialog-window">
+            <header class="dialog-header">
+                <h3 id="dialogTitle">İnceleme</h3>
+
+                <button
+                    id="dialog-x-button"
+                    type="button"
+                    aria-label="Diyaloğu kapat"
+                >
+                    ✕
+                </button>
+            </header>
+
+            <div class="dialog-body">
+                <p id="dialogText"></p>
+            </div>
+
+            <footer class="dialog-footer">
+                <button id="dialogContinue" type="button">
+                    DEVAM
+                </button>
+            </footer>
+        </div>
+    </section>
+
+    <section
+        id="chapterComplete"
+        class="chapter-complete hidden"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="chapterCompleteTitle"
+    >
+        <div class="chapter-complete-content">
+            <span class="chapter-complete-label">ASHVALE HOSPITAL</span>
+
+            <h2 id="chapterCompleteTitle">BÖLÜM 12 TAMAMLANDI</h2>
+
+            <p>
+                Üçüncü yöntemin ne olduğunu şimdi biliyorsun - ama bunu nasıl kullanacağını henüz bilmiyorsun.
+            </p>
+
+            <button id="nextChapter" type="button" data-href="room13.html">
+                BÖLÜM 13
+            </button>
+        </div>
+    </section>
+
+    <script src="js/core/flashlight.js?v=20260901085329"></script>
+
+    <script src="js/core/save-manager.js?v=20260901085329"></script>
+    <script src="js/core/inventory.js?v=20260901085329"></script>
+    <script src="js/core/audio-manager.js?v=20260901085329"></script>
+    <script src="js/core/dialogue.js?v=20260901085329"></script>
+    <script src="js/effects.js?v=20260901085329"></script>
+    <script src="js/game.js?v=20260901085329"></script>
+    <script src="js/rooms/room12.js?v=20260901085329"></script>
+
+</body>
+</html>
