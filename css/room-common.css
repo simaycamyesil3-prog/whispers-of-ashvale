@@ -519,6 +519,67 @@ body.room-page button:focus-visible { outline: 2px solid rgba(229,92,92,.78); ou
     .dialog, .chapter-complete { min-width: 100vw; }
 }
 
+/* =========================================================
+   YATAY TELEFON (LANDSCAPE) UYUMU
+   ---------------------------------------------------------
+   Telefon yan çevrildiğinde ekran kısa ve geniş olur.
+   Yukarıdaki 760px kuralı odayı 900px'e sabitleyip kaydırma
+   moduna geçiriyordu - bu, ekrana asla tam sığmıyordu.
+   Bu blok o davranışı geçersiz kılıp odayı gerçekten ekrana
+   sığdırır ve arayüzü küçültür.
+========================================================= */
+@media (orientation: landscape) and (max-height: 520px) {
+    body.room-page { overflow: hidden; }
+
+    .room-shell, .room { min-width: 0; min-height: 100vh; }
+
+    .hud {
+        position: fixed;
+        top: 6px; left: 6px; right: 6px;
+        min-height: 0;
+        padding: 6px 10px;
+        column-gap: 8px;
+    }
+    .player-box { min-width: 0; padding: 4px 8px; }
+    .player-box .label { display: none; }
+    .chapter-box { min-width: 0; padding: 4px 10px; font-size: 10px; }
+    .save-status { display: none; }
+    .menu-button, #menuButton, #menu-button { min-width: 0; padding: 4px 10px; font-size: 10px; }
+
+    .story-panel {
+        position: fixed;
+        left: 6px; bottom: 6px;
+        width: 220px;
+        max-height: 48vh;
+        overflow-y: auto;
+        padding: 8px 10px;
+    }
+    .story-header h3 { font-size: 10px; }
+    .story-body, #objectiveText { font-size: 10px; line-height: 1.3; }
+    .hint-button { padding: 4px 8px; font-size: 10px; }
+
+    .inventory {
+        position: fixed;
+        right: 6px; bottom: 6px;
+        width: 140px;
+        max-height: 48vh;
+        overflow-y: auto;
+        padding: 8px 10px;
+    }
+    .inventory-title { font-size: 10px; }
+    .inventory-slots, .inventory ul, #inventory-list { gap: 4px; }
+
+    .interaction-prompt {
+        position: fixed;
+        bottom: 8px;
+        min-width: 0;
+        padding: 6px 12px;
+        font-size: 9px;
+    }
+
+    .dialog, .chapter-complete { min-width: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
     body.room-page *,
     body.room-page *::before,

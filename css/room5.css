@@ -907,3 +907,11 @@ body.chapter-five.uv-active .uv-mark.found {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+/* =========================================================
+   YATAY TELEFON (LANDSCAPE) — EL FENERİ BOYUTU
+   Küçük ekranda 620px çap kullanılamaz durumda kalıyordu.
+========================================================= */
+@media (orientation: landscape) and (max-height: 520px) {
+    body.chapter-five #flashlight { width: 240px; height: 240px; }
+}

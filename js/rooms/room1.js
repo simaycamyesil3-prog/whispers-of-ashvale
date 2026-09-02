@@ -442,6 +442,52 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
+    function updateFromTouch(touch) {
+        const rect =
+            room.getBoundingClientRect();
+
+        targetX =
+            touch.clientX - rect.left;
+
+        targetY =
+            touch.clientY - rect.top;
+
+        room.classList.remove(
+            "flashlight-idle"
+        );
+    }
+
+    room.addEventListener(
+        "touchstart",
+        (event) => {
+            if (event.touches[0]) {
+                updateFromTouch(event.touches[0]);
+            }
+        },
+        { passive: true }
+    );
+
+    room.addEventListener(
+        "touchmove",
+        (event) => {
+            if (event.touches[0]) {
+                updateFromTouch(event.touches[0]);
+            }
+        },
+        { passive: true }
+    );
+
+    room.addEventListener(
+        "touchend",
+        () => {
+            room.classList.add(
+                "flashlight-idle"
+            );
+        },
+        { passive: true }
+    );
+
+
     window.addEventListener(
         "resize",
         () => {
