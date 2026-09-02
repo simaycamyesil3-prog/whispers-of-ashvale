@@ -39,17 +39,11 @@ window.AshvaleAudio = (() => {
     const layers = new Map();
 
     const GLOBAL_LAYER_SOUNDS = {
-        __ambientRainLayer: {
-            src: "audio/rain.mp3",
+        __horrorAmbienceScore: {
+            src: "audio/horror_ambience.mp3",
             type: "ambience",
             loop: true,
-            volume: 0.42
-        },
-        __ambientWhisperLayer: {
-            src: "audio/whisper.mp3",
-            type: "ambience",
-            loop: true,
-            volume: 0.24
+            volume: 0.4
         },
         __ambientThunderStrike: {
             src: "audio/thunder.mp3",
@@ -494,8 +488,7 @@ window.AshvaleAudio = (() => {
 
         registerMany(GLOBAL_LAYER_SOUNDS);
 
-        playLayer("__ambientRainLayer");
-        playLayer("__ambientWhisperLayer");
+        playLayer("__horrorAmbienceScore");
 
         scheduleThunderStrike();
 
