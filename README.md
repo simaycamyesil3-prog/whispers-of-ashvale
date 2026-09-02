@@ -1,31 +1,31 @@
-# Whispers of Ashvale - Başlangıç Paketi
+# Whispers of Ashvale
 
-Bu paket şunları içerir:
+**[🎮 Oyna →](https://simaycamyesil3-prog.github.io/whispers-of-ashvale/)**
 
-- Sinematik ana menü
-- Yeni Oyun sistemi
-- Oyuncu adı
-- Devam Et sistemi
-- localStorage tabanlı kayıt sistemi
-- Ayarlar menüsü
-- Bölüm geçiş ekranı
-- Ortak envanter sistemi
-- Oynanabilir Bölüm 1 prototipi
-- 20 bölüme genişletilebilen altyapı
+Ashvale Psikiyatri Hastanesi, 1987'de açıklanamayan olayların ardından kapatıldı. Yıllar sonra oraya gönderilen bir araştırmacı olarak, hastanenin aslında hiç terk edilmediğini keşfedeceksin.
+
+Tarayıcıda oynanan, hastane temalı bir psikolojik korku kaçış odası oyunu — 15 bölüm, her biri kendi bulmacası ve hikâye parçasıyla, sondan itibaren daha da zorlaşarak birbirine bağlanan tek bir gizemde birleşiyor.
+
+## Özellikler
+
+- **15 bölüm**, giderek zorlaşan özgün bulmacalarla (şifre çözme, çapraz karşılaştırma, zamanlı görevler, ses/görsel ipuçları ve daha fazlası)
+- Atmosferik ses tasarımı: katmanlı fon müziği, bölüme özel efektler
+- Yerel kayıt sistemi (localStorage) — kaldığın yerden devam et
+- Telefonda yan çevrilerek de oynanabilir, el feneri mekaniği dokunmatik ekranlarda parmakla kontrol ediliyor
+- Vanilla HTML, CSS ve JavaScript — framework yok, harici bağımlılık yok
 
 ## Çalıştırma
 
-1. Klasörü Visual Studio Code ile aç.
-2. `index.html` dosyasına sağ tıkla.
-3. `Open with Live Server` seç.
-4. Live Server yüklü değilse VS Code Extensions bölümünden kur.
+1. Repoyu klonla veya indir.
+2. `index.html` dosyasını bir Live Server ile aç (VS Code'da "Open with Live Server" yeterli).
+3. Oyna, ya da doğrudan [canlı sürümü](https://simaycamyesil3-prog.github.io/whispers-of-ashvale/) dene.
 
-## İlk bölümün şifresi
+## Teknik
 
-3179
+- Saf HTML/CSS/JS, hiçbir framework veya build adımı yok
+- Bölüm başına ayrı JS/CSS dosyası, ortak bir çekirdek (kayıt, envanter, diyalog, ses, el feneri) üzerine kurulu
+- GitHub Pages üzerinden barındırılıyor
 
-## Önemli
+## Geliştirici
 
-Bölüm 2 henüz bu başlangıç paketinde oluşturulmadı.
-Bölüm 1 tamamlanınca kayıt `currentRoom: 2` olarak güncellenir.
-Sonraki paketlerde `room2.html` ve devamı eklenecek.
+Simay Çam Yeşil
