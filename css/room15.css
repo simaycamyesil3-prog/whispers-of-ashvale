@@ -19,7 +19,10 @@ body.chapter-fifteen .room-background {
         saturate(0.95)
         sepia(0.08);
 
-    transition: filter 0.6s ease;
+    transform-origin: 69% 54%;
+    transform: scale(1);
+
+    transition: filter 0.6s ease, transform 3s ease;
 }
 
 body.chapter-fifteen .dark-overlay {
@@ -74,10 +77,10 @@ body.chapter-fifteen .fog-two {
 }
 
 #figure {
-    top: 39%;
-    left: 65%;
-    width: 9%;
-    height: 29%;
+    top: 27%;
+    left: 75%;
+    width: 8.7%;
+    height: 46%;
 }
 
 body.chapter-fifteen #photos.inspected,
@@ -97,6 +100,18 @@ body.chapter-fifteen #musicBox.climax-triggered {
     100% { box-shadow: 0 0 0 rgba(230, 195, 140, 0); }
 }
 
+/* Oda tamamen incelenince (fotoğraf+çekmece+yatak) müzik kutusu
+   artık hazır olduğunu hafif bir parıltıyla belli ediyor. */
+body.chapter-fifteen #musicBox.ready-to-play {
+    animation: room15MusicBoxReady 3s ease-in-out infinite;
+}
+
+@keyframes room15MusicBoxReady {
+    0% { box-shadow: 0 0 0 rgba(230, 195, 140, 0); }
+    50% { box-shadow: 0 0 10px rgba(230, 195, 140, 0.2); }
+    100% { box-shadow: 0 0 0 rgba(230, 195, 140, 0); }
+}
+
 /* ==========================================================
    ROOM 15 — HOTSPOT TIKLAMA ÖNCELİĞİ
    ========================================================== */
@@ -111,11 +126,55 @@ body.chapter-fifteen #figure {
 }
 
 /* ==========================================================
+   ROOM 15 — İKİNCİ ARKA PLAN KATMANI (figürün yaklaşma/dönme
+   sahneleri için). Temel görselle aynı .room-background sınıfını
+   taşıdığı için zoom/filter efektleri otomatik olarak ikisine de
+   uygulanıyor - sadece opacity ile katmanlar arası geçiş yapılıyor.
+   ========================================================== */
+
+.room-background-alt {
+    opacity: 0;
+    transition: opacity 0.9s ease;
+}
+
+.room-background-alt.visible {
+    opacity: 1;
+}
+
+/* Büyük korku anında (figür döndüğünde) katman zaten görünür -
+   sadece kaynağı değişiyor, bu yüzden ani/sert bir kesim hissi
+   oluşuyor - jumpscare için bilerek böyle. */
+.room-background-alt.snap {
+    transition: opacity 0.12s ease;
+}
+
+/* ==========================================================
    ROOM 15 — KLİMAKS EFEKTLERİ
    ========================================================== */
 
-body.chapter-fifteen.climax-active .room-background {
+#room.climax-active .room-background {
     animation: room15ColorPulse 3.2s ease-in-out infinite;
+    transform: scale(1.06);
+}
+
+/* Figürle yüzleşme diyaloğu başlayınca oda ona doğru biraz daha
+   yaklaşmış gibi hissettiriyor - "üstümüze doğru geliyor" etkisinin
+   ilk basamağı. */
+#room.climax-confront .room-background {
+    transform: scale(1.15);
+}
+
+/* İlk yanlış seçim (KONUŞ): yaklaşma belirgin hale geliyor. */
+#room.climax-intense .room-background {
+    transform: scale(1.28);
+}
+
+/* İkinci yanlış seçimdeki büyük korku anı: ani bir sıçrama/hamle
+   hissi için hızlı ve sert bir geçişle en yakın kareye zıplıyor,
+   sonra activateTemporaryClass sınıfı kaldırınca geri iniyor. */
+#room.climax-jumpscare .room-background {
+    transition: filter 0.6s ease, transform 0.22s cubic-bezier(0.3, 0.7, 0.2, 1.5);
+    transform: scale(1.5);
 }
 
 @keyframes room15ColorPulse {
@@ -129,7 +188,7 @@ body.chapter-fifteen.climax-active .room-background {
     }
 }
 
-body.chapter-fifteen.climax-active #photos {
+#room.climax-active #photos {
     animation: room15PhotoGlitch 2.6s steps(6) infinite;
 }
 
@@ -141,7 +200,7 @@ body.chapter-fifteen.climax-active #photos {
     80% { filter: none; opacity: 1; }
 }
 
-body.chapter-fifteen.climax-active .dark-overlay {
+#room.climax-active .dark-overlay {
     animation: room15OverlayPulse 3.2s ease-in-out infinite;
 }
 
@@ -156,11 +215,11 @@ body.chapter-fifteen.climax-active .dark-overlay {
     }
 }
 
-body.chapter-fifteen.climax-intense .room-background {
+#room.climax-intense .room-background {
     animation-duration: 1.6s;
 }
 
-body.chapter-fifteen.climax-intense .dark-overlay {
+#room.climax-intense .dark-overlay {
     animation-duration: 1.6s;
 }
 
@@ -209,6 +268,25 @@ body.chapter-fifteen .dialog.dialog--whisper .dialog-footer {
     font-size: 0.92rem;
 }
 
+/* Ortak .chapter-complete arka planı bir vinyet (kenarlarda koyu,
+   tam ortada - metnin durduğu yerde - açık) - kısa "BÖLÜM X
+   TAMAMLANDI" başlıkları için yeterli ama Bölüm 15'in uzun
+   kapanış paragrafı tam o açık orta bölgeye denk geldiği için
+   okunmuyordu. Sadece bu bölümün final ekranına, diğer 14
+   bölümün ekranına dokunmadan, içerik kutusunun arkasına ayrı
+   bir koyu panel eklendi. */
+#chapterComplete .chapter-complete-content {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(8, 4, 4, 0.86),
+            rgba(4, 2, 2, 0.92)
+        );
+    border: 1px solid rgba(148, 66, 57, 0.28);
+    border-radius: 18px;
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+}
+
 #nextChapter {
     min-width: 190px;
     min-height: 44px;
@@ -248,6 +326,25 @@ body.chapter-fifteen .dialog.dialog--whisper .dialog-footer {
     background: rgba(0, 0, 0, 0.88);
     backdrop-filter: blur(9px);
     -webkit-backdrop-filter: blur(9px);
+    transition: background 0.5s ease, backdrop-filter 0.5s ease;
+}
+
+/* Yanlış seçimde arka plandaki odanın (ve figürün) yaklaştığı
+   hissedilsin diye perde biraz inceliyor - "SUS/KONUŞ" seçimi
+   sırasında bile yaklaşma tamamen gizlenmesin. */
+.final-choice-panel.climax-intense {
+    background: rgba(0, 0, 0, 0.58);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+/* İkinci yanlış seçimdeki büyük korku anında perde bir anlığına
+   iyice açılıyor - oda aniden çok daha yakın görünüyor. */
+.final-choice-panel.climax-jumpscare {
+    transition: background 0.15s ease, backdrop-filter 0.15s ease;
+    background: rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
 }
 
 .final-choice-panel[aria-hidden="true"] {

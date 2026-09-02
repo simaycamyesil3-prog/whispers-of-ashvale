@@ -192,6 +192,29 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = Save.getData ? Save.getData() : null;
             const playerName = data?.player?.name || "";
             const currentRoom = data?.currentRoom || 1;
+            const isGameCompleted =
+                Boolean(data?.gameCompleted) || currentRoom > TOTAL_CHAPTERS;
+
+            if (isGameCompleted) {
+
+                if (continueButton) {
+                    continueButton.disabled = true;
+                }
+
+                if (continueDescription) {
+                    continueDescription.textContent =
+                        (playerName ? playerName + " — " : "") +
+                        "Oyun tamamlandı";
+                }
+
+                if (saveStatus) {
+                    saveStatus.textContent = "15 bölüm de tamamlandı";
+                }
+
+                return;
+
+            }
+
             const chapterTitle = CHAPTER_TITLES[currentRoom] || ("Bölüm " + currentRoom);
 
             if (continueDescription) {

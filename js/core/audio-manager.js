@@ -26,6 +26,40 @@ window.AshvaleAudio = (() => {
 
     let initialized = false;
 
+    /*
+    =====================================================
+    KATMANLAR (LAYERS)
+    Tek seferde sadece bir ambiyans + bir müzik çalabiliyoruz.
+    Ama "harmanlanmış" korku fon sesi (yağmur + fısıltı, üstüne
+    ara sıra gök gürültüsü) için bunlardan bağımsız, aynı anda
+    çalabilen ek katmanlar gerekiyor. layers Map'i bunun için.
+    =====================================================
+    */
+
+    const layers = new Map();
+
+    const GLOBAL_LAYER_SOUNDS = {
+        __ambientRainLayer: {
+            src: "audio/rain.mp3",
+            type: "ambience",
+            loop: true,
+            volume: 0.42
+        },
+        __ambientWhisperLayer: {
+            src: "audio/whisper.mp3",
+            type: "ambience",
+            loop: true,
+            volume: 0.24
+        },
+        __ambientThunderStrike: {
+            src: "audio/thunder.mp3",
+            type: "effect",
+            volume: 0.55
+        }
+    };
+
+    let thunderTimerId = null;
+
     const settings = {
         masterVolume: 1,
         effectsVolume: 0.8,
@@ -359,6 +393,143 @@ window.AshvaleAudio = (() => {
 
     /*
     =====================================================
+    LAYERS
+    playAmbience/playMusic gibi tek slotlu değil - aynı anda
+    birden fazla katman (ör. yağmur + fısıltı) çalabilir.
+    =====================================================
+    */
+
+    function playLayer(
+        name,
+        options = {}
+    ) {
+
+        const sound =
+            sounds.get(name);
+
+        if (!sound) {
+
+            console.warn(
+                `AshvaleAudio: "${name}" adlı katman bulunamadı.`
+            );
+
+            return null;
+        }
+
+        const existing =
+            layers.get(name);
+
+        if (existing && !existing.paused) {
+            return existing;
+        }
+
+        const layerAudio =
+            createAudio({
+                ...sound,
+                type: options.type || sound.type,
+                loop:
+                    options.loop ??
+                    sound.loop,
+                volume:
+                    clamp(
+                        options.volume ??
+                        sound.volume
+                    )
+            });
+
+        layerAudio.dataset.soundName =
+            name;
+
+        layers.set(name, layerAudio);
+
+        layerAudio.play()
+            .catch(() => {
+                // İlk kullanıcı etkileşiminde
+                // tekrar başlatılacaktır.
+            });
+
+        return layerAudio;
+
+    }
+
+    function stopLayer(name) {
+
+        const layerAudio =
+            layers.get(name);
+
+        if (!layerAudio) {
+            return;
+        }
+
+        layerAudio.pause();
+
+        layerAudio.currentTime = 0;
+
+        layers.delete(name);
+
+    }
+
+    function stopAllLayers() {
+
+        layers.forEach((layerAudio) => {
+            layerAudio.pause();
+            layerAudio.currentTime = 0;
+        });
+
+        layers.clear();
+
+    }
+
+    /*
+    =====================================================
+    ARKA PLAN KORKU MÜZİĞİ (harmanlanmış katmanlar)
+    Yağmur + fısıltı sürekli düşük seviyede çalıyor, üstüne
+    rastgele aralıklarla (35-70sn) bir gök gürültüsü vuruyor.
+    Bölümün kendi ambiyansıyla birlikte, ondan bağımsız olarak
+    çalışır.
+    =====================================================
+    */
+
+    function startAmbientHorrorScore() {
+
+        registerMany(GLOBAL_LAYER_SOUNDS);
+
+        playLayer("__ambientRainLayer");
+        playLayer("__ambientWhisperLayer");
+
+        scheduleThunderStrike();
+
+    }
+
+    function scheduleThunderStrike() {
+
+        stopThunderSchedule();
+
+        const delay =
+            35000 + Math.random() * 35000;
+
+        thunderTimerId =
+            window.setTimeout(() => {
+
+                playEffect("__ambientThunderStrike");
+
+                scheduleThunderStrike();
+
+            }, delay);
+
+    }
+
+    function stopThunderSchedule() {
+
+        if (thunderTimerId !== null) {
+            window.clearTimeout(thunderTimerId);
+            thunderTimerId = null;
+        }
+
+    }
+
+    /*
+    =====================================================
     MUSIC
     =====================================================
     */
@@ -438,6 +609,8 @@ window.AshvaleAudio = (() => {
 
         stopAmbience();
         stopMusic();
+        stopAllLayers();
+        stopThunderSchedule();
 
     }
 
@@ -445,6 +618,10 @@ window.AshvaleAudio = (() => {
 
         currentAmbience?.pause();
         currentMusic?.pause();
+
+        layers.forEach((layerAudio) => {
+            layerAudio.pause();
+        });
 
     }
 
@@ -459,6 +636,12 @@ window.AshvaleAudio = (() => {
             currentMusic
                 ?.play()
                 .catch(() => {});
+
+            layers.forEach((layerAudio) => {
+                layerAudio
+                    .play()
+                    .catch(() => {});
+            });
 
         }
 
@@ -503,6 +686,22 @@ window.AshvaleAudio = (() => {
                 );
 
         }
+
+        layers.forEach((layerAudio) => {
+
+            const soundName =
+                layerAudio.dataset.soundName;
+
+            const sound =
+                sounds.get(soundName);
+
+            layerAudio.volume =
+                getFinalVolume(
+                    sound?.type || "ambience",
+                    sound?.volume ?? 1
+                );
+
+        });
 
     }
 
@@ -654,6 +853,10 @@ window.AshvaleAudio = (() => {
 
         initialized = true;
 
+        if (options.ambientHorrorScore !== false) {
+            startAmbientHorrorScore();
+        }
+
         return true;
 
     }
@@ -679,6 +882,10 @@ window.AshvaleAudio = (() => {
 
         playMusic,
         stopMusic,
+
+        playLayer,
+        stopLayer,
+        stopAllLayers,
 
         stopAll,
         pauseAll,

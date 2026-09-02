@@ -963,6 +963,10 @@ document.addEventListener("DOMContentLoaded", () => {
         figure?.classList.add("encounter-resolved");
 
         updateObjective();
+
+        window.setTimeout(() => {
+            completeChapter();
+        }, 1200);
     }
 
     /* =====================================================

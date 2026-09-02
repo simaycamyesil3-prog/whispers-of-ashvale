@@ -277,27 +277,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setAudioVolume(
             roomAmbience,
-            settings.musicVolume / 100
+            settings.musicVolume
         );
 
         setAudioVolume(
             fluorescentSound,
-            settings.effectsVolume / 100
+            settings.effectsVolume
         );
 
         setAudioVolume(
             metalSound,
-            settings.effectsVolume / 100
+            settings.effectsVolume
         );
 
         setAudioVolume(
             whisperSound,
-            settings.effectsVolume / 100
+            settings.effectsVolume
         );
 
         setAudioVolume(
             doorSound,
-            settings.effectsVolume / 100
+            settings.effectsVolume
         );
 
         playAudio(roomAmbience);

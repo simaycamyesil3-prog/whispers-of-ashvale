@@ -42,6 +42,9 @@ document.getElementById("electricalPanel");
 const room4Inventory =
     window.AshvaleInventory;
 
+const room4Audio =
+    window.AshvaleAudio;
+
 const securityMonitors =
 document.getElementById("securityMonitors");
 
@@ -213,6 +216,95 @@ function startRoom4Flashlight() {
         smoothing: 0.14,
         swayAmount: 1.6
     });
+}
+
+/* ==========================================================
+   ROOM 4 — SES SİSTEMİ
+   Diğer bölümler (5 ve sonrası) paylaşılan AshvaleAudio sistemini
+   kullanıyor ama Bölüm 4 hiç kablolanmamıştı - oda tamamen
+   sessizdi. Aynı kurulum kalıbı burada da uygulandı: hafif bir
+   oda ambiyansı + kablo/kart toplama, panel/kart okuyucu ve
+   elektrik geri gelme anlarına bağlı efekt sesleri.
+========================================================== */
+
+function initializeRoom4Audio() {
+
+    if (
+        !room4Audio ||
+        typeof room4Audio.initialize !== "function"
+    ) {
+        return;
+    }
+
+    try {
+        room4Audio.initialize({
+            sounds: {
+                chapter4Ambience: {
+                    src: "assets/audio/ambience/chapter2_ambient.mp3",
+                    type: "ambience",
+                    loop: true,
+                    volume: 0.55
+                },
+                itemPickup: {
+                    src: "assets/audio/effects/key_pickup.mp3",
+                    type: "effect",
+                    volume: 0.56
+                },
+                cardPickup: {
+                    src: "assets/audio/effects/paper_pickup.mp3",
+                    type: "effect",
+                    volume: 0.54
+                },
+                panelOpen: {
+                    src: "assets/audio/effects/cabinet.mp3",
+                    type: "effect",
+                    volume: 0.6
+                },
+                keypadError: {
+                    src: "assets/audio/effects/keypad_error.mp3",
+                    type: "effect",
+                    volume: 0.6
+                },
+                keypadSuccess: {
+                    src: "assets/audio/effects/keypad_success.mp3",
+                    type: "effect",
+                    volume: 0.64
+                },
+                doorUnlock: {
+                    src: "assets/audio/effects/door_unlock.mp3",
+                    type: "effect",
+                    volume: 0.7
+                },
+                powerRestore: {
+                    src: "assets/audio/effects/computer_boot.mp3",
+                    type: "effect",
+                    volume: 0.68
+                }
+            }
+        });
+
+        if (typeof room4Audio.playAmbience === "function") {
+            room4Audio.playAmbience("chapter4Ambience");
+        }
+    } catch (error) {
+        console.warn("Room4 ses sistemi başlatılamadı.", error);
+    }
+}
+
+function playRoom4Effect(soundName) {
+
+    if (
+        !room4Audio ||
+        typeof room4Audio.playEffect !== "function"
+    ) {
+        return;
+    }
+
+    try {
+        room4Audio.playEffect(soundName);
+    } catch (error) {
+        console.warn(`Ses oynatılamadı: ${soundName}`, error);
+    }
 }
 
 /* ==========================================================
@@ -518,6 +610,8 @@ function openElectricalPanelWindow() {
         return;
     }
 
+    playRoom4Effect("panelOpen");
+
     electricalPanelWindow.classList.remove("hidden");
     electricalPanelWindow.setAttribute(
         "aria-hidden",
@@ -796,6 +890,8 @@ function collectRedPowerCable() {
 
     closeItemPopup(redPopup);
 
+    playRoom4Effect("itemPickup");
+
     addCableToInventory(
         "red-power-cable",
         "Kırmızı Güç Kablosu"
@@ -816,6 +912,8 @@ function collectBluePowerCable() {
 
     closeItemPopup(bluePopup);
 
+    playRoom4Effect("itemPickup");
+
     addCableToInventory(
         "blue-power-cable",
         "Mavi Güç Kablosu"
@@ -835,6 +933,8 @@ function collectGreenPowerCable() {
     room4State.greenCable = true;
 
     closeItemPopup(greenPopup);
+
+    playRoom4Effect("itemPickup");
 
     addCableToInventory(
         "green-power-cable",
@@ -859,6 +959,8 @@ function collectAccessCardItem() {
     room4State.accessCard = true;
 
     closeItemPopup(accessCardPopup);
+
+    playRoom4Effect("cardPickup");
 
     addCardToInventory();
 
@@ -1072,6 +1174,8 @@ function restorePower(){
 
     room4State.powerRestored=true;
 
+    playRoom4Effect("powerRestore");
+
     setObjective(
         room4State.accessCard
             ? "Elektrik geri geldi. Çıkış kapısındaki kart okuyucuyu kullan."
@@ -1136,6 +1240,8 @@ function handleScanAccessCard(){
 
     if(!room4State.accessCard){
 
+        playRoom4Effect("keypadError");
+
         showRoom4Dialog(
 
             "Kart Okuyucu",
@@ -1153,6 +1259,12 @@ function handleScanAccessCard(){
     }
 
     room4State.cardVerified = true;
+
+    playRoom4Effect("keypadSuccess");
+
+    window.setTimeout(() => {
+        playRoom4Effect("doorUnlock");
+    }, 350);
 
     updateCardReaderUi();
 
@@ -1793,6 +1905,8 @@ function initializeRoom4() {
     bindEvents();
     bindElectricalPanelControls();
     bindChapterCompleteButton();
+
+    initializeRoom4Audio();
 
     startRoom4Flashlight();
     playChapterIntro();

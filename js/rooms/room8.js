@@ -1072,7 +1072,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function triggerMovingShadow() {
-        activateTemporaryClass(movingShadow, "active", 1700);
+        activateTemporaryClass(movingShadow, "active", 5000);
     }
 
     function triggerHallwayFigure() {

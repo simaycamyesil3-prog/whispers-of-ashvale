@@ -106,13 +106,15 @@ body.chapter-eight #exitDoor {
 }
 
 /* ==========================================================
-   ROOM 8 — KAPININ ÖNÜNDEN GEÇEN GÖLGE
-   Kapının cam bölmesinin arkasından, koridorda biri geçiyormuş
+   ROOM 8 — KAPININ ÖNÜNDEKİ SİLÜET
+   Kapının cam bölmesinin arkasında, koridorda biri duruyormuş
    gibi görünen dar, insansı bir siluet. triggerMovingShadow()
    ile aynı #movingShadow elementi kullanılıyor (room8.js'te
    zaten periyodik olarak tetikleniyor), sadece bu bölüme özel
    konum/animasyon override ediliyor - kapının cam penceresinin
-   üzerine hizalı.
+   üzerine hizalı. Artık kaymıyor/geçmiyor: sabit durup ~5 saniye
+   görünür kalıyor, sonra kayboluyor (bkz. room8.js'teki
+   activateTemporaryClass(movingShadow, "active", 5000) çağrısı).
    ========================================================== */
 
 body.chapter-eight .moving-shadow {
@@ -137,29 +139,23 @@ body.chapter-eight .moving-shadow {
 }
 
 body.chapter-eight .moving-shadow.active {
-    animation: room8DoorShadowPass 1.6s ease-in-out forwards;
+    animation: room8DoorSilhouetteHold 5s ease-in-out forwards;
 }
 
-@keyframes room8DoorShadowPass {
+@keyframes room8DoorSilhouetteHold {
     0% {
-        left: 35.5%;
         opacity: 0;
     }
 
-    15% {
-        opacity: 0.82;
+    10% {
+        opacity: 0.88;
     }
 
-    50% {
-        opacity: 0.9;
-    }
-
-    85% {
-        opacity: 0.35;
+    82% {
+        opacity: 0.88;
     }
 
     100% {
-        left: 41%;
         opacity: 0;
     }
 }

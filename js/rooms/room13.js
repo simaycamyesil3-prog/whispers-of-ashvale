@@ -167,7 +167,8 @@ document.addEventListener("DOMContentLoaded", () => {
         activeHotspot: null,
         playerName: "Oyuncu",
         dialogueQueue: [],
-        dialogueIndex: 0
+        dialogueIndex: 0,
+        awaitingDoorTransition: false
     };
 
     /* =====================================================
@@ -489,11 +490,28 @@ document.addEventListener("DOMContentLoaded", () => {
             typeof dialogue.next === "function"
         ) {
             dialogue.next();
+
+            if (
+                state.awaitingDoorTransition &&
+                dialogElement?.getAttribute("aria-hidden") === "true"
+            ) {
+                state.awaitingDoorTransition = false;
+                completeChapter();
+            }
+
             return;
         }
 
         state.dialogueIndex += 1;
         showFallbackDialogueEntry();
+
+        if (
+            state.awaitingDoorTransition &&
+            state.dialogueIndex >= state.dialogueQueue.length
+        ) {
+            state.awaitingDoorTransition = false;
+            completeChapter();
+        }
     }
 
     function hideDialogue() {
@@ -914,6 +932,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         window.setTimeout(() => {
             hideElement(doorPanel);
+
+            state.awaitingDoorTransition = true;
 
             playDialogue([
                 {

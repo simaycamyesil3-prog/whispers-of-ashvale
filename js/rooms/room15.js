@@ -13,13 +13,27 @@ UYUMLULUK
 - AshvaleAudio ve AshvaleDialogue varsa bunlara bağlanır.
 
 BULMACA / FİNAL SEKANSI
-- Klasik bulmaca YOK. Oda serbestçe incelenebilir (fotoğraflar,
-  çekmece, yatak, figür - atmosfer).
-- Müzik kutusuna dokununca final sekansı başlıyor: hızlı
-  fısıltı korosu (otomatik ilerleyen, tıklama gerektirmeyen
-  kısa satırlar) → oda renk/ışık titremesiyle "canlanıyor" →
-  fotoğraflar çarpıtılıyor (CSS) → figür oyuncuya doğrudan
-  hitap ediyor → "KONUŞ / SUS" seçimi geliyor.
+- Klasik bulmaca YOK ama müzik kutusu artık kilitli: oyuncu
+  fotoğrafları, çekmeceyi ve yatağı incelemeden müzik kutusu
+  tepki vermiyor. Bu üç nesne artık gerçek hikaye parçaları
+  veriyor (1987/1994/2011 tarihli "3179" etiketli izler - diğer
+  bölümlerdeki (8, 13) izlerle aynı isim, figürün kim/ne olduğuna
+  dair önceden ipucu).
+- Odayı incele bittikten sonra müzik kutusuna dokununca final
+  sekansı başlıyor: hızlı fısıltı korosu (otomatik ilerleyen,
+  tıklama gerektirmeyen kısa satırlar) → oda renk/ışık
+  titremesiyle "canlanıyor" → figür oyuncuya doğrudan hitap
+  ediyor (artık Bölüm 10'daki ninni kaydına da değiniyor) →
+  "KONUŞ / SUS" seçimi geliyor.
+- İKİNCİ ARKA PLAN KATMANI (#roomBackgroundAlt): yüzleşme
+  başlayınca (climax-confront) figürün sırtı dönük ama daha
+  yakın olduğu bir görsele (room15_approach.png) yavaşça geçiliyor
+  (crossfade). İkinci yanlış KONUŞ seçimindeki büyük korku anında
+  (triggerBigScare) aynı katmanın kaynağı ANİDEN figürün artık
+  sana döndüğü/baktığı görsele (room15_jumpscare.png) değişiyor -
+  katman zaten görünür olduğu için bu geçiş kasıtlı olarak sert/
+  ani oluyor (jumpscare hissi). SUS (doğru) seçilince katman
+  sıfırlanıp temel görsele dönülüyor.
 - KONUŞ yanlış (döngüyü hiç kimse böyle kıramamış) - bölümü
   bitirmiyor, oda daha da yoğunlaşıyor (climax-intense), tekrar
   denenebiliyor.
@@ -71,6 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const playerNameElement = getElement("playerName");
     const menuButton = getElement("menuButton");
     const roomMain = getElement("room");
+    const roomBackgroundAlt = getElement("roomBackgroundAlt");
 
     /* =====================================================
        HOTSPOTLAR
@@ -158,7 +173,8 @@ document.addEventListener("DOMContentLoaded", () => {
         playerName: "Oyuncu",
         dialogueQueue: [],
         dialogueIndex: 0,
-        autoAdvanceActive: false
+        autoAdvanceActive: false,
+        explorationQueueActive: false
     };
 
     /* =====================================================
@@ -466,6 +482,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         state.dialogueQueue = [];
         state.dialogueIndex = 0;
+        state.explorationQueueActive = false;
         state.modalOpen = isAnyModalOpen();
     }
 
@@ -475,6 +492,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function showSimpleLine(text) {
         showDialogue("", text, 20);
+    }
+
+    /* =====================================================
+       ÇOK SATIRLI KEŞİF DİYALOĞU (fotoğraf/çekmece/yatak)
+       - Tek satır yerine 2-3 satırlık kısa bir hikaye parçası
+         gösterir, DEVAM ile ilerler, son satırdan sonra sessizce
+         kapanır (climax veya final akışını etkilemez).
+    ===================================================== */
+
+    function showExplorationQueue(lines) {
+        state.dialogueQueue = lines.map(text => ({
+            speaker: "",
+            text,
+            speed: 22
+        }));
+        state.dialogueIndex = 0;
+        state.explorationQueueActive = true;
+
+        showExplorationEntry();
+    }
+
+    function showExplorationEntry() {
+        const entry = state.dialogueQueue[state.dialogueIndex];
+
+        if (!entry) {
+            state.explorationQueueActive = false;
+            hideDialogue();
+            return;
+        }
+
+        showDialogue(entry.speaker || "", entry.text || "", entry.speed || 20);
     }
 
     /* =====================================================
@@ -671,11 +719,14 @@ document.addEventListener("DOMContentLoaded", () => {
             saveState();
             photos?.classList.add("inspected");
             updateObjective();
+            updateMusicBoxReadiness();
         }
 
-        showSimpleLine(
-            "Üç eski aile fotoğrafı. Kim olduklarını bilmiyorsun ama yüzleri tuhaf bir şekilde tanıdık geliyor."
-        );
+        showExplorationQueue([
+            "Üç eski fotoğraf. Altlarında tarihler var: 1987, 1994, 2011.",
+            "Farklı yüzler, farklı kıyafetler - ama hepsinin arkasında aynı el yazısıyla tek kelime yazıyor: 3179.",
+            "En eski fotoğrafın altında küçük bir not var: \"E. Varlık, Oda 3-1.\" İlk vaka. Ya da öyle sanılan."
+        ]);
     }
 
     function inspectDrawer() {
@@ -684,11 +735,14 @@ document.addEventListener("DOMContentLoaded", () => {
             saveState();
             drawer?.classList.add("inspected");
             updateObjective();
+            updateMusicBoxReadiness();
         }
 
-        showSimpleLine(
-            "Çekmecede küçük, katlanmış bir kağıt var. Üzerinde tek bir cümle yazılı olmalıydı - ama sayfa bilerek boş bırakılmış."
-        );
+        showExplorationQueue([
+            "Çekmecede küçük, katlanmış bir kağıt var. Üzerinde tek bir cümle yazılı olmalıydı - ama sayfa bilerek boş bırakılmış.",
+            "Kağıdın altında kısa bir not daha var: \"Cümleyi yazma. Sadece dinle, sonra sustur.\"",
+            "El yazısı, oda kadar eski. Sanki biri bunu senin için bırakmış - yıllar önce."
+        ]);
     }
 
     function inspectBed() {
@@ -697,11 +751,14 @@ document.addEventListener("DOMContentLoaded", () => {
             saveState();
             bed?.classList.add("inspected");
             updateObjective();
+            updateMusicBoxReadiness();
         }
 
-        showSimpleLine(
-            "Yatak diğer odalardaki gibi dağınık değil. Çarşaflar düzgün, sanki birazdan biri yatacakmış gibi."
-        );
+        showExplorationQueue([
+            "Yatak diğer odalardaki gibi dağınık değil. Çarşaflar düzgün, sanki birazdan biri yatacakmış gibi.",
+            "Yastığın altında küçük bir hasta bilekliği var. Üzerinde bir isim yerine yine aynı etiket yazıyor: 3179.",
+            "Tarih 1987. Odanın ilk sahibinden kalma - ya da öyle görünüyor."
+        ]);
     }
 
     function inspectFigure() {
@@ -742,7 +799,33 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        if (
+            !state.photosInspected ||
+            !state.drawerInspected ||
+            !state.bedInspected
+        ) {
+            showSimpleLine(
+                "Müzik kutusuna dokunmadan önce odayı iyice incele - fotoğraflar, çekmece, yatak."
+            );
+
+            return;
+        }
+
         startClimax();
+    }
+
+    function updateMusicBoxReadiness() {
+        if (!musicBox) {
+            return;
+        }
+
+        const ready =
+            state.photosInspected &&
+            state.drawerInspected &&
+            state.bedInspected &&
+            !state.climaxStarted;
+
+        musicBox.classList.toggle("ready-to-play", ready);
     }
 
     function startClimax() {
@@ -751,6 +834,7 @@ document.addEventListener("DOMContentLoaded", () => {
         updateObjective();
 
         musicBox?.classList.add("climax-triggered");
+        musicBox?.classList.remove("ready-to-play");
         roomMain?.classList.add("climax-active");
 
         playEffect("lullaby");
@@ -774,14 +858,51 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 1500);
     }
 
+    /* =====================================================
+       ARKA PLAN GEÇİŞLERİ (figür yaklaşıyor/dönüyor)
+    ===================================================== */
+
+    function crossfadeToApproach() {
+        if (!roomBackgroundAlt) {
+            return;
+        }
+
+        roomBackgroundAlt.classList.remove("snap");
+        roomBackgroundAlt.src = "images/ui/rooms/room15_approach.png";
+        roomBackgroundAlt.classList.add("visible");
+    }
+
+    function snapToJumpscareImage() {
+        if (!roomBackgroundAlt) {
+            return;
+        }
+
+        // Katman zaten görünür (climax-confront'tan beri) - sadece
+        // kaynağı değiştirip ani bir kesim/dönüş hissi veriyoruz.
+        roomBackgroundAlt.classList.add("snap", "visible");
+        roomBackgroundAlt.src = "images/ui/rooms/room15_jumpscare.png";
+    }
+
+    function resetBackgroundLayer() {
+        if (!roomBackgroundAlt) {
+            return;
+        }
+
+        roomBackgroundAlt.classList.remove("visible", "snap");
+    }
+
     function startFigureConfrontation() {
         state.autoAdvanceActive = false;
         dialogElement?.classList.remove("dialog--whisper");
+        roomMain?.classList.add("climax-confront");
+        crossfadeToApproach();
 
         const name = state.playerName || "Oyuncu";
 
         state.dialogueQueue = [
             { speaker: "", text: `${name}, şimdi senin sıran.`, speed: 24 },
+            { speaker: "", text: "Bunu daha önce duydun - küçükken, birinin sana söylediği bir ninni gibi.", speed: 22 },
+            { speaker: "", text: "O gün hatırlamıyordun. Ama bir parçan hep biliyordu.", speed: 22 },
             { speaker: "", text: "Cümleyi duyacaksın. Sadece bir kez. Tam olarak.", speed: 22 },
             { speaker: "", text: "Ne yapacaksın?", speed: 26 }
         ];
@@ -802,6 +923,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function handleDialogContinue() {
+        if (state.explorationQueueActive) {
+            if (
+                dialogue &&
+                typeof dialogue.typing === "function" &&
+                dialogue.typing()
+            ) {
+                dialogue.skip();
+                return;
+            }
+
+            state.dialogueIndex += 1;
+            showExplorationEntry();
+            return;
+        }
+
         if (state.autoAdvanceActive) {
             // Fısıltı korosu otomatik ilerliyor, DEVAM tuşu sadece
             // yazının hızlı bitmesini sağlar.
@@ -882,7 +1018,7 @@ document.addEventListener("DOMContentLoaded", () => {
             finalChoiceMessage.textContent =
                 state.wrongSpeakCount === 1
                     ? "Hayır... yapma..."
-                    : "Döngü hiç bitmeyecek - eğer konuşursan.";
+                    : "Döndü. Artık sana bakıyor.";
 
             finalChoiceMessage.classList.add("error", "is-error");
         }
@@ -891,6 +1027,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (state.wrongSpeakCount === 1) {
             roomMain?.classList.add("climax-intense");
+            finalChoicePanel?.classList.add("climax-intense");
         }
 
         if (state.wrongSpeakCount >= 2) {
@@ -904,8 +1041,10 @@ document.addEventListener("DOMContentLoaded", () => {
         state.climaxResolved = true;
         saveState();
 
-        roomMain?.classList.remove("climax-active", "climax-intense");
+        roomMain?.classList.remove("climax-active", "climax-intense", "climax-confront", "climax-jumpscare");
+        finalChoicePanel?.classList.remove("climax-intense", "climax-jumpscare");
         musicBox?.classList.remove("climax-triggered");
+        resetBackgroundLayer();
 
         stopAllAudio();
         playEffect("finalRelease");
@@ -1061,6 +1200,10 @@ document.addEventListener("DOMContentLoaded", () => {
         playEffect("scare");
         triggerLightFlicker();
         triggerMovingShadow();
+        snapToJumpscareImage();
+
+        activateTemporaryClass(roomMain, "climax-jumpscare", 900);
+        activateTemporaryClass(finalChoicePanel, "climax-jumpscare", 900);
 
         if (window.Effects && typeof window.Effects.shake === "function") {
             try {
@@ -1162,6 +1305,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (state.figureInspected) {
             figure?.classList.add("inspected");
         }
+
+        updateMusicBoxReadiness();
     }
 
     /* =====================================================
