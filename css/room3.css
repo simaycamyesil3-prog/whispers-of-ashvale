@@ -1288,10 +1288,3 @@ body.chapter-three {
     opacity: 0;
     pointer-events: none;
 }
-/* =========================================================
-   YATAY TELEFON (LANDSCAPE) — EL FENERİ BOYUTU
-   Küçük ekranda 620px çap kullanılamaz durumda kalıyordu.
-========================================================= */
-@media (orientation: landscape) and (max-height: 520px) {
-    #flashlight { width: 240px; height: 240px; }
-}

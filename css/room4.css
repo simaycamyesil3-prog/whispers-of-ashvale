@@ -863,10 +863,3 @@ body.chapter-four #doorCardReader[aria-hidden="false"] {
 body.chapter-four .dialog {
     z-index: 4000 !important;
 }
-/* =========================================================
-   YATAY TELEFON (LANDSCAPE) — EL FENERİ BOYUTU
-   Küçük ekranda 620px çap kullanılamaz durumda kalıyordu.
-========================================================= */
-@media (orientation: landscape) and (max-height: 520px) {
-    body.chapter-four #flashlight { width: 240px; height: 240px; }
-}
