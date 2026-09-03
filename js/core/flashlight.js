@@ -55,6 +55,22 @@ window.AshvaleFlashlight = (() => {
     }
 
 
+    // Telefon yan çevrildiğinde tüm sayfa CSS transform:scale() ile
+    // küçültülüyor (bkz. mobile-scale.js). Parmak/fare konumu her zaman
+    // GERÇEK ekran pikseli olarak gelir (event.clientX/Y), ama el
+    // fenerinin kendi konumu (#flashlight'ın left/top'u) oda elementinin
+    // KENDİ (küçültülmeden önceki) yerel piksel uzayındadır. Bu yüzden
+    // ekran pikseli farkını mevcut küçültme oranına bölerek yerel
+    // piksele çevirmek gerekiyor — yoksa el feneri sadece ekranın sol üst
+    // köşesindeki dar bir alanda hareket edebiliyor.
+    function currentScale() {
+        return window.AshvaleMobileScale &&
+            typeof window.AshvaleMobileScale.getScale === "function"
+            ? window.AshvaleMobileScale.getScale()
+            : 1;
+    }
+
+
     function getElement(
         elementOrId
     ) {
@@ -179,17 +195,22 @@ window.AshvaleFlashlight = (() => {
         =================================================
         */
 
-        const roomRect =
-            room.getBoundingClientRect();
+        const roomLocalWidth =
+            room.clientWidth ||
+            room.getBoundingClientRect().width;
+
+        const roomLocalHeight =
+            room.clientHeight ||
+            room.getBoundingClientRect().height;
 
         let targetX =
             startAtCenter
-                ? roomRect.width / 2
+                ? roomLocalWidth / 2
                 : 0;
 
         let targetY =
             startAtCenter
-                ? roomRect.height / 2
+                ? roomLocalHeight / 2
                 : 0;
 
         let currentX =
@@ -267,28 +288,51 @@ window.AshvaleFlashlight = (() => {
             const rect =
                 room.getBoundingClientRect();
 
+            const scale =
+                currentScale();
+
+            const localWidth =
+                room.clientWidth ||
+                (rect.width / scale);
+
+            const localHeight =
+                room.clientHeight ||
+                (rect.height / scale);
+
             targetX =
                 clamp(
-                    clientX -
-                    rect.left,
+                    (clientX - rect.left) / scale,
                     0,
-                    rect.width
+                    localWidth
                 );
 
             targetY =
                 clamp(
-                    clientY -
-                    rect.top,
+                    (clientY - rect.top) / scale,
                     0,
-                    rect.height
+                    localHeight
                 );
 
             if (interactionPrompt) {
-                interactionPrompt.style.left =
-                    `${clientX}px`;
+                if (scale !== 1) {
+                    // .interaction-prompt position:fixed'dir; küçültme
+                    // aktifken konteyner konumu artık <body>'nin kendi
+                    // (küçültülmeden önceki) yerel kutusudur.
+                    const bodyRect =
+                        document.body.getBoundingClientRect();
 
-                interactionPrompt.style.top =
-                    `${clientY}px`;
+                    interactionPrompt.style.left =
+                        `${(clientX - bodyRect.left) / scale}px`;
+
+                    interactionPrompt.style.top =
+                        `${(clientY - bodyRect.top) / scale}px`;
+                } else {
+                    interactionPrompt.style.left =
+                        `${clientX}px`;
+
+                    interactionPrompt.style.top =
+                        `${clientY}px`;
+                }
             }
         }
 
@@ -426,35 +470,40 @@ window.AshvaleFlashlight = (() => {
         */
 
         function handleResize() {
-            const rect =
-                room.getBoundingClientRect();
+            const localWidth =
+                room.clientWidth ||
+                room.getBoundingClientRect().width;
+
+            const localHeight =
+                room.clientHeight ||
+                room.getBoundingClientRect().height;
 
             targetX =
                 clamp(
                     targetX,
                     0,
-                    rect.width
+                    localWidth
                 );
 
             targetY =
                 clamp(
                     targetY,
                     0,
-                    rect.height
+                    localHeight
                 );
 
             currentX =
                 clamp(
                     currentX,
                     0,
-                    rect.width
+                    localWidth
                 );
 
             currentY =
                 clamp(
                     currentY,
                     0,
-                    rect.height
+                    localHeight
                 );
         }
 
@@ -777,21 +826,26 @@ window.AshvaleFlashlight = (() => {
                 y,
                 immediate = false
             ) {
-                const rect =
-                    room.getBoundingClientRect();
+                const localWidth =
+                    room.clientWidth ||
+                    room.getBoundingClientRect().width;
+
+                const localHeight =
+                    room.clientHeight ||
+                    room.getBoundingClientRect().height;
 
                 targetX =
                     clamp(
                         x,
                         0,
-                        rect.width
+                        localWidth
                     );
 
                 targetY =
                     clamp(
                         y,
                         0,
-                        rect.height
+                        localHeight
                     );
 
                 if (immediate) {

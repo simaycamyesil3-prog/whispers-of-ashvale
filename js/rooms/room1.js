@@ -358,6 +358,20 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
+    // Telefon yan çevrildiğinde tüm sayfa CSS transform:scale() ile
+    // küçültülüyor (bkz. mobile-scale.js). Parmak/fare konumu her zaman
+    // GERÇEK ekran pikseli olarak gelir, ama flashlight.style.left/top
+    // oda elementinin KENDİ (küçültülmeden önceki) yerel piksel
+    // uzayındadır — bu yüzden farkı mevcut küçültme oranına bölmek
+    // gerekiyor, yoksa el feneri sadece ekranın sol üst köşesindeki dar
+    // bir alanda hareket edebiliyor.
+    function currentScale() {
+        return window.AshvaleMobileScale &&
+            typeof window.AshvaleMobileScale.getScale === "function"
+            ? window.AshvaleMobileScale.getScale()
+            : 1;
+    }
+
     let targetX = room.clientWidth / 2;
     let targetY = room.clientHeight / 2;
 
@@ -407,17 +421,20 @@ document.addEventListener("DOMContentLoaded", () => {
             const rect =
                 room.getBoundingClientRect();
 
+            const scale =
+                currentScale();
+
             targetX =
-                event.clientX - rect.left;
+                (event.clientX - rect.left) / scale;
 
             targetY =
-                event.clientY - rect.top;
+                (event.clientY - rect.top) / scale;
 
             room.classList.remove(
                 "flashlight-idle"
             );
 
-            
+
         }
     );
 
@@ -446,11 +463,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const rect =
             room.getBoundingClientRect();
 
+        const scale =
+            currentScale();
+
         targetX =
-            touch.clientX - rect.left;
+            (touch.clientX - rect.left) / scale;
 
         targetY =
-            touch.clientY - rect.top;
+            (touch.clientY - rect.top) / scale;
 
         room.classList.remove(
             "flashlight-idle"
@@ -491,17 +511,14 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener(
         "resize",
         () => {
-            const rect =
-                room.getBoundingClientRect();
-
             targetX = Math.min(
                 targetX,
-                rect.width
+                room.clientWidth
             );
 
             targetY = Math.min(
                 targetY,
-                rect.height
+                room.clientHeight
             );
         }
     );

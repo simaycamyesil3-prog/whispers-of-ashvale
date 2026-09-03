@@ -80,6 +80,19 @@ window.AshvaleMobileScale = (() => {
         document.documentElement.style.setProperty("--ashvale-mobile-scale", scale);
     }
 
+    // El feneri gibi diğer script'lerin, sayfanın şu an hangi oranda
+    // küçültüldüğünü öğrenmesi için: küçültme aktif değilse her zaman 1
+    // döner, aktifse şu an uygulanan gerçek oranı verir.
+    function getScale() {
+        if (!document.documentElement.classList.contains("mobile-scale-active")) {
+            return 1;
+        }
+        const raw = getComputedStyle(document.documentElement)
+            .getPropertyValue("--ashvale-mobile-scale");
+        const parsed = parseFloat(raw);
+        return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
+    }
+
     function update(rotateOverlay) {
         const size = viewportSize();
         const isPortrait = size.height > size.width;
@@ -100,22 +113,59 @@ window.AshvaleMobileScale = (() => {
         }
 
         const rotateOverlay = buildRotateOverlay();
-        update(rotateOverlay);
 
         let pendingFrame = null;
+        let settleTimers = [];
+
+        function clearSettleTimers() {
+            settleTimers.forEach((id) => clearTimeout(id));
+            settleTimers = [];
+        }
+
+        function runUpdate() {
+            update(rotateOverlay);
+        }
+
+        // Telefonu çevirdikten sonra Safari'nin adres/sekme çubuğu bir
+        // animasyonla yerleşiyor ve görünür alan birkaç yüz milisaniye
+        // boyunca değişmeye devam edebiliyor (özellikle çok sekme açıkken
+        // görünen sekme şeridiyle). Tek bir anlık ölçüm yanlış (fazla küçük)
+        // bir oran hesaplayıp öyle kalabiliyor. Bunu önlemek için ilk tepkiden
+        // sonra birkaç kez daha ölçüp en son (yerleşmiş) değeri uyguluyoruz.
+        function scheduleSettleChecks() {
+            clearSettleTimers();
+            [80, 200, 400, 700, 1100].forEach((delay) => {
+                settleTimers.push(
+                    setTimeout(runUpdate, delay)
+                );
+            });
+        }
+
         function onChange() {
             if (pendingFrame) {
                 cancelAnimationFrame(pendingFrame);
             }
-            pendingFrame = requestAnimationFrame(() => {
-                update(rotateOverlay);
-            });
+            pendingFrame = requestAnimationFrame(runUpdate);
+            scheduleSettleChecks();
         }
+
+        runUpdate();
+        scheduleSettleChecks();
 
         window.addEventListener("resize", onChange);
         window.addEventListener("orientationchange", onChange);
+        window.addEventListener("pageshow", onChange);
+        document.addEventListener("visibilitychange", () => {
+            if (!document.hidden) {
+                onChange();
+            }
+        });
         if (window.visualViewport) {
             window.visualViewport.addEventListener("resize", onChange);
+        }
+        if (window.ResizeObserver) {
+            const observer = new ResizeObserver(onChange);
+            observer.observe(document.documentElement);
         }
     }
 
@@ -125,5 +175,5 @@ window.AshvaleMobileScale = (() => {
         init();
     }
 
-    return { init: init };
+    return { init: init, getScale: getScale };
 })();
