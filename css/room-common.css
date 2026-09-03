@@ -910,3 +910,92 @@ body.room-page button:focus-visible { outline: 2px solid rgba(229,92,92,.78); ou
             scale(1);
     }
 }
+/* =========================================================
+   TAM EKRAN BUTONU VE İPUCU KUTUSU
+   ========================================================= */
+
+.hud-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.fullscreen-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.fullscreen-button__icon {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.fullscreen-tip {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(2, 4, 4, 0.82);
+}
+
+.fullscreen-tip[aria-hidden="true"] {
+    display: none;
+}
+
+.fullscreen-tip__box {
+    max-width: 420px;
+    padding: 26px 24px;
+    border: 1px solid rgba(180, 64, 59, 0.5);
+    border-radius: 14px;
+    background: linear-gradient(180deg, rgba(14, 19, 17, 0.98), rgba(6, 9, 8, 0.99));
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+    text-align: center;
+}
+
+.fullscreen-tip__box p {
+    margin: 0 0 14px;
+    color: #d7dcd9;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.fullscreen-tip__box p:last-of-type {
+    margin-bottom: 20px;
+}
+
+.fullscreen-tip__box strong {
+    color: #fff;
+}
+
+.fullscreen-tip__close {
+    min-width: 120px;
+    padding: 11px 20px;
+    border: 1px solid rgba(180, 64, 59, 0.68);
+    border-radius: 10px;
+    background: linear-gradient(180deg, var(--room-ui-red-top), var(--room-ui-red-bottom));
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    cursor: pointer;
+}
+
+.fullscreen-tip__close:hover {
+    filter: brightness(1.16);
+}
+
+@media (orientation: landscape) and (max-height: 520px) {
+    .hud-right { gap: 6px; }
+    .fullscreen-button { min-width: 0; width: 34px; height: 34px; padding: 0; }
+    .fullscreen-button__label { display: none; }
+    .fullscreen-button__icon { font-size: 15px; }
+    .fullscreen-tip__box { max-width: 320px; padding: 18px 16px; }
+    .fullscreen-tip__box p { font-size: 12px; margin-bottom: 10px; }
+    .fullscreen-tip__close { min-width: 0; padding: 8px 14px; font-size: 10px; }
+}

@@ -6657,6 +6657,7 @@ body.chapter-one #inventory-list li:not(.inventory-empty):focus-visible {
 
     .hud {
         top: 6px !important; left: 6px !important; right: 6px !important;
+        min-width: 0 !important;
         min-height: 0 !important;
         padding: 6px 10px !important;
     }
@@ -6687,4 +6688,93 @@ body.chapter-one #inventory-list li:not(.inventory-empty):focus-visible {
     .flashlight, #flashlight { width: 220px !important; height: 220px !important; }
 
     .dialog, .chapter-complete, .computer-screen, .record-viewer, .code-panel { min-width: 0 !important; }
+
+    .hud-right { gap: 6px !important; }
+    .fullscreen-button { min-width: 0 !important; width: 34px !important; height: 34px !important; padding: 0 !important; }
+    .fullscreen-button__label { display: none !important; }
+    .fullscreen-button__icon { font-size: 15px !important; }
+    .fullscreen-tip__box { max-width: 320px !important; padding: 18px 16px !important; }
+    .fullscreen-tip__box p { font-size: 12px !important; margin-bottom: 10px !important; }
+    .fullscreen-tip__close { min-width: 0 !important; padding: 8px 14px !important; font-size: 10px !important; }
+}
+
+
+/* =========================================================
+   TAM EKRAN BUTONU VE İPUCU KUTUSU
+   ========================================================= */
+
+.hud-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+}
+
+.fullscreen-button {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    white-space: nowrap !important;
+}
+
+.fullscreen-button__icon {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.fullscreen-tip {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(2, 4, 4, 0.82);
+}
+
+.fullscreen-tip[aria-hidden="true"] {
+    display: none;
+}
+
+.fullscreen-tip__box {
+    max-width: 420px;
+    padding: 26px 24px;
+    border: 1px solid rgba(180, 64, 59, 0.5);
+    border-radius: 14px;
+    background: linear-gradient(180deg, rgba(14, 19, 17, 0.98), rgba(6, 9, 8, 0.99));
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+    text-align: center;
+}
+
+.fullscreen-tip__box p {
+    margin: 0 0 14px;
+    color: #d7dcd9;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.fullscreen-tip__box p:last-of-type {
+    margin-bottom: 20px;
+}
+
+.fullscreen-tip__box strong {
+    color: #fff;
+}
+
+.fullscreen-tip__close {
+    min-width: 120px;
+    padding: 11px 20px;
+    border: 1px solid rgba(180, 64, 59, 0.68);
+    border-radius: 10px;
+    background: linear-gradient(180deg, var(--room-ui-red-top), var(--room-ui-red-bottom));
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    cursor: pointer;
+}
+
+.fullscreen-tip__close:hover {
+    filter: brightness(1.16);
 }
