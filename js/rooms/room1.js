@@ -280,11 +280,9 @@ document.addEventListener("DOMContentLoaded", () => {
             settings.musicVolume
         );
 
-        setAudioVolume(
-            fluorescentSound,
-            settings.effectsVolume
-        );
-
+        // fluorescentSound artık otomatik çalmıyor (sürekli tıslama/uğultu istenmiyor);
+        // metalSound/whisperSound/doorSound yalnızca tıklama/etkileşim anlarında
+        // başka yerlerden tetikleniyor, o yüzden onların sesi burada ayarlanmaya devam ediyor.
         setAudioVolume(
             metalSound,
             settings.effectsVolume
@@ -301,7 +299,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
         playAudio(roomAmbience);
-        playAudio(fluorescentSound);
     }
 
 

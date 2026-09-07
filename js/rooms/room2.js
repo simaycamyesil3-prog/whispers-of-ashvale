@@ -757,7 +757,7 @@ document.addEventListener(
 
                 chapter2Ambience: {
                     src:
-                        "assets/audio/ambience/chapter2_ambient.mp3",
+                        "audio/horror_ambience.mp3", // ana menüyle aynı fon müziği
 
                     type:
                         "ambience",

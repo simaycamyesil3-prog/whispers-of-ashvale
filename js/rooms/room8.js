@@ -256,7 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
             audio.initialize({
                 sounds: {
                     chapter8Ambience: {
-                        src: "assets/audio/ambience/chapter2_ambient.mp3",
+                        src: "audio/horror_ambience.mp3", // ana menüyle aynı fon müziği
                         type: "ambience",
                         loop: true,
                         volume: 0.5
