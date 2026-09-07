@@ -268,10 +268,141 @@ document.addEventListener("DOMContentLoaded", () => {
             Save.setSetting("muted", !muted);
 
             refreshSoundToggle();
+            applyAudioSettings(); // sessize alma anında ambiyans seviyesini de günceller
 
         });
 
     }
+
+    /*
+    =====================================================
+    SES YÖNETİMİ
+    index.html içindeki menuAmbience/rainAmbience/hoverSound/
+    clickSound/thunderSound <audio> etiketlerini burada
+    gerçekten çalıştırıyoruz. Daha önce bu etiketler sayfada
+    duruyordu ama hiçbir yerde play() çağrılmıyordu.
+    =====================================================
+    */
+
+    // index.html'deki hazır <audio> etiketlerine referanslar.
+    const menuAmbienceAudio = document.getElementById("menuAmbience");
+    const rainAmbienceAudio = document.getElementById("rainAmbience");
+    const hoverSoundAudio = document.getElementById("hoverSound");
+    const clickSoundAudio = document.getElementById("clickSound");
+    const thunderSoundAudio = document.getElementById("thunderSound");
+
+    // Devam eden gök gürültüsü zamanlayıcısının id'sini tutar (şu an kullanılmasa
+    // da ileride durdurmak gerekirse diye saklıyoruz).
+    let thunderTimerId = null;
+
+    // Ayarlardaki masterVolume/musicVolume/effectsVolume ve "muted" değerinden
+    // 0-1 arası tek bir ses seviyesi hesaplar. category "effects" ise hover/
+    // tıklama/gök gürültüsü için effectsVolume, değilse ambiyans için musicVolume kullanılır.
+    function computeVolume(category) {
+
+        if (!Save) return 0;
+
+        const settings = Save.getSettings ? Save.getSettings() : {};
+        const muted = Save.getSetting ? Save.getSetting("muted", false) : false;
+
+        if (muted) return 0; // sessizdeyken her şey 0 ses seviyesinde
+
+        const master = settings.masterVolume ?? 1;
+        const bucket = category === "effects"
+            ? (settings.effectsVolume ?? 0.8)
+            : (settings.musicVolume ?? 0.6);
+
+        return Math.max(0, Math.min(1, master * bucket));
+
+    }
+
+    // Ambiyans ve yağmur seslerinin ses seviyesini güncel ayarlara göre yeniden
+    // ayarlar. Ayarlar kaydedildiğinde veya ses aç/kapa değiştiğinde çağrılır.
+    function applyAudioSettings() {
+
+        if (!Save) return;
+
+        const settings = Save.getSettings ? Save.getSettings() : {};
+        const musicVol = computeVolume("music");
+        const rainEnabled = settings.rainEnabled !== false; // varsayılan: açık
+
+        if (menuAmbienceAudio) menuAmbienceAudio.volume = musicVol;
+        // Yağmur ayarlardan kapatılmışsa sesi de 0'da tutuyoruz.
+        if (rainAmbienceAudio) rainAmbienceAudio.volume = rainEnabled ? musicVol : 0;
+
+    }
+
+    // Tarayıcılar kullanıcı sayfaya dokunmadan sesli oynatmaya izin vermez.
+    // Önce oynatmayı deneriz; tarayıcı engellerse ilk tıklama/tuşta tekrar deneriz.
+    function startAmbienceLoop(audioEl) {
+
+        if (!audioEl) return;
+
+        const attempt = () => audioEl.play().catch(() => {});
+
+        attempt();
+
+        document.addEventListener("pointerdown", () => {
+            if (audioEl.paused) attempt();
+        }, { once: true });
+
+        document.addEventListener("keydown", () => {
+            if (audioEl.paused) attempt();
+        }, { once: true });
+
+    }
+
+    // Rastgele aralıklarla (35-70 saniye) uzaktan gök gürültüsü çalar; oda
+    // sayfalarındaki atmosfer ritmiyle aynı mantığı kullanır.
+    function scheduleThunder() {
+
+        const delay = 35000 + Math.random() * 35000;
+
+        thunderTimerId = window.setTimeout(() => {
+
+            const volume = computeVolume("effects") * 0.6; // uzaktan geldiği için daha kısık
+
+            if (thunderSoundAudio && volume > 0) {
+                thunderSoundAudio.volume = volume;
+                thunderSoundAudio.currentTime = 0;
+                thunderSoundAudio.play().catch(() => {});
+            }
+
+            scheduleThunder(); // bir sonrakini planla
+
+        }, delay);
+
+    }
+
+    // Menüdeki her tıklanabilir kutuya (Devam Et, Yeni Oyun, Bölümler, Ayarlar,
+    // Hakkında) üzerine gelince hover, tıklayınca da click sesi bağlar.
+    document.querySelectorAll(".menu-button").forEach((button) => {
+
+        button.addEventListener("mouseenter", () => {
+
+            const volume = computeVolume("effects");
+
+            if (hoverSoundAudio && volume > 0) {
+                hoverSoundAudio.volume = volume;
+                hoverSoundAudio.currentTime = 0;
+                hoverSoundAudio.play().catch(() => {});
+            }
+
+        });
+
+        button.addEventListener("click", () => {
+
+            const volume = computeVolume("effects");
+
+            if (clickSoundAudio && volume > 0) {
+                clickSoundAudio.volume = volume;
+                clickSoundAudio.currentTime = 0;
+                clickSoundAudio.play().catch(() => {});
+            }
+
+        });
+
+    });
 
     /*
     =====================================================
@@ -512,6 +643,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             populateSettingsForm();
             refreshSoundToggle();
+            applyAudioSettings(); // sıfırlanan ses seviyelerini hemen uygula
 
             toast("Ayarlar varsayılana döndürüldü.");
 
@@ -542,6 +674,8 @@ document.addEventListener("DOMContentLoaded", () => {
             if (Game && typeof Game.applySettings === "function") {
                 Game.applySettings();
             }
+
+            applyAudioSettings(); // yeni kaydedilen ses seviyelerini hemen uygula
 
             closeModal(settingsModal);
 
@@ -604,5 +738,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (Game && typeof Game.applySettings === "function") {
         Game.applySettings();
     }
+
+    // Menü sesini başlat: ambiyans + yağmur döngüde çalar, gök gürültüsü
+    // rastgele aralıklarla tetiklenir. Ses seviyeleri kayıtlı ayarlara göre ayarlanır.
+    applyAudioSettings();
+    startAmbienceLoop(menuAmbienceAudio);
+    startAmbienceLoop(rainAmbienceAudio);
+    scheduleThunder();
 
 });
