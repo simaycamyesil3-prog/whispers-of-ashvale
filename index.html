@@ -21,7 +21,7 @@
     <title>Whispers of Ashvale</title>
 
     <!-- Ana tasarım dosyaları -->
-    <link rel="stylesheet" href="css/style.css?v=202608280557">
+    <link rel="stylesheet" href="css/style.css?v=20260907063235">
     <link rel="stylesheet" href="css/animations.css?v=202608280557">
 
     <!-- Tarayıcı simgesi -->
@@ -194,6 +194,24 @@
         <!-- ================================================= -->
         <!-- ANA MENÜ İÇERİĞİ                                  -->
         <!-- ================================================= -->
+
+        <!-- Sadece telefon gibi küçük dokunmatik ekranlarda gösterilir
+             (aşağıdaki script tarafından açılıyor) -->
+        <div
+            id="deviceNotice"
+            class="device-notice"
+            role="note"
+            aria-hidden="true"
+        >
+            <span class="device-notice__icon" aria-hidden="true">
+                🖥️
+            </span>
+
+            <span class="device-notice__text">
+                En iyi deneyim için bilgisayar veya tablet tarayıcısından oynaman önerilir.
+            </span>
+        </div>
+
 
         <section class="menu-layout">
 
@@ -1236,6 +1254,37 @@
     <script src="js/core/save-manager.js?v=202608280557"></script>
     <script src="js/game.js?v=20260831095208"></script>
     <script src="js/menu.js?v=20260902055428"></script>
+
+    <script>
+        // Telefon gibi küçük dokunmatik ekranlarda, oyun deneyiminin
+        // bilgisayar/tablette daha rahat olduğunu belirten küçük bir
+        // uyarı gösteriyor. Bilgisayar ve tablette hiçbir şey
+        // göstermiyor — sadece gerçekten küçük dokunmatik ekranlar için.
+        (function () {
+            "use strict";
+
+            var hasTouch =
+                "ontouchstart" in window ||
+                navigator.maxTouchPoints > 0;
+
+            var shortSide =
+                Math.min(window.innerWidth, window.innerHeight);
+
+            var isPhoneLikeDevice =
+                hasTouch && shortSide <= 500;
+
+            if (!isPhoneLikeDevice) {
+                return;
+            }
+
+            var notice =
+                document.getElementById("deviceNotice");
+
+            if (notice) {
+                notice.setAttribute("aria-hidden", "false");
+            }
+        })();
+    </script>
 
 </body>
 </html>

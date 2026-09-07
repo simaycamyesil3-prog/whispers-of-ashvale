@@ -97,45 +97,7 @@ window.AshvaleMobileScale = (() => {
         return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
     }
 
-    // ------------------------------------------------------------------
-    // GEÇİCİ TEŞHİS PANELİ — ekranın neden küçük kaldığını gerçek
-    // telefonda görebilmek için. Sorun çözülünce kaldırılacak.
-    // ------------------------------------------------------------------
-    function buildDebugPanel() {
-        const panel = document.createElement("div");
-        panel.id = "ashvaleDebugPanel";
-        panel.style.cssText =
-            "position:fixed;top:6px;left:6px;z-index:999999;" +
-            "background:rgba(0,0,0,.85);color:#7CFC7C;" +
-            "font:10px/1.4 monospace;padding:6px 8px;border-radius:6px;" +
-            "pointer-events:none;white-space:pre;max-width:90vw;overflow:auto;";
-        document.documentElement.appendChild(panel);
-        return panel;
-    }
-
-    function updateDebugPanel(panel, size) {
-        if (!panel) {
-            return;
-        }
-        const vv = window.visualViewport;
-        const bodyEl = document.body;
-        const bodyRect = bodyEl ? bodyEl.getBoundingClientRect() : null;
-        const lines = [
-            "DEBUG (gecici)",
-            "vv: " + (vv ? vv.width.toFixed(0) + "x" + vv.height.toFixed(0) : "yok"),
-            "inner: " + window.innerWidth + "x" + window.innerHeight,
-            "screen: " + screen.width + "x" + screen.height,
-            "orient: " + (screen.orientation ? screen.orientation.type : "?"),
-            "dpr: " + window.devicePixelRatio,
-            "used size: " + size.width.toFixed(0) + "x" + size.height.toFixed(0),
-            "scale: " + getScale().toFixed(3),
-            "bodyRect: " + (bodyRect ? bodyRect.width.toFixed(0) + "x" + bodyRect.height.toFixed(0) +
-                " @" + bodyRect.left.toFixed(0) + "," + bodyRect.top.toFixed(0) : "yok")
-        ];
-        panel.textContent = lines.join("\n");
-    }
-
-    function update(rotateOverlay, debugPanel) {
+    function update(rotateOverlay) {
         const measured = measure();
 
         if (measured.isPortrait) {
@@ -146,8 +108,6 @@ window.AshvaleMobileScale = (() => {
             document.documentElement.classList.add("mobile-scale-active");
             applyScale(measured.size);
         }
-
-        updateDebugPanel(debugPanel, measured.size);
     }
 
     function init() {
@@ -156,7 +116,6 @@ window.AshvaleMobileScale = (() => {
         }
 
         const rotateOverlay = buildRotateOverlay();
-        const debugPanel = buildDebugPanel();
 
         let pendingFrame = null;
         let settleTimers = [];
@@ -167,7 +126,7 @@ window.AshvaleMobileScale = (() => {
         }
 
         function runUpdate() {
-            update(rotateOverlay, debugPanel);
+            update(rotateOverlay);
         }
 
         // Telefonu çevirdikten sonra Safari'nin adres/sekme çubuğu bir

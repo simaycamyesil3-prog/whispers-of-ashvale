@@ -1092,6 +1092,47 @@ body.no-camera-motion .hospital-background {
 
 
 /* =========================================================
+   7B. CİHAZ UYARISI
+   Sadece telefon gibi küçük dokunmatik ekranlarda JS tarafından
+   gösteriliyor (bkz. index.html'deki küçük script) — masaüstünde
+   ve tablette hiç görünmüyor, gereksiz kalabalık yapmasın diye.
+   ========================================================= */
+
+.device-notice {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 60;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 9px 16px;
+
+    background: rgba(6, 9, 8, 0.92);
+    border-bottom: 1px solid rgba(143, 156, 150, 0.25);
+
+    color: #cbd0cd;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.device-notice[aria-hidden="true"] {
+    display: none;
+}
+
+.device-notice__icon {
+    flex-shrink: 0;
+    font-size: 13px;
+}
+
+
+/* =========================================================
    8. ALT BİLGİ
    ========================================================= */
 
